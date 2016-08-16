@@ -8,7 +8,7 @@
 
     <f:metadata>
         <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{perfilDocumentalDetalleBean.perfil}" />
-        <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{tipoBean.perfil}" />
+        <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{tipoBean.perfil}" />x
         <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{documentalBean.perfil}" />
         <f:viewParam name="PERFIL_DOCUMENTAL" value="#{documentalBean.perfil_documental}" />
     </f:metadata>
@@ -60,7 +60,8 @@
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar Documental"/>
-                        <p:inputText id="globalFilter"  onchange="PF('tblDocumental').filter()" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                        <p:inputText id="globalFilter" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                        <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblDocumental').filter()" value="Filtrar"></p:commandButton>
                     </p:outputPanel>
                 </f:facet>
 
