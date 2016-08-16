@@ -1219,10 +1219,6 @@ ui-overlay-visible * {
 .ui-dialog .ui-dialog-content {
     position: relative;
     border: 0;
-<<<<<<< HEAD
-=======
-  
->>>>>>> 32c6afa4e454ff033d36d2ec6fe46040b7db2b66
     padding-top: 15px !important;
     padding-bottom: 0px !important;
     padding-right: 15px !important;

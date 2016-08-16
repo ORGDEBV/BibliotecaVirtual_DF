@@ -58,7 +58,8 @@
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar Documental"/>
-                        <p:inputText id="globalFilter" onkeyup="PF('tblDocumental').filter()" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                        <p:inputText id="globalFilter" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                        <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblDocumental').filter()" value="Filtrar"></p:commandButton>
                     </p:outputPanel>
                 </f:facet>
                 <p:column filterStyle="display:none" filterBy="#{biblioteca.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="Detalle" width="5%" style="text-align: center;">
