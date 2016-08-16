@@ -22,15 +22,13 @@ import org.apache.commons.io.FilenameUtils;
 @ViewScoped
 public class archivoBean implements Serializable {
 
-    private final String prefijoRutaIndex;
-    private final String prefijoRutaNovedades;
+    private final String rutaServidorArchivos;
 
     private ArrayList<UploadedFile> lstImagenes = new ArrayList<UploadedFile>();
 
     public archivoBean() {
         ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
-        prefijoRutaIndex = ext.getInitParameter("imagenesIndex");
-        prefijoRutaNovedades = ext.getInitParameter("imagenesNovedades");
+        rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
     }
 
     public ArrayList<UploadedFile> getLstImagenes() {
@@ -55,20 +53,20 @@ public class archivoBean implements Serializable {
             }
             if (a == 0) {
                 lstImagenes.add(archivo);
-                grabrArchivoTemporal(archivo.getInputstream(), archivo.getSize(), archivo.getFileName(), archivo.getContents(), prefijoRutaIndex);
-                FacesContext.getCurrentInstance().addMessage("gmsj", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", "Se agrego a la lista"));
+                grabrArchivoTemporal(archivo.getFileName(), archivo.getContents(), rutaServidorArchivos);
+                FacesContext.getCurrentInstance().addMessage("gmsj", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", "Imagen se agrego a la lista"));
                 RequestContext.getCurrentInstance().update("frmNovedad");
             }
         } else {
             lstImagenes.add(archivo);
-            grabrArchivoTemporal(archivo.getInputstream(), archivo.getSize(), archivo.getFileName(), archivo.getContents(), prefijoRutaIndex);
-            FacesContext.getCurrentInstance().addMessage("gmsj", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", "Se agrego a la lista"));
+            grabrArchivoTemporal(archivo.getFileName(), archivo.getContents(), rutaServidorArchivos);
+            FacesContext.getCurrentInstance().addMessage("gmsj", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", "Imagen se agrego a la lista"));
             RequestContext.getCurrentInstance().update("frmNovedad");
         }
     }
 
     //con comons fileupload
-    private void grabrArchivoTemporal(InputStream in, long size, String nombreArchivo, byte[] contenido, String dirFinal) {
+    private void grabrArchivoTemporal(String nombreArchivo, byte[] contenido, String dirFinal) {
         try {
             String filename = FilenameUtils.getName(nombreArchivo);
             OutputStream out = new FileOutputStream(new File(dirFinal + filename));
@@ -98,13 +96,13 @@ public class archivoBean implements Serializable {
             }
             if (a == 0) {
                 lstImagenes.add(archivo);
-                grabrArchivoTemporal2(archivo.getFileName(), archivo.getContents(), prefijoRutaNovedades);
+                grabrArchivoTemporal2(archivo.getFileName(), archivo.getContents(), rutaServidorArchivos);
                 FacesContext.getCurrentInstance().addMessage("gmsj", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", "Se agrego a la lista"));
                 RequestContext.getCurrentInstance().update("frmNovedad");
             }
         } else {
             lstImagenes.add(archivo);
-            grabrArchivoTemporal2(archivo.getFileName(), archivo.getContents(), prefijoRutaNovedades);
+            grabrArchivoTemporal2(archivo.getFileName(), archivo.getContents(), rutaServidorArchivos);
             FacesContext.getCurrentInstance().addMessage("gmsj", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", "Se agrego a la lista"));
             RequestContext.getCurrentInstance().update("frmNovedad");
         }

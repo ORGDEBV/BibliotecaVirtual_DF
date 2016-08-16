@@ -50,7 +50,7 @@
                             <p:inputText id="txtImgHome" widgetVar="txtImgHome" value="#{novedadBean.imagenHome.URL_NOVEDAD}" disabled="true" styleClass="Wid100" />                            
                         </p:column>
                         <p:column>
-                            <p:commandButton icon="fa fa-plus" actionListener="#{novedadBean.abrirDlg2()}" title="Abrir dialogo">
+                            <p:commandButton icon="fa fa-plus" actionListener="#{novedadBean.abrirDlgImagenPortada()}" title="Abrir dialogo">
                                 <p:ajax event="dialogReturn" listener="#{novedadBean.onReturnNovedadHome}" />
                             </p:commandButton>
                         </p:column>                        
@@ -63,7 +63,7 @@
                             <p:inputText id="txtImgHome2" widgetVar="txtImgHome2" value="#{novedadBean.imagenHome2.URL_NOVEDAD}" disabled="true" styleClass="Wid100" />                            
                         </p:column>
                         <p:column>
-                            <p:commandButton icon="fa fa-plus" actionListener="#{novedadBean.abrirDlg3()}" title="Abrir dialogo">
+                            <p:commandButton icon="fa fa-plus" actionListener="#{novedadBean.abrirDlgImagenPortadaAccion()}" title="Abrir dialogo">
                                 <p:ajax event="dialogReturn" listener="#{novedadBean.onReturnNovedadHome2}" />
                             </p:commandButton>
                         </p:column>                        
@@ -126,7 +126,7 @@
                             </p:dataList>
                         </p:column>
                         <p:column>
-                            <p:commandButton icon="fa fa-plus" actionListener="#{novedadBean.abrirDlg}" title="Abrir dialogo">
+                            <p:commandButton icon="fa fa-plus" actionListener="#{novedadBean.abrirDlgImagenesDetalles()}" title="Abrir dialogo">
                                 <p:ajax event="dialogReturn" listener="#{novedadBean.onReturnFromdocumentalUpd}" />
                             </p:commandButton>
                         </p:column>

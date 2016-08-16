@@ -4,15 +4,13 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>    
         <param-value>Production</param-value>
     </context-param>
+
     <context-param>
-        <param-name>imagenesIndex</param-name>
-        <param-value>C:\REPOSITORIO_LOCAL\Bvirtual\web\resources\img\novedades-index\</param-value>
+        <param-name>rutaServidorArchivos</param-name>
+        <param-value>C:\glassfish-4.1.1\glassfish4\glassfish\domains\domain1\docroot\draco\</param-value>
     </context-param>
-    
-    <context-param>
-        <param-name>imagenesNovedades</param-name>
-        <param-value>C:\REPOSITORIO_LOCAL\Bvirtual\web\resources\img\novedades\</param-value>       
-    </context-param>    
+
+       
     <listener>
         <description>HttpSessionListener</description>
         <listener-class>vb.Listener.SessionListener</listener-class>

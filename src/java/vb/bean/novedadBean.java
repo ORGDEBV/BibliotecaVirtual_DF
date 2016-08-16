@@ -109,13 +109,13 @@ public class novedadBean {
     }
 
     //****Home    
-    public void abrirDlg2() {
+    public void abrirDlgImagenPortada() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
         options.put("width", 700);
         options.put("closable", false);
         options.put("headerElement", "customheader");
-        RequestContext.getCurrentInstance().openDialog("novedadHome", options, null);
+        RequestContext.getCurrentInstance().openDialog("novedadImagenPortada", options, null);
     }
 
     public void onReturnNovedadHome(SelectEvent event) {
@@ -134,13 +134,13 @@ public class novedadBean {
     }
 
     /*Novedad*/
-    public void abrirDlg3() {
+    public void abrirDlgImagenPortadaAccion() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
         options.put("width", 700);
         options.put("closable", false);
         options.put("headerElement", "customheader");        
-        RequestContext.getCurrentInstance().openDialog("novedadHome2", options, null);
+        RequestContext.getCurrentInstance().openDialog("novedadImagenPortada2", options, null);
     }
 
     public void onReturnNovedadHome2(SelectEvent event) {
@@ -159,13 +159,13 @@ public class novedadBean {
     }
 
     ////Novedad detalles
-    public void abrirDlg() {
+    public void abrirDlgImagenesDetalles() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
         options.put("width", 700);
         options.put("closable", false);
         options.put("headerElement", "customheader");        
-        RequestContext.getCurrentInstance().openDialog("novedadDetalles", options, null);
+        RequestContext.getCurrentInstance().openDialog("novedadImagenesDetalles", options, null);
     }
     
     

@@ -447,7 +447,7 @@ public class transaccionDao {
             callNovedad.setString(9, novedad.getACTIVO());
             callNovedad.setString(10, "INSERTAR");
             callNovedad.executeQuery();
-             logTablaDao.registrarLogTabla(new LogTabla("web", "NOVEDADES", "", "1", String.valueOf(idUsuario)));
+            logTablaDao.registrarLogTabla(new LogTabla("web", "NOVEDADES", "", "1", String.valueOf(idUsuario)));
 
             //innecesario
             CallableStatement callImagenNovedad = conn.prepareCall("{call web.SP_IMAGEN_NOVEDAD_MANTENIMIENTO(?,?,?,?,?)}");
@@ -462,6 +462,7 @@ public class transaccionDao {
             }
             conn.commit();
             insert = "1";
+            
         } catch (SQLException ex) {
             insert = ex.getMessage();
             ex.printStackTrace();
