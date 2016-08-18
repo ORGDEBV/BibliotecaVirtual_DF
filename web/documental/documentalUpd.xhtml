@@ -722,11 +722,11 @@
             </p:panelGrid>
         </h:form>
 
-        <p:dialog id="dlgTema" widgetVar="dlgTema" styleClass="claseAux35" closeOnEscape="true" modal="true" header="..:: MANTENIMIENTO TEMA ::.." resizable="false" showEffect="puff" hideEffect="puff">
+        <p:dialog id="dlgTema" widgetVar="dlgTema" styleClass="claseAux35" closeOnEscape="true" modal="true" header="NUEVO TEMA :" resizable="false" showEffect="puff" hideEffect="puff">
             <h:form id="frmTema">
                 <h:panelGrid id="gridTema" columns="2" cellpadding="5" columnClasses="label, value">
-                    <p:outputLabel for="txtTema" value="TEMA: " />
-                    <p:inputText id="txtTema" value="#{temaBean.tema.TEMA}"/>
+                    <p:outputLabel for="txtTema" value="TEMA : " />
+                    <p:inputText id="txtTema" style="width: 370px" value="#{temaBean.tema.TEMA}"/>
                     <p:commandButton value="REGISTRAR TEMA" actionListener="#{temaBean.creaTema}" update=":frmTema:gridTema :frmAddDocumental:cboTema" />
                 </h:panelGrid>
             </h:form>
