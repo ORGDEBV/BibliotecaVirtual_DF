@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vb.bean;
 
 import java.util.ArrayList;
@@ -16,10 +11,6 @@ import org.primefaces.context.RequestContext;
 import vb.dao.temaDao;
 import vb.entidad.Tema;
 
-/**
- *
- * @author Renato Vásquez Tejada - renatovt11@gmail.com
- */
 @ManagedBean
 @RequestScoped
 public class temaBean {
@@ -38,10 +29,17 @@ public class temaBean {
         int insert = temaDao.crearEntidad(tema);
         if(insert == 0){
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Ocurrió un error al ejecutar la sentencia."));
-        }else{
+            RequestContext.getCurrentInstance().update("gMensaje");
+        }
+        if(insert == 2){
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Ya se agregó este tema."));
+            RequestContext.getCurrentInstance().update("gMensaje");
+        }
+        else{
             RequestContext rc = RequestContext.getCurrentInstance();
             rc.execute("PF('dlgTema').hide();");
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO,"Inserción correcta", "Se registro el tema correctamente."));
+            RequestContext.getCurrentInstance().update("gMensaje");
         }
         limparTema();
     }
