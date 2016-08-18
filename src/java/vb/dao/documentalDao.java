@@ -389,19 +389,19 @@ public class documentalDao implements entidadService<Biblioteca> {
         return nombreArchivo;
     }
     
-    public String controlDocumental(String idDoc, String url,int idUsuario,String publicado){
+    public String controlDocumental(String idDoc, String url,int idUsuario,String publicado,String perfil){
    
      
      
         String msg = "";
        
-    String[] parametros = new String[5];
+    String[] parametros = new String[6];
         parametros[0] =idDoc ;
         parametros[1] = url;
         parametros[2] = "4";
         parametros[3] = String.valueOf(idUsuario);
         parametros[4] = publicado;
-        
+        parametros[5] = perfil;
          ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_CONTROL_DOCUMENTAL]", parametros);
 
         for (Object[] d : data) {
