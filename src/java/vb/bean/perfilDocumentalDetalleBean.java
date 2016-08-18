@@ -24,6 +24,7 @@ public class perfilDocumentalDetalleBean {
     String perfil;
     String perfilSelect;
     String perfilControl;
+    private Documental documentalPnlControl= new Documental();
     private List<SelectItem> cboPerfiles;
     private List<SelectItem> cboVista;
     private List<SelectItem> cboRequerido;
@@ -54,6 +55,14 @@ public class perfilDocumentalDetalleBean {
 
     public void setPerfilSelect(String perfilSelect) {
         this.perfilSelect = perfilSelect;
+    }
+
+    public Documental getDocumentalPnlControl() {
+        return documentalPnlControl;
+    }
+
+    public void setDocumentalPnlControl(Documental documentalPnlControl) {
+        this.documentalPnlControl = documentalPnlControl;
     }
 
     public String getPerfilControl() {
@@ -256,6 +265,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     }
 
     public String getArchivo() {
+        
         return archivo;
     }
 
@@ -271,18 +281,22 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
         this.archivofinal = archivofinal;
     }
 
-    public void mostrarTipo(){
+   
+    public void mostrarTipo(String id){
         if(perfilControl.equals("6")){
+            archivo=ddao.nombreArchivo(id);
             mostrarTipoArchivo = false;
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");            
         }else{
             mostrarTipoArchivo = true;
+            archivo=ddao.nombreArchivo(id);
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         }
         RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
     }
     
     public void handleKeyEvent() {
+       
         archivo = archivo.toLowerCase();
     }
     public String valor0;
@@ -349,10 +363,44 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
         archivo= "";
         archivofinal = "";
         tipoArchivo = "";
+        publicar=new ArrayList<>();
+      
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
     }
     
     public void registrarControlado(){
+        
+  if(perfilControl.equals("6")){
+  
+  
+  
+  
+  }else{
+      
+     
+  
+    String idDoc=documentalPnlControl.getID_DOCUMENTAL();
+        String url=archivofinal;
+        int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+      String publicado;
+        if(publicar.get(0).equals("1")){
+   publicado="SI";
+        }else{
+        publicado="NO";
+        }
+        String mensage=ddao.controlDocumental(idDoc, url, idUsuario,publicado);
+        limpiar();
+        publicar=new ArrayList<>();
+        FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
+        RequestContext.getCurrentInstance().update("gMensaje");
+        RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
+        listarTablaxPerfil();
+  
+  
+  
+  }
+      
+        //RequestContext.getCurrentInstance().update("frmDlgControl");  
         
         
     }

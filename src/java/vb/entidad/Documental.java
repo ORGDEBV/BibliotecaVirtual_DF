@@ -53,6 +53,7 @@ public class Documental {
     private String AUDIENCIA;
     private String URL;
     private String ISBN;
+     
     private String OTRO;
     private String NUMERO_PAGINAS;
     private Integer ACTIVO;
@@ -63,8 +64,19 @@ public class Documental {
     private Integer PAGINA_FIN;
     private String NOTA;
     
+    //// VARIABLE AUXILIAR DTO
+     private String TIPO_OTRO;
+    
     public Documental (){
         
+    }
+
+    public String getTIPO_OTRO() {
+        return TIPO_OTRO;
+    }
+
+    public void setTIPO_OTRO(String TIPO_OTRO) {
+        this.TIPO_OTRO = TIPO_OTRO;
     }
 
     public String getPAIS_DEFINIDO() {

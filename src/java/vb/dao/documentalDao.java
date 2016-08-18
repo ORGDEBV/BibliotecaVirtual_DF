@@ -1,11 +1,17 @@
 package vb.dao;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vb.entidad.Biblioteca;
 import vb.entidad.Documental;
 import vb.servicio.entidadService;
+import vb.util.ConectaDb;
 import vb.util.sql;
 
 /**
@@ -81,28 +87,26 @@ public class documentalDao implements entidadService<Biblioteca> {
         return data;
     }
 
-    public List<Documental> listarDocumental(String perfil, int tipoUsuario, int idUsuario,int idBiblioteca) {
+    public List<Documental> listarDocumental(String perfil, int tipoUsuario, int idUsuario, int idBiblioteca) {
         List<Documental> lstDocumental = new ArrayList<>();
         Documental doc;
         String[] array = new String[4];
         array[1] = perfil;
 
-        if(tipoUsuario == 3){
-           array[2] = idUsuario + "";
-           array[0] = "LIST_DOCUMENTAL_UNICO";
-        }else if(tipoUsuario == 2){
-           array[2] = "";
-           array[0] = "LIST_DOCUMENTAL_REPRERSENTANTE";
-        }else{
-           array[2] = "";
-           array[0] = "LIST_DOCUMENTAL_ADMINISTRADOR";
+        if (tipoUsuario == 3) {
+            array[2] = idUsuario + "";
+            array[0] = "LIST_DOCUMENTAL_UNICO";
+        } else if (tipoUsuario == 2) {
+            array[2] = "";
+            array[0] = "LIST_DOCUMENTAL_REPRERSENTANTE";
+        } else {
+            array[2] = "";
+            array[0] = "LIST_DOCUMENTAL_ADMINISTRADOR";
 
         }
-        
-        
-        
-        array[3]=String.valueOf(idBiblioteca);
-        
+
+        array[3] = String.valueOf(idBiblioteca);
+
         ArrayList<Object[]> data = conector.execProcedure("BV.SP_LISTAR_DOCUMENTAL", array);
         for (Object[] d : data) {
             doc = new Documental();
@@ -144,7 +148,7 @@ public class documentalDao implements entidadService<Biblioteca> {
         return lstDocumental;
     }
 
-    public List<Documental> listarDocumentalGn(String perfil,int idBiblioteca) {
+    public List<Documental> listarDocumentalGn(String perfil, int idBiblioteca) {
         List<Documental> lstDocumental = new ArrayList<>();
         Documental doc;
         String[] array = new String[4];
@@ -303,6 +307,34 @@ public class documentalDao implements entidadService<Biblioteca> {
         return documental;
     }
 
+    public Documental listarDocumentalDetalleControl(String idDocumental) {
+        Documental documental = null;
+        String[] parametros = new String[1];
+        parametros[0] = idDocumental;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_LISTAR_DOCUMENTAL_DETALLE_CONTROL]", parametros);
+        for (Object[] datos : data) {
+            documental = new Documental();
+            documental.setID_DOCUMENTAL(idDocumental);
+            documental.setTITULO(datos[1].toString());
+            documental.setEDITORIAL(datos[2].toString());
+            documental.setFECHA_PUBLICACION(datos[3].toString());
+            documental.setTIPO(datos[4].toString());
+            documental.setTIENE_COMO_VERSION(datos[5].toString());
+            documental.setCOBERTURA_ESPACIAL(datos[6].toString());
+            documental.setCOBERTURA_TEMPORAL(datos[7].toString());
+            documental.setDERECHO(datos[8].toString());
+            documental.setAUDIENCIA(datos[9].toString());
+            documental.setFORMATO(datos[10].toString());
+            documental.setFORMATO_EXTENSION(datos[11].toString());
+            documental.setFORMATO_MEDIO_DESCRIPCION(datos[12].toString());
+            documental.setNUMERO_PAGINAS(datos[13].toString());
+            documental.setTIPO_OTRO(datos[14].toString());
+            documental.setOTRO(datos[15].toString());
+            documental.setID_TIPO_OTRO(Integer.parseInt(datos[16].toString()));
+        }
+        return documental;
+    }
+
     public ArrayList<String> listDocumentalRelacionXidDocumental(String idDocumental) {
         ArrayList<String> lst = new ArrayList<>();
         String[] parametros = new String[3];
@@ -320,14 +352,14 @@ public class documentalDao implements entidadService<Biblioteca> {
 
     }
 
-    public ArrayList<Documental> listDocumentalPublicacion(String perfilControl,String idBiblioteca) {
+    public ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca) {
         ArrayList<Documental> lstDocPublicacion = new ArrayList<Documental>();
-        Documental doc ;
+        Documental doc;
         String[] parametros = new String[4];
-        parametros[0] = "LIST_DOCUMENTAL_PUBLICACION";  
-        parametros[1] = perfilControl;  
-        parametros[2] = "";  
-        parametros[3] = idBiblioteca;  
+        parametros[0] = "LIST_DOCUMENTAL_PUBLICACION";
+        parametros[1] = perfilControl;
+        parametros[2] = "";
+        parametros[3] = idBiblioteca;
         ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_LISTAR_DOCUMENTAL]", parametros);
         for (Object[] d : data) {
             doc = new Documental();
@@ -336,9 +368,50 @@ public class documentalDao implements entidadService<Biblioteca> {
             doc.setISBN(d[2].toString());
             doc.setURL(d[3].toString());
             doc.setNUMERO_PAGINAS(d[4].toString());
+            doc.setOTRO(d[5].toString());
             lstDocPublicacion.add(doc);
         }
         return lstDocPublicacion;
+    }
+
+    public String nombreArchivo(String id) {
+        String nombreArchivo = "";
+        String[] parametros = new String[1];
+        parametros[0] = id;
+
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_GENERA_NOMBRE_ARCHIVO]", parametros);
+
+        for (Object[] d : data) {
+            nombreArchivo = d[0].toString();
+
+        }
+
+        return nombreArchivo;
+    }
+    
+    public String controlDocumental(String idDoc, String url,int idUsuario,String publicado){
+   
+     
+     
+        String msg = "";
+       
+    String[] parametros = new String[5];
+        parametros[0] =idDoc ;
+        parametros[1] = url;
+        parametros[2] = "4";
+        parametros[3] = String.valueOf(idUsuario);
+        parametros[4] = publicado;
+        
+         ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_CONTROL_DOCUMENTAL]", parametros);
+
+        for (Object[] d : data) {
+            msg = d[1].toString();
+
+        }
+
+        
+        
+    return msg;
     }
 
 }
