@@ -648,26 +648,30 @@ public class documentalBean {
         int antIgual = 0;
         ArrayList<String> arrayErrores = new ArrayList<>();
         RequestContext execJs = RequestContext.getCurrentInstance();
-        if (documental.getID_TIPO_OTRO() != 5) {
-            if (documental.getTITULO().trim().equals("")) {
-                execJs.execute("validarCampo('.txtTitulo')");
-                arrayErrores.add("No ingresó un título.");
-            } else {
-                execJs.execute("$('.txtTitulo').style('border','','important');");
-            }
+        if (documental.getID_TIPO_OTRO() <6) {
+            
+            
+                if (documental.getTITULO().trim().equals("")) {
+                    execJs.execute("validarCampo('.txtTitulo')");
+                    arrayErrores.add("No ingresó un título.");
+                } else {
+                    execJs.execute("$('.txtTitulo').style('border','','important');");
+                }
 
-            if (documental.getID_TIPO_OTRO() == -1) {
-                execJs.execute("validarCampo('.cboTipoOtro')");
-                arrayErrores.add("No ingresó seleccionó un tipo de código..");
-            } else {
-                execJs.execute("$('.cboTipoOtro').style('border','','important');");
-            }
-            if (documental.getOTRO().trim().equals("")) {
-                execJs.execute("validarCampo('.txtOtro')");
-                arrayErrores.add("No ingresó un código.");
-            } else {
-                execJs.execute("$('.txtOtro').style('border','','important');");
-            }
+                if (documental.getID_TIPO_OTRO() == -1) {
+                    execJs.execute("validarCampo('.cboTipoOtro')");
+                    arrayErrores.add("No ingresó seleccionó un tipo de código..");
+                } else {
+                    execJs.execute("$('.cboTipoOtro').style('border','','important');");
+                }
+                
+                if (documental.getOTRO().trim().equals("") && documental.getID_TIPO_OTRO() !=5 ) {
+                    execJs.execute("validarCampo('.txtOtro')");
+                    arrayErrores.add("No ingresó un código.");
+                } else {
+                    execJs.execute("$('.txtOtro').style('border','','important');");
+                }   
+                
             if (ID_DOCUMENTAL != "") {
                 int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
                 if (documental.getTITULO().equals(antTITULO) && documental.getOTRO().equals(antOTRO) && documental.getID_TIPO_OTRO() == antID_TIPO_OTRO && documental.getID_BIBLIOTECA_FUENTE() == ID_BIBLIOTECA_FUENTE) {
@@ -676,6 +680,7 @@ public class documentalBean {
                     antIgual = 0;
                 }
             }
+            
             if (arrayErrores.size() == 0) {
                 int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
                 documental.setID_BIBLIOTECA_FUENTE(ID_BIBLIOTECA_FUENTE);
@@ -691,6 +696,7 @@ public class documentalBean {
                     FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "No hay coincidencias con el título ingresado, puede ser usado."));
                 }
             } else {
+                 classValidacion = "btnValidar-red";
                 String mensaje = "No se pudo insertar el documento.\nPor los motivos:<br/>";
                 for (int i = 0; i < arrayErrores.size(); i++) {
                     String motivo = "-" + arrayErrores.get(i) + "<br/>";
@@ -1535,6 +1541,17 @@ public class documentalBean {
 
     public void cargaData(String idDocumental) {
         dgn = documentalDao.listarDocumentalDetalle(idDocumental);
+        listdetautores = autorDao.listarAutorIdDocumental(idDocumental);
+        listdetcoleccion = coleccionDao.listarColeccionIdDocumental(idDocumental);
+        listdetserie = serieDao.listarSerieIdDocumental(idDocumental);
+        listdetlenguaje = lenguajeDao.listarSerieIdDocumental(idDocumental);
+        listdettema = temaDao.listarSerieIdDocumental(idDocumental);
+        listdetcontribuidor = conntribuidorDao.listarContribuidorIdDocumental(idDocumental);
+        RequestContext.getCurrentInstance().update("dlgDocumental");
+        RequestContext.getCurrentInstance().execute("PF('dlgDocumental').show();");
+    }
+    public void cargaDataControl(String idDocumental) {
+        dgn = documentalDao.listarDocumentalDetalleControl(idDocumental);
         listdetautores = autorDao.listarAutorIdDocumental(idDocumental);
         listdetcoleccion = coleccionDao.listarColeccionIdDocumental(idDocumental);
         listdetserie = serieDao.listarSerieIdDocumental(idDocumental);

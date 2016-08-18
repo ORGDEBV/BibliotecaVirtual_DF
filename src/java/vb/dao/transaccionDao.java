@@ -366,6 +366,7 @@ public class transaccionDao {
             callHistorial.setInt(5, ID_USUARIO);
             callHistorial.setString(6, "HISTORIA_ACCION_INS");
             callHistorial.executeQuery();
+            
             conn.commit();
             upd = "1";
         } catch (SQLException ex) {

@@ -32,23 +32,36 @@
                 </p:column>
             </p:panelGrid>
 
-            <p:dataTable id="tblControlDocumental" var="cd" value="#{perfilDocumentalDetalleBean.listaDoc}" editable="false" paginator="true" rows="15" 
-                         filteredValue="#{perfilDocumentalDetalleBean.filterDocumental}" lazy="false" paginatorPosition="top" emptyMessage="No se encontraron registros.">
+            <p:dataTable lazy="false" id="tblControlDocumental" 
+                         var="cd" value="#{perfilDocumentalDetalleBean.listaDoc}" 
+                         paginator="true" rows="15" 
+                         widgetVar="tblControlDocumental"
+                         filteredValue="#{perfilDocumentalDetalleBean.filterDocumental}" 
+                         paginatorPosition="top" emptyMessage="No se encontraron registros.">
+
                 <f:facet name="header">
-                    <f:facet name="header">
-                        <p:outputPanel>
-                            <h:outputText value="Busque documental :" />
-                            <p:inputText id="globalFilter" onkeyup="PF('tblControlDocumental').filter()" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
-                        </p:outputPanel>
-                    </f:facet>
+                    <p:outputPanel>
+                        <h:outputText value="Busque documental :" />
+                        <p:inputText id="globalFilter" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                        <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblDocumental').filter()" value="Filtrar"></p:commandButton>
+                    </p:outputPanel>
                 </f:facet>
+
                 <p:column headerText="CONTROL"  width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains">
-                    <p:commandButton  icon="fa fa-edit" actionListener="#{perfilDocumentalDetalleBean.mostrarTipo()}">
-                        <f:setPropertyActionListener value="#{cd.ID_DOCUMENTAL}"  target="#{perfilDocumentalDetalleBean.idDocumentalControl}"  />
+                    <p:commandButton  icon="fa fa-edit" actionListener="#{perfilDocumentalDetalleBean.mostrarTipo(cd.ID_DOCUMENTAL)}">
+                        <f:setPropertyActionListener value="#{cd}"  target="#{perfilDocumentalDetalleBean.documentalPnlControl}"  />
+                    </p:commandButton>
+                </p:column>
+                
+                    <p:column filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="DETALLE" width="6%" style="text-align: center;">
+                    <p:commandButton actionListener="#{documentalBean.cargaDataControl(cd.ID_DOCUMENTAL)}" icon="fa fa-search">
                     </p:commandButton>
                 </p:column>
                 <p:column headerText="ID" width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.ID_DOCUMENTAL}"/>
+                </p:column>
+                <p:column headerText="COD. BARRAS"  style="text-align: center" filterStyle="display:none" filterBy="#{cd.OTRO}" filterMatchMode="contains">
+                    <p:outputLabel value="#{cd.OTRO}"/>
                 </p:column>
                 <p:column headerText="TITULO" filterStyle="display:none" filterBy="#{cd.TITULO}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.TITULO}"/>
@@ -62,6 +75,70 @@
             </p:dataTable>
 
         </h:form>
+        <p:dialog styleClass="Wid60Imp" header="Documental Seleccionado" id="dlgDocumental" widgetVar="dlgDocumental"  modal="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:scrollPanel mode="native" style="height:500px">
+                    <p:panelGrid style="text-align:left;margin:0 auto;" columns="2">
+                        <h:outputText value="ID DOCUMENTAL: " />
+                        <h:outputText value="#{documentalBean.dgn.ID_DOCUMENTAL}" />
+                        <h:outputText value="TIPO CÓDIGO: " />
+                        <h:outputText value="#{documentalBean.dgn.TIPO_OTRO}" />
+                        <h:outputText value="CÓDIGO: " />
+                        <h:outputText value="#{documentalBean.dgn.OTRO}" />
+                        <h:outputText value="TITULO:" />
+                        <h:outputText value="#{documentalBean.dgn.TITULO}" />
+                        <h:outputText value="AUTORES: "/>
+                        <p:dataList value="#{documentalBean.listdetautores}"  var="a" emptyMessage="No hay autores asignadas." itemType="circle">
+                            #{a.APELLIDO_PATERNO} #{a.APELLIDO_MATERNO}, #{a.NOMBRE}
+                        </p:dataList>
+                        <h:outputText value="EDITORIAL: " />
+                        <h:outputText value="#{documentalBean.dgn.EDITORIAL}" />
+                        <h:outputText value="FECHA PUBLICACIÓN: " />
+                        <h:outputText value="#{documentalBean.dgn.FECHA_PUBLICACION}" />
+                        <h:outputText value="COLECCIÓN: "/>
+                        <p:dataList value="#{documentalBean.listdetcoleccion}"  var="c" emptyMessage="No hay colecciones asignadas." itemType="circle">
+                            #{c.DESCRIPCION}
+                        </p:dataList>
+                        <h:outputText value="SERIE: "/>
+                        <p:dataList value="#{documentalBean.listdetserie}"  var="s" emptyMessage="No hay series asignadas." itemType="circle">
+                            #{s.SERIE}
+                        </p:dataList>
+                        <h:outputText value="LENGUAJE: "/>
+                        <p:dataList value="#{documentalBean.listdetlenguaje}"  var="l" emptyMessage="No hay lenguajes asignadas." itemType="circle">
+                            #{l.LENGUAJE}
+                        </p:dataList>
+                        <h:outputText value="TEMAS: "/>
+                        <p:dataList value="#{documentalBean.listdettema}"  var="t" emptyMessage="No hay temas asignadas." itemType="circle">
+                            #{t.TEMA}
+                        </p:dataList>
+                        <h:outputText value="TIPO: " />
+                        <h:outputText value="#{documentalBean.dgn.TIPO}" />
+                        <h:outputText value="VERSIÓN:  " />
+                        <h:outputText value="#{documentalBean.dgn.TIENE_COMO_VERSION}" />
+                        <h:outputText value="COBERTURA ESPACIAL: " />
+                        <h:outputText value="#{documentalBean.dgn.COBERTURA_ESPACIAL}" />
+                        <h:outputText value="COBERTURA TEMPORAL: " />
+                        <h:outputText value="#{documentalBean.dgn.COBERTURA_TEMPORAL}" />
+                        <h:outputText value="CONTRIBUIDORES: "/>
+                        <p:dataList value="#{documentalBean.listdetcontribuidor}"  var="cn" emptyMessage="No hay contribuidores registrados." itemType="circle">
+                            #{cn.CONTRIBUIDOR}
+                        </p:dataList>
+                        <h:outputText value="DERECHOS: " />
+                        <h:outputText value="#{documentalBean.dgn.DERECHO}" />
+                        <h:outputText value="AUDIENCIA: " />
+                        <h:outputText value="#{documentalBean.dgn.AUDIENCIA}" />
+                        <h:outputText value="FORMATO: " />
+                        <h:outputText value="#{documentalBean.dgn.FORMATO}" />
+                        <h:outputText value="FORMATO EXTENSIÓN: " />
+                        <h:outputText value="#{documentalBean.dgn.FORMATO_EXTENSION}" />
+                        <h:outputText value="FORMATO MEDIO: " />
+                        <h:outputText value="#{documentalBean.dgn.FORMATO_MEDIO_DESCRIPCION}" />
+                        <h:outputText value="NÚMERO IMAGENES: " />
+                        <h:outputText value="#{documentalBean.dgn.NUMERO_PAGINAS}" />
+                    </p:panelGrid>
+                </p:scrollPanel>
+            </h:form>
+        </p:dialog>
 
         <p:dialog id="dlgControl" widgetVar="dlgControl" header="Control Documental" modal="true" showEffect="explode" hideEffect="explode" closable="false" styleClass="Wid50">
             <h:form id="frmDlgControl">
@@ -71,7 +148,7 @@
                             <p:outputLabel value="ID:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText value="#{perfilDocumentalDetalleBean.idDocumentalControl}" disabled="true"/>
+                            <p:inputText value="#{perfilDocumentalDetalleBean.documentalPnlControl.ID_DOCUMENTAL}" disabled="true"/>
                         </p:column>
                     </p:row>
 
@@ -92,7 +169,7 @@
                             <p:outputLabel value="Nombre del archivo :"/>
                         </p:column>
                         <p:column>
-                            <p:inputText value="#{perfilDocumentalDetalleBean.archivo}" styleClass="Wid100">
+                            <p:inputText value="#{perfilDocumentalDetalleBean.archivo}" styleClass="Wid100" disabled="true">
                                 <p:ajax event="keyup" update=":frmDlgControl:txtMuestra" listener="#{perfilDocumentalDetalleBean.handleKeyEvent}" />
                             </p:inputText> 
                         </p:column>
