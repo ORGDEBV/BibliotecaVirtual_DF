@@ -33,7 +33,7 @@ public class perfilDocumentalDetalleBean {
     private String urlOld = "";
     private String rutaServidorArchivos;
     private boolean linkProbado = false;
-    private boolean mostrarLink=false;
+    private boolean mostrarLink = false;
 
     public List<SelectItem> getCboRequerido() {
         cboRequerido.add(new SelectItem(0, "Requerido"));
@@ -362,7 +362,7 @@ public class perfilDocumentalDetalleBean {
         switch (tipoArchivo) {
             case "FlippingBook":
                 concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
-                
+
                 break;
             case "PDF":
                 concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
@@ -371,12 +371,12 @@ public class perfilDocumentalDetalleBean {
                 concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
                 break;
         }
-        mostrarLink=true;
+        mostrarLink = true;
         // urlOld = documentalPnlControl.getURL();
         archivofinal = concat;
         //documentalPnlControl.setURL(concat);
         RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
-         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+        RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
     }
 
     public void limpiar() {
@@ -394,7 +394,7 @@ public class perfilDocumentalDetalleBean {
         archivofinal = "";
         publicar = new ArrayList<>();
         linkProbado = false;
-        mostrarLink=false;
+        mostrarLink = false;
 
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
     }
@@ -463,22 +463,19 @@ public class perfilDocumentalDetalleBean {
         if (archivofinal.trim().length() > 0) {
             String url = "http://localhost:8080/draco/" + archivofinal;
 
-            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            externalContext.redirect(url);
-            linkProbado = true;
+            boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+            if (!existe) {
 
-            if (linkProbado) {
-
-                RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'red !important'}); ");
-                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
-
+                String mensaje = "El Fichero no existe en el Servidor de Archivos";
+                msjError("gMensaje", mensaje);
+                RequestContext.getCurrentInstance().update("gMensaje");
             } else {
-                RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'blue !important'}); ");
-                 RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
+                linkProbado = true;
             }
 
         }
-
     }
 
 }
