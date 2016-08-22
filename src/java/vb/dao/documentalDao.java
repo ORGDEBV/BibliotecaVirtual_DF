@@ -1,5 +1,6 @@
 package vb.dao;
 
+import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -413,5 +414,21 @@ public class documentalDao implements entidadService<Biblioteca> {
         
     return msg;
     }
+    
 
+public boolean validarFichero(String servArch,String archivo){
+    boolean existe=false;
+     String url=servArch+archivo;
+        File fichero = new File(url);
+
+        if (fichero.exists()) {
+           existe=true;
+        } else {
+          existe=false;
+        }
+     
+    
+    return existe;
+    
+    }
 }

@@ -1,10 +1,12 @@
 package vb.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.CellEditEvent;
@@ -28,12 +30,23 @@ public class perfilDocumentalDetalleBean {
     private List<SelectItem> cboPerfiles;
     private List<SelectItem> cboVista;
     private List<SelectItem> cboRequerido;
-    private String urlOld="";
+    private String urlOld = "";
+    private String rutaServidorArchivos;
+    private boolean linkProbado = false;
+    private boolean mostrarLink=false;
 
     public List<SelectItem> getCboRequerido() {
         cboRequerido.add(new SelectItem(0, "Requerido"));
         cboRequerido.add(new SelectItem(1, "No Requerido"));
         return cboRequerido;
+    }
+
+    public boolean isMostrarLink() {
+        return mostrarLink;
+    }
+
+    public void setMostrarLink(boolean mostrarLink) {
+        this.mostrarLink = mostrarLink;
     }
 
     public void setCboRequerido(List<SelectItem> cboRequerido) {
@@ -284,13 +297,13 @@ public class perfilDocumentalDetalleBean {
     public void mostrarTipo(String id) {
         if (perfilControl.equals("6")) {
             archivo = ddao.nombreArchivo(id);
-            
+
             mostrarTipoArchivo = false;
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         } else {
             mostrarTipoArchivo = true;
             archivo = ddao.nombreArchivo(id);
-           
+
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         }
         RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
@@ -344,47 +357,51 @@ public class perfilDocumentalDetalleBean {
 
     public void cambiarLabel() {
         String concat = "";
-        String r = "resources/";
+        String idBiblioteca = "2";
+        String r = "recursos";
         switch (tipoArchivo) {
             case "FlippingBook":
-                concat = r + tipoArchivo.toLowerCase() + "/" + archivo + "/index.html";
+                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
+                
                 break;
             case "PDF":
-                concat = r + tipoArchivo.toLowerCase() + "/" + archivo + ".pdf";
+                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
                 break;
             case "Imagen":
-                concat = r + tipoArchivo.toLowerCase() + "/" + archivo + ".jpg";
+                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
                 break;
         }
-        urlOld=documentalPnlControl.getURL();
-        documentalPnlControl.setURL(concat);
+        mostrarLink=true;
+        // urlOld = documentalPnlControl.getURL();
+        archivofinal = concat;
+        //documentalPnlControl.setURL(concat);
         RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
+         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
     }
 
     public void limpiar() {
         archivo = "";
-        //archivofinal = "";
-        
-         //caundo es multimedia si cancelo
-        
-         if(!perfilControl.equals("6")){
-            if(urlOld.length()>0){
-            documentalPnlControl.setURL(urlOld);
-            }else{
-            documentalPnlControl.setURL("");
-            }
-         
-        }
-       
+
+//        if (perfilControl.equals("6")) {
+//            if (urlOld.length() > 0) {
+//                documentalPnlControl.setURL(urlOld);
+//            } else {
+//                documentalPnlControl.setURL("");
+//            }
+//
+//        }
         tipoArchivo = "";
+        archivofinal = "";
         publicar = new ArrayList<>();
+        linkProbado = false;
+        mostrarLink=false;
 
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
     }
 
     public void registrarControlado() {
         String idDoc = documentalPnlControl.getID_DOCUMENTAL();
-         archivofinal=documentalPnlControl.getURL();
+        //archivofinal = documentalPnlControl.getURL();
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         String publicado;
         if (publicar.size() > 0) {
@@ -392,23 +409,75 @@ public class perfilDocumentalDetalleBean {
         } else {
             publicado = "0";
         }
-        
-        if (archivofinal.length() > 0) {
-                String mensage = ddao.controlDocumental(idDoc, archivofinal, idUsuario, publicado, perfilControl);
-                limpiar();
-                publicar = new ArrayList<>();
-                FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
-                RequestContext.getCurrentInstance().update("gMensaje");
-                RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
-                listarTablaxPerfil();
+        ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+        rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
+
+        //****validaciones
+        ArrayList<String> lstErrores = new ArrayList<>();
+
+        switch (perfilControl) {
+            case "6":
+
+                break;
+            default:
+                if (archivofinal.trim().length() == 0) {
+                    lstErrores.add("Campo Ruta Final esta Vacio");
+                }
+
+                boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+                if (!existe) {
+                    lstErrores.add("El Fichero no existe en el Servidor de Archivos");
+                }
+                if (!linkProbado) {
+                    lstErrores.add("Debe validar el Link antes de Aceptar");
+                }
+
+                break;
+
+        }
+
+        //---------------
+        if (lstErrores.size() == 0) {
+            String mensage = ddao.controlDocumental(idDoc, archivofinal, idUsuario, publicado, perfilControl);
+            limpiar();
+            publicar = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
+            RequestContext.getCurrentInstance().update("gMensaje");
+            RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
+            listarTablaxPerfil();
+
+        } else {
+            String mensaje = "No se pudo insertar el documento.\nPor los motivos:<br/>";
+            for (int i = 0; i < lstErrores.size(); i++) {
+                String motivo = "-" + lstErrores.get(i) + "<br/>";
+                mensaje = mensaje + motivo;
+            }
+            msjError("gMensaje", mensaje);
+            RequestContext.getCurrentInstance().update("gMensaje");
+
+        }
+
+    }
+
+    public void redirectUrl() throws IOException {
+        if (archivofinal.trim().length() > 0) {
+            String url = "http://localhost:8080/draco/" + archivofinal;
+
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            externalContext.redirect(url);
+            linkProbado = true;
+
+            if (linkProbado) {
+
+                RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'red !important'}); ");
+                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+
             } else {
-                FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Campo Ruta final esta vacia"));
-                RequestContext.getCurrentInstance().update("gMensaje");
-                
-                
+                RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'blue !important'}); ");
+                 RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
             }
 
-       
+        }
 
     }
 

@@ -9,7 +9,8 @@
     <h:body>
         <h:form id="frmListadoArchivos">
             <p:commandButton value="Mostrar" actionListener="#{pruebaListadoArchivos.mostrarLista()}" />
-
+            <p:link value="flippingbook" href="http://localhost:8080/draco/recursos/2/flippingbook/10/"/>
+            <a href="draco/recursos/2/flippingbook/10/">jinmi</a>
             <p:dataTable value="#{PruebaListadoArchivos.listaArchivosCarpeta}" var="arch" id="tablaArchivos">
                 <p:column headerText="Archivo">
                     <p:outputLabel value="#{arch}"/>

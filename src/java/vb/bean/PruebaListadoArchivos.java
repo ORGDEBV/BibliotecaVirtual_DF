@@ -35,9 +35,9 @@ public class PruebaListadoArchivos {
         
         String nombreArchivo = "ave-4.jpg";
 
-        String imagen = "recursos\\2\\imagen";
-        String flipping = "recursos\\2\\flippingbook";
-        String pdf = "recursos\\2\\pdf";
+        String imagen = "recursos/2/imagen";
+//        String flipping = "recursos\\2\\flippingbook";
+//        String pdf = "recursos\\2\\pdf";
 
         File dir = new File(rutaServidorArchivos + imagen);
 
