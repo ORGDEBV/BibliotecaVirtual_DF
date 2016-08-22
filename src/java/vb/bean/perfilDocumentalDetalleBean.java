@@ -209,10 +209,10 @@ public class perfilDocumentalDetalleBean {
     private documentalDao ddao = new documentalDao();
     private PublicacionDao pubDao = new PublicacionDao();
     private ArrayList<Documental> listaDoc = new ArrayList<Documental>();
-    private List<PublicacionDto> ldocumentalpublicado = new ArrayList<>();
+    private ArrayList<PublicacionDto> ldocumentalpublicado = new ArrayList<PublicacionDto>();
     private Publicacion pub = new Publicacion();
     private List<Documental> filterDocumental;
-    private List<PublicacionDto> ldocumentalpublicadofiltrado = new ArrayList<>();
+    private ArrayList<PublicacionDto> ldocumentalpublicadofiltrado = new ArrayList<PublicacionDto>();
 
     public List<Documental> getFilterDocumental() {
         return filterDocumental;
@@ -374,17 +374,12 @@ public class perfilDocumentalDetalleBean {
                 concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
                 break;
         }
-        archivofinal = concat;
-
         mostrarLink = true;
         // urlOld = documentalPnlControl.getURL();
         archivofinal = concat;
         //documentalPnlControl.setURL(concat);
-
-        RequestContext.getCurrentInstance()
-                .update("frmDlgControl:txtMuestra");
-        RequestContext.getCurrentInstance()
-                .update("frmDlgControl:grdControl:link");
+        RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
+        RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
     }
 
     public void limpiar() {
@@ -411,52 +406,6 @@ public class perfilDocumentalDetalleBean {
     }
 
     public void registrarControlado() {
-        if (perfilControl.equals("6")) {
-
-        } else {
-
-            String idDoc = documentalPnlControl.getID_DOCUMENTAL();
-            String url = archivofinal;
-            int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-            String publicado;
-            if (publicar.get(0).equals("1")) {
-                publicado = "SI";
-            } else {
-                publicado = "NO";
-            }
-            String mensage = ddao.controlDocumental(idDoc, url, idUsuario, publicado);
-            limpiar();
-            publicar = new ArrayList<>();
-            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
-            RequestContext.getCurrentInstance().update("gMensaje");
-            RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
-            listarTablaxPerfil();
-
-        }
-
-        //RequestContext.getCurrentInstance().update("frmDlgControl");  
-    }
-
-    public void listarDocumentalPublicado() {
-        String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
-        ldocumentalpublicado = pubDao.listPublicacion(perfilControl, idBiblioteca);
-        RequestContext.getCurrentInstance().update("frmPublicacion:tblPublicacion");
-    }
-
-    public List<PublicacionDto> getLdocumentalpublicado() {
-        return ldocumentalpublicado;
-    }
-
-    public void setLdocumentalpublicado(List<PublicacionDto> ldocumentalpublicado) {
-        this.ldocumentalpublicado = ldocumentalpublicado;
-    }
-
-    public List<PublicacionDto> getLdocumentalpublicadofiltrado() {
-        return ldocumentalpublicadofiltrado;
-    }
-
-    public void setLdocumentalpublicadofiltrado(List<PublicacionDto> ldocumentalpublicadofiltrado) {
-        this.ldocumentalpublicadofiltrado = ldocumentalpublicadofiltrado;
         String idDoc = documentalPnlControl.getID_DOCUMENTAL();
         //archivofinal = documentalPnlControl.getURL();
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
@@ -516,22 +465,42 @@ public class perfilDocumentalDetalleBean {
 
     }
 
+    public void listarDocumentalPublicado() {
+        String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
+        ldocumentalpublicado = pubDao.listPublicacion(perfilControl, idBiblioteca);
+    }
+
+    public ArrayList<PublicacionDto> getLdocumentalpublicado() {
+        return ldocumentalpublicado;
+    }
+
+    public void setLdocumentalpublicado(ArrayList<PublicacionDto> ldocumentalpublicado) {
+        this.ldocumentalpublicado = ldocumentalpublicado;
+    }
+
+    public ArrayList<PublicacionDto> getLdocumentalpublicadofiltrado() {
+        return ldocumentalpublicadofiltrado;
+    }
+
+    public void setLdocumentalpublicadofiltrado(ArrayList<PublicacionDto> ldocumentalpublicadofiltrado) {
+        this.ldocumentalpublicadofiltrado = ldocumentalpublicadofiltrado;
+    }
+
     public void redirectUrl() throws IOException {
         if (archivofinal.trim().length() > 0) {
             String url = "http://localhost:8080/draco/" + archivofinal;
 
-            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            externalContext.redirect(url);
-            linkProbado = true;
+            boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+            if (!existe) {
 
-            if (linkProbado) {
-
-                RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'red !important'}); ");
-                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
-
+                String mensaje = "El Fichero no existe en el Servidor de Archivos";
+                msjError("gMensaje", mensaje);
+                RequestContext.getCurrentInstance().update("gMensaje");
             } else {
                 RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'blue !important'}); ");
                 RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+                RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
+                linkProbado = true;
             }
 
         }

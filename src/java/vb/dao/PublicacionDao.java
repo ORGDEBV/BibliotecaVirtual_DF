@@ -19,9 +19,9 @@ public class PublicacionDao {
 
     sql conector = new sql();
 
-    public List<PublicacionDto> listPublicacion(String ID_PERFIL, String ID_BIBLIOTECA) {
+    public ArrayList<PublicacionDto> listPublicacion(String ID_PERFIL, String ID_BIBLIOTECA) {
         String[] parametros = new String[2];
-        List<PublicacionDto> lPublicacion = new ArrayList<>();
+        ArrayList<PublicacionDto> lPublicacion = new ArrayList<PublicacionDto>();
         PublicacionDto dto = null;
         parametros[0] = ID_PERFIL;
         parametros[1] = ID_BIBLIOTECA;

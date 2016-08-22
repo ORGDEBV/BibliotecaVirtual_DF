@@ -25,7 +25,7 @@
                                      filter="true" 
                                      widgetVar="perfilControl" 
                                      value="#{perfilDocumentalDetalleBean.perfilControl}" required="true" styleClass="Wid100Imp">
-                        <p:ajax listener="#{perfilDocumentalDetalleBean.listarDocumentalPublicado()}"/>
+                        <p:ajax listener="#{perfilDocumentalDetalleBean.listarDocumentalPublicado()}" update="frmPublicacion:tblPublicacion"/>
                         <f:selectItem itemLabel="Seleccione un Perfil" itemValue="-1" noSelectionOption="true"/>
                         <f:selectItems value="#{perfilDocumentalDetalleBean.cboPerfiles}"/>
                     </p:selectOneMenu>

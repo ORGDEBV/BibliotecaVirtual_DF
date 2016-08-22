@@ -197,20 +197,13 @@
                             
                         </p:column>
                     </p:row>
-                    <p:row>
-                        <p:column>
-                            
-                        </p:column>
-                        <p:column>
-                            <h:commandLink   id="link" styleClass="cambiarColorControlLink"  value="Probar link" target="_blank" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
-                          
-                        </p:column>
-                    </p:row>
+                   
                     <p:row>
                         <p:column>
                             <p:spacer/>
                         </p:column>
                         <p:column>
+                             <p:commandButton  value="Probar link" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
                             <p:commandButton value="Aceptar" update=":frmControl:tblControlDocumental" actionListener="#{perfilDocumentalDetalleBean.registrarControlado()}"/>
                             <p:commandButton value="Cancelar" update=":frmControl:tblControlDocumental :frmDlgControl:grdControl" actionListener="#{perfilDocumentalDetalleBean.limpiar()}" onclick="PF('dlgControl').hide();"/> 
                         </p:column>
