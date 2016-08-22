@@ -109,7 +109,7 @@
         <view-id value="/bv/reportes/reporteAnualTrabajadores.xhtml" /> 
     </url-mapping>  
     
-     <url-mapping id="geolocalizacionBibliotecas">
+    <url-mapping id="geolocalizacionBibliotecas">
         <pattern value="/Reportes/geolocalizacionBibliotecas" />
         <view-id value="/bv/reportes/geolocalizacionBibliotecas.xhtml" /> 
     </url-mapping> 
@@ -123,13 +123,18 @@
         <pattern value="/Sociales/Admin" />
         <view-id value="/bv/sociales/novedadAdd.xhtml" />
     </url-mapping>
-        <url-mapping id="control">
+    <url-mapping id="control">
         <pattern value="/control/cont" />
         <view-id value="/bv/control/log.xhtml" />
     </url-mapping>
-         <url-mapping id="controlDoc">
+    <url-mapping id="controlDoc">
         <pattern value="/control/contDoc" />
         <view-id value="/bv/control/logDocumental.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="publicacionList">
+        <pattern value="/Publicacion/List" />
+        <view-id value="/bv/publicacion/publicacionList.xhtml" />
     </url-mapping>
         
 </pretty-config>

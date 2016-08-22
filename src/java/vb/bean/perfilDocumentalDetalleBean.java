@@ -9,8 +9,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.context.RequestContext;
+import vb.dao.PublicacionDao;
 import vb.dao.documentalDao;
 import vb.dao.perfilDocumentalDetalleDao;
+import vb.dto.PublicacionDto;
 import vb.entidad.Documental;
 import vb.entidad.PerfilDocumentalDetalle;
 import vb.entidad.Publicacion;
@@ -24,7 +26,7 @@ public class perfilDocumentalDetalleBean {
     String perfil;
     String perfilSelect;
     String perfilControl;
-    private Documental documentalPnlControl= new Documental();
+    private Documental documentalPnlControl = new Documental();
     private List<SelectItem> cboPerfiles;
     private List<SelectItem> cboVista;
     private List<SelectItem> cboRequerido;
@@ -145,8 +147,8 @@ public class perfilDocumentalDetalleBean {
     }
 
     public void editarPerfilDocumentalDetalle() {
-int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-        int upd = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle,idUsuario);
+        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        int upd = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle, idUsuario);
 
     }
 //    private void msjCorrecto(String growl, String m) {
@@ -159,9 +161,9 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
 //    }
 
     public String actualizarTabla() {
-           int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-        int n = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle,idUsuario);
-     
+        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        int n = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle, idUsuario);
+
         if (n > 0) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito!", "ACTUALIZADO EXITOSAMENTE"));
             RequestContext.getCurrentInstance().update("gMensaje");
@@ -190,10 +192,12 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     //ludwig
     private String idDocumentalControl = "";
     private documentalDao ddao = new documentalDao();
+    private PublicacionDao pubDao = new PublicacionDao();
     private ArrayList<Documental> listaDoc = new ArrayList<Documental>();
+    private List<PublicacionDto> ldocumentalpublicado = new ArrayList<>();
     private Publicacion pub = new Publicacion();
     private List<Documental> filterDocumental;
-    
+    private List<PublicacionDto> ldocumentalpublicadofiltrado = new ArrayList<>();
 
     public List<Documental> getFilterDocumental() {
         return filterDocumental;
@@ -232,8 +236,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
         listaDoc = ddao.listDocumentalPublicacion(perfilControl, idBiblioteca);
         RequestContext.getCurrentInstance().update("frmControl:tblControlDocumental");
     }
-    
-    
+
     private List<String> publicar;
     public boolean mostrarTipoArchivo = true;
     public String tipoArchivo = "";
@@ -247,7 +250,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     public void setPublicar(List<String> publicar) {
         this.publicar = publicar;
     }
-    
+
     public boolean isMostrarTipoArchivo() {
         return mostrarTipoArchivo;
     }
@@ -265,7 +268,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     }
 
     public String getArchivo() {
-        
+
         return archivo;
     }
 
@@ -281,128 +284,140 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
         this.archivofinal = archivofinal;
     }
 
-   
-    public void mostrarTipo(String id){
-        if(perfilControl.equals("6")){
-            archivo=ddao.nombreArchivo(id);
+    public void mostrarTipo(String id) {
+        if (perfilControl.equals("6")) {
+            archivo = ddao.nombreArchivo(id);
             mostrarTipoArchivo = false;
-            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");            
-        }else{
+            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+        } else {
             mostrarTipoArchivo = true;
-            archivo=ddao.nombreArchivo(id);
+            archivo = ddao.nombreArchivo(id);
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         }
         RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
     }
-    
+
     public void handleKeyEvent() {
-       
+
         archivo = archivo.toLowerCase();
     }
     public String valor0;
+
     public void mostrarMsgcheck() {
         //List<String> listaOut = new ArrayList<String>();
-        String msg = "";        
-        int l = publicar.size();        
+        String msg = "";
+        int l = publicar.size();
         String valorI = "";
-        switch(l){
+        switch (l) {
             case 1:
-                valorI = publicar.get(l-1);
+                valorI = publicar.get(l - 1);
                 //listaOut = publicar;
-                if(valorI.equals("1")){
+                if (valorI.equals("1")) {
                     msg = "Se agregará este documental al catálogo.";
-                }else{
+                } else {
                     msg = "No agregará este documental al catálogo.";
-                } 
+                }
                 valor0 = valorI;
                 break;
             case 2:
-                if(publicar.contains(valor0)){
+                if (publicar.contains(valor0)) {
                     int position = publicar.indexOf(valor0);
                     publicar.remove(position);
                 }
                 int s = publicar.size();
-                String valorII = publicar.get(s-1);
-                if(valorII.equals("1")){
+                String valorII = publicar.get(s - 1);
+                if (valorII.equals("1")) {
                     msg = "Se agregará este documental al catálogo.";
-                }else{
+                } else {
                     msg = "No agregará este documental al catálogo.";
-                } 
+                }
                 valor0 = valorII;
                 break;
             default:
-                
-                break;                    
+
+                break;
         }
         FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(msg));
         RequestContext.getCurrentInstance().update("gMensaje");
         RequestContext.getCurrentInstance().update("frmDlgControl:chkPublicar");
 
-               
     }
-    
+
     public void cambiarLabel() {
         String concat = "";
         String r = "resources/";
         switch (tipoArchivo) {
             case "FlippingBook":
-                concat = r+tipoArchivo.toLowerCase()+"/"+archivo+"/index.html";
+                concat = r + tipoArchivo.toLowerCase() + "/" + archivo + "/index.html";
                 break;
             case "PDF":
-                concat = r+tipoArchivo.toLowerCase()+"/"+archivo+".pdf";
+                concat = r + tipoArchivo.toLowerCase() + "/" + archivo + ".pdf";
                 break;
             case "Imagen":
-                concat = r+tipoArchivo.toLowerCase()+"/"+archivo+".jpg";
+                concat = r + tipoArchivo.toLowerCase() + "/" + archivo + ".jpg";
                 break;
         }
-        archivofinal=concat;
+        archivofinal = concat;
         RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
     }
-    
-    public void limpiar(){
-        archivo= "";
+
+    public void limpiar() {
+        archivo = "";
         archivofinal = "";
         tipoArchivo = "";
-        publicar=new ArrayList<>();
-      
+        publicar = new ArrayList<>();
+
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
     }
-    
-    public void registrarControlado(){
-        
-  if(perfilControl.equals("6")){
-  
-  
-  
-  
-  }else{
-      
-     
-  
-    String idDoc=documentalPnlControl.getID_DOCUMENTAL();
-        String url=archivofinal;
-        int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-      String publicado;
-        if(publicar.get(0).equals("1")){
-   publicado="SI";
-        }else{
-        publicado="NO";
+
+    public void registrarControlado() {
+
+        if (perfilControl.equals("6")) {
+
+        } else {
+
+            String idDoc = documentalPnlControl.getID_DOCUMENTAL();
+            String url = archivofinal;
+            int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+            String publicado;
+            if (publicar.get(0).equals("1")) {
+                publicado = "SI";
+            } else {
+                publicado = "NO";
+            }
+            String mensage = ddao.controlDocumental(idDoc, url, idUsuario, publicado);
+            limpiar();
+            publicar = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
+            RequestContext.getCurrentInstance().update("gMensaje");
+            RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
+            listarTablaxPerfil();
+
         }
-        String mensage=ddao.controlDocumental(idDoc, url, idUsuario,publicado);
-        limpiar();
-        publicar=new ArrayList<>();
-        FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
-        RequestContext.getCurrentInstance().update("gMensaje");
-        RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
-        listarTablaxPerfil();
-  
-  
-  
-  }
-      
+
         //RequestContext.getCurrentInstance().update("frmDlgControl");  
-        
-        
+    }
+
+    public void listarDocumentalPublicado() {
+        String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
+        ldocumentalpublicado = pubDao.listPublicacion(perfilControl, idBiblioteca);
+        RequestContext.getCurrentInstance().update("frmPublicacion:tblPublicacion");
+    }
+
+    public List<PublicacionDto> getLdocumentalpublicado() {
+        return ldocumentalpublicado;
+    }
+
+    public void setLdocumentalpublicado(List<PublicacionDto> ldocumentalpublicado) {
+        this.ldocumentalpublicado = ldocumentalpublicado;
+    }
+
+    public List<PublicacionDto> getLdocumentalpublicadofiltrado() {
+        return ldocumentalpublicadofiltrado;
+    }
+
+    public void setLdocumentalpublicadofiltrado(List<PublicacionDto> ldocumentalpublicadofiltrado) {
+        this.ldocumentalpublicadofiltrado = ldocumentalpublicadofiltrado;
     }
 
 }
