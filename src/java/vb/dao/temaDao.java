@@ -25,9 +25,7 @@ public class temaDao implements entidadService<Tema>{
         parametros[3] = tema.getID_BIBLIOTECA_REGISTRO();
         data = conector.execProcedure("BV.SP_MANTENIMIENTO_TEMA",parametros);
         for (Object[] dat : data) {
-            if(dat[0].toString().equals("1")){
-                n = 1;
-            }
+            n = Integer.parseInt(dat[0].toString());
         }
         return n;
     }

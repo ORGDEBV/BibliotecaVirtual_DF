@@ -154,7 +154,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel value="Publicar :"/>
+                            <p:outputLabel value="Visible en la Web :"/>
                         </p:column>
                         <p:column>
                             <p:selectManyMenu id="chkPublicar" showCheckbox="true" value="#{perfilDocumentalDetalleBean.publicar}"  styleClass="Wid70">
@@ -193,7 +193,17 @@
                             <p:outputLabel value="Ruta Final :" style="font-weight: bold !important"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtMuestra" value="#{perfilDocumentalDetalleBean.archivofinal}" styleClass="Wid100" disabled="true"/>
+                            <p:inputText  id="txtMuestra"  value="#{perfilDocumentalDetalleBean.archivofinal}" styleClass="Wid100" disabled="true"/>
+                            
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            
+                        </p:column>
+                        <p:column>
+                            <h:commandLink   id="link" styleClass="cambiarColorControlLink"  value="Probar link" target="_blank" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
+                          
                         </p:column>
                     </p:row>
                     <p:row>
