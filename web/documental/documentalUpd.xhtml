@@ -249,7 +249,7 @@
                         </p:column>
                         <p:column>
                             <p:selectCheckboxMenu 
-                                  updateLabel="true"
+                                updateLabel="true"
                                 label=""
                                 id="cboRelacionDocumental" 
                                 filter="true" filterMatchMode="contains"
@@ -331,14 +331,14 @@
                             <p:outputLabel for="cboCobertura" value="COBERTURA ESPACIAL "/>
                         </p:column>
                         <p:column>
-                           
+
                             <p:selectOneMenu id="cboCobertura" 
                                              filter="true" filterMatchMode="contains"
                                              required="false"
                                              widgetVar="cboCobertura"
                                              value="#{documentalBean.documental.ID_COBERTURA_ESPACIAL}"
                                              styleClass="Wid100Imp cboCobertura">
-                                
+
                                 <p:ajax listener="#{coberturaBean.cboEditarCoberturaChage(documentalBean.documental.ID_COBERTURA_ESPACIAL)}" />
                                 <f:selectItem itemLabel="Seleccione cobertura" itemValue="-1" noSelectionOption="true" />
                                 <f:selectItems value="#{coberturaBean.cboCobertura}"/>
@@ -828,8 +828,8 @@
             <h:form id="frmCobertura">
                 <h:panelGrid id="gridCobertura" columns="2" cellpadding="5" columnClasses="Wid30,Wid70">
                     <p:outputLabel for="txtIdPais" value="PAIS:" />
-                    
-                        <p:selectOneMenu id="txtIdPais" filter="true" filterMatchMode="contains"
+
+                    <p:selectOneMenu id="txtIdPais" filter="true" filterMatchMode="contains"
                                      widgetVar="txtIdPais" 
                                      value="#{coberturaBean.cobertura.ID_PAIS}" 
                                      required="false"
@@ -837,8 +837,8 @@
                         <f:selectItem itemLabel="Seleccione un país" itemValue="-1" noSelectionOption="true" />
                         <f:selectItems value="#{coberturaBean.cboPais}"/>
                     </p:selectOneMenu>
-                    
-                
+
+
                     <p:outputLabel for="txtIdColeccion" value="CIUDAD ACTUAL:" />
                     <p:inputText id="txtIdColeccion" value="#{coberturaBean.cobertura.CIUDAD_ACTUAL}" styleClass="Wid100"></p:inputText>
                     <p:outputLabel for="txtColeccion" value="CIUDAD ANTIGUA: " />
@@ -886,7 +886,15 @@
 
         <p:dialog id="dlgAutor" widgetVar="dlgAutor" styleClass="claseAux30" closeOnEscape="true" modal="true" header="..:: MANTENIMIENTO AUTOR ::.." resizable="false" showEffect="puff"  hideEffect="puff" draggable="false">
             <h:form id="frmAutor">
-                <h:panelGrid id="gridAutor" columns="2" cellpadding="5" columnClasses="label, value">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="tipo" value="Tipo :" />
+                    <p:selectOneRadio id="tipo" value="#{autor.tipoAutor}" >
+                        <p:ajax listener="#{autor.mostrarCamposAutores()}"/>
+                        <f:selectItem itemLabel="Normal" itemValue="1"  />
+                        <f:selectItem itemLabel="Especial" itemValue="2" />                            
+                    </p:selectOneRadio>
+                </h:panelGrid>
+                <h:panelGrid id="gridAutor1" columns="2" cellpadding="5" columnClasses="label, value" class="autorAux1">
                     <p:outputLabel for="nombre" value="NOMBRES: "/>
                     <p:inputText id="nombre" value="#{autor.autAdd.NOMBRE}" />
                     <p:outputLabel for="paterno" value="AP. PATERNO: "/>
@@ -894,12 +902,23 @@
                     <p:outputLabel for="materno" value="AP. MATERNO: "/>
                     <p:inputText id="materno" value="#{autor.autAdd.APELLIDO_MATERNO}" />  
                     <p:outputLabel for="pais" value="NACIONALIDAD : "/>
-                    <p:selectOneMenu id="pais" filter="true" filterMatchMode="contains" widgetVar="cboCreaAutor" value="#{autor.autAdd.ID_PAIS}" style="width: 310px;overflow-y: 150px;">
+                    <p:selectOneMenu id="pais" filter="true" filterMatchMode="contains" widgetVar="cboPaisAutor" value="#{autor.autAdd.ID_PAIS}" style="width: 310px;overflow-y: 150px;">
                         <f:selectItem itemLabel="Seleccione un país" itemValue="-1" noSelectionOption="true" />
                         <f:selectItems value="#{autor.cboPais}"/>
                     </p:selectOneMenu>                       
                     <p:spacer/>
-                    <p:commandButton value="REGISTRAR" update=":frmAutor:gridAutor"  onclick="PF('dlgAutor').hide()" actionListener="#{autor.crearAutorDocumental()}" />
+                    <p:commandButton value="REGISTRAR" actionListener="#{autor.crearAutorDocumental()}" />
+                </h:panelGrid>
+                <h:panelGrid id="gridAutor2" columns="2" cellpadding="5" columnClasses="label, value" class="autorAux2">
+                    <p:outputLabel for="alternativo" value="ALTERNATIVO : "/>
+                    <p:inputText id="alternativo" value="#{autor.autAddAlternativo.ALTERNATIVO}" />
+                    <p:outputLabel for="pais2" value="NACIONALIDAD : "/>
+                    <p:selectOneMenu id="pais2" filter="true" filterMatchMode="contains" widgetVar="cboPaisAutor2" value="#{autor.autAddAlternativo.ID_PAIS}" style="width: 310px;overflow-y: 150px;">
+                        <f:selectItem itemLabel="Seleccione un país" itemValue="-1" noSelectionOption="true" />
+                        <f:selectItems value="#{autor.cboPais}"/>
+                    </p:selectOneMenu>                       
+                    <p:spacer/>
+                    <p:commandButton value="REGISTRAR" actionListener="#{autor.crearAutorDocumental()}" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

@@ -52,7 +52,7 @@ public class sql {
 
     //ejecuta un STORE_PROCEDURE
     public ArrayList<Object[]> execProcedure(String sp, String[] parametros) {
-        ArrayList<Object[]> array = new ArrayList<Object[]>();
+        ArrayList<Object[]> array = new ArrayList<>();
         Connection cn = db.getConnection();
         if (cn != null) {
             try {

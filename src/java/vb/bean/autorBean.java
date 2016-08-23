@@ -22,14 +22,35 @@ public class autorBean implements Serializable {
     private List<Autor> ListAut;
     private Autor autAux = new Autor();
     private Autor autAdd = new Autor();
+    private Autor autAddAlternativo = new Autor();
     private List<SelectItem> cboPais;
     private List<Autor> filterListAutor;
     private List<Autor> cboAutores;
-    String idBiblioteca=FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
-    int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+    private int tipoAutor;
+    private String idBiblioteca;
+    private int idUsuario;
+
     public autorBean() {
+        idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
+        idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         ListAut = daoa.obtenerEntidades(idBiblioteca);
         rfrhCboAutor();
+    }
+
+    public Autor getAutAddAlternativo() {
+        return autAddAlternativo;
+    }
+
+    public void setAutAddAlternativo(Autor autAddAlternativo) {
+        this.autAddAlternativo = autAddAlternativo;
+    }
+
+    public int getTipoAutor() {
+        return tipoAutor;
+    }
+
+    public void setTipoAutor(int tipoAutor) {
+        this.tipoAutor = tipoAutor;
     }
 
     //Listar autores
@@ -44,17 +65,17 @@ public class autorBean implements Serializable {
 
     public void rfrhCboAutor() {
         List<Object[]> lista = daoa.cboAutores(idBiblioteca);
-        cboAutores = new ArrayList<Autor>();
+        cboAutores = new ArrayList<>();
         if (lista != null) {
             for (Object[] fila : lista) {
                 Autor autor = new Autor();
                 autor.setID_AUTOR(Integer.parseInt(fila[0].toString()));
-                autor.setNOMBRE(fila[2] + " " + fila[3] + ", " + fila[1]);
+                autor.setNOMBRE(fila[1].toString());
                 cboAutores.add(autor);
             }
         }
         RequestContext.getCurrentInstance().update("frmAddDocumental:cboAutor");
-        
+
     }
 
     public void setCboAutores(List<Autor> cboAutores) {
@@ -100,6 +121,16 @@ public class autorBean implements Serializable {
         this.autAdd = autAdd;
     }
 
+    public void mostrarCamposAutores() {
+        if (tipoAutor == 1) {
+            RequestContext.getCurrentInstance().execute(" $('.autorAux1').css({'display':'table-row'}); ");
+            RequestContext.getCurrentInstance().execute(" $('.autorAux2').css({'display':'none'}); ");
+        } else {
+            RequestContext.getCurrentInstance().execute(" $('.autorAux1').css({'display':'none'}); ");
+            RequestContext.getCurrentInstance().execute(" $('.autorAux2').css({'display':'table-row'}); ");
+        }
+    }
+
     public void crearAutor() {
         String nombre = fragmentarNombre(autAdd.getNOMBRE());
         String pat = letraCapital(autAdd.getAPELLIDO_PATERNO());
@@ -110,7 +141,7 @@ public class autorBean implements Serializable {
         autAdd.setID_BIBLIOTECA_REGISTRO(idBiblioteca);
         int flag1 = daoa.buscarEntidad(autAdd);
         if (flag1 == 0) {
-            int flag2 = daoa.crearEntidad(autAdd,idUsuario);
+            int flag2 = daoa.crearEntidad(autAdd, idUsuario);
             if (flag2 == 0) {
                 msjError("No se ha podido registrar.");
             } else {
@@ -123,29 +154,54 @@ public class autorBean implements Serializable {
 
     }
 
-    public void crearAutorDocumental() {
-        String nombre = fragmentarNombre(autAdd.getNOMBRE());
-        String pat = letraCapital(autAdd.getAPELLIDO_PATERNO());
-        String mat = letraCapital(autAdd.getAPELLIDO_MATERNO());
-        autAdd.setNOMBRE(nombre);
-        autAdd.setAPELLIDO_PATERNO(pat);
-        autAdd.setAPELLIDO_MATERNO(mat);
-        autAdd.setID_BIBLIOTECA_REGISTRO(idBiblioteca);
-
-        int flag1 = daoa.buscarEntidad(autAdd);
-        if (flag1 == 0) {
-            int flag2 = daoa.crearEntidad(autAdd,idUsuario);
-            if (flag2 == 0) {
-                msjError("No se ha podido registrar.");
-            } else {
-                msjCorrecto("Su registro se ha agregado con éxito.");
+    public void crearAutorDocumental() {        
+        if (autAdd != null && autAddAlternativo != null) {
+            if (tipoAutor == 1) {
+                autAdd.setID_BIBLIOTECA_REGISTRO(idBiblioteca);
+                if (autAdd.getNOMBRE().trim().isEmpty() && autAdd.getAPELLIDO_MATERNO().trim().isEmpty() && autAdd.getAPELLIDO_PATERNO().trim().isEmpty()) {
+                    msjError("gMensaje", "Debe ingresar por lo menos un campo.");
+                }else{
+                    int flag1 = daoa.buscarEntidad(autAdd);
+                    if (flag1 == 0) {
+                        int flag2 = daoa.crearEntidad(autAdd, idUsuario);
+                        if (flag2 == 0) {
+                            msjError("gMensaje","No se ha podido registrar.");
+                        } else {
+                            msjCorrecto("gMensaje","Su registro se ha agregado con éxito.");
+                        }
+                    } else {
+                        msjError("gMensaje","El registro que esta tratando de ingresar ya existe.");
+                    }
+                    tipoAutor = 0;
+                    limpiarEntidadAutor(autAdd);
+                    rfrhCboAutor();
+                    RequestContext.getCurrentInstance().update("frmAutor");
+                    RequestContext.getCurrentInstance().execute("PF('dlgAutor').hide()"); 
+                }
+            } else if(tipoAutor == 2){
+                autAddAlternativo.setID_BIBLIOTECA_REGISTRO(idBiblioteca);
+                if(autAddAlternativo.getALTERNATIVO().trim().isEmpty()){
+                    msjError("gMensaje", "Debe rellenar el campo.");
+                }else{
+                    int flag1 = daoa.buscarEntidadAlternativo(autAddAlternativo);
+                    if(flag1 == 0){
+                        int flag2 = daoa.crearEntidadAlternativo(autAddAlternativo, idUsuario);
+                        if (flag2 == 0) {
+                            msjError("gMensaje","No se ha podido registrar.");
+                        } else {
+                            msjCorrecto("gMensaje","Su registro se ha agregado con éxito.");
+                        }
+                    }else {
+                        msjError("gMensaje","El registro que esta tratando de ingresar ya existe.");
+                    }
+                    tipoAutor = 0;
+                    limpiarEntidadAutor(autAddAlternativo);
+                    rfrhCboAutor();                    
+                    RequestContext.getCurrentInstance().update("frmAutor");
+                    RequestContext.getCurrentInstance().execute("PF('dlgAutor').hide()");                   
+                }
             }
-        } else {
-            msjError("El registro que esta tratando de ingresar ya existe.");
         }
-        limpiarEntidadAutor(autAdd);
-        rfrhCboAutor();
-
     }
 
     private String fragmentarNombre(String s) {
@@ -196,7 +252,7 @@ public class autorBean implements Serializable {
 
     //Borrar autor
     public void borrarAutor(Autor aut) {
-        int flag = daoa.eliminarEntidad(aut.getID_AUTOR(),idUsuario);
+        int flag = daoa.eliminarEntidad(aut.getID_AUTOR(), idUsuario);
         if (flag == 0) {
             msjError("gMensaje", "Este autor se encuentra asignado a otros documentos");
         } else {
@@ -207,8 +263,8 @@ public class autorBean implements Serializable {
 
     //Modificar autor
     public void actualizarAutor() {
-        
-        int flag = daoa.actualizarEntidad(autAux,idUsuario);
+
+        int flag = daoa.actualizarEntidad(autAux, idUsuario);
         if (flag == 0) {
             msjError("gMensaje", "No se pudo actualizar correctamante");
         } else {
@@ -225,6 +281,7 @@ public class autorBean implements Serializable {
     private void msjError(String growl, String m) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(growl, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", m));
+        RequestContext.getCurrentInstance().update(growl);
     }
 
     private void msjCorrecto(String m) {
@@ -235,6 +292,7 @@ public class autorBean implements Serializable {
     private void msjCorrecto(String growl, String m) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(growl, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito!", m));
+        RequestContext.getCurrentInstance().update(growl);
     }
 
     private void limpiarEntidadAutor(Autor t) {
@@ -242,6 +300,7 @@ public class autorBean implements Serializable {
         t.setAPELLIDO_PATERNO("");
         t.setAPELLIDO_MATERNO("");
         t.setID_PAIS("");
+        t.setALTERNATIVO("");
     }
 
 }

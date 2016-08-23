@@ -11,14 +11,12 @@ public class Autor implements Serializable{
     private String ID_PAIS;
     private String PAIS;
     private String ID_BIBLIOTECA_REGISTRO;
-
-   
+    private String ALTERNATIVO;
     // auxiliares
     private String ID_DOCUMENTAL;
     
       public Autor() {
     }
-
 
     public String getID_DOCUMENTAL() {
         return ID_DOCUMENTAL;
@@ -91,5 +89,15 @@ public class Autor implements Serializable{
     public void setPAIS(String PAIS) {
         this.PAIS = PAIS;
     }
+
+    public String getALTERNATIVO() {
+        return ALTERNATIVO;
+    }
+
+    public void setALTERNATIVO(String ALTERNATIVO) {
+        this.ALTERNATIVO = ALTERNATIVO;
+    }
+    
+    
 
 }
