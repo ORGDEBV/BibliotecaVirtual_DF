@@ -1,16 +1,20 @@
 package vb.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.context.RequestContext;
+import vb.dao.PublicacionDao;
 import vb.dao.documentalDao;
 import vb.dao.perfilDocumentalDetalleDao;
+import vb.dto.PublicacionDto;
 import vb.entidad.Documental;
 import vb.entidad.PerfilDocumentalDetalle;
 import vb.entidad.Publicacion;
@@ -24,15 +28,28 @@ public class perfilDocumentalDetalleBean {
     String perfil;
     String perfilSelect;
     String perfilControl;
-    private Documental documentalPnlControl= new Documental();
+    private Documental documentalPnlControl = new Documental();
     private List<SelectItem> cboPerfiles;
     private List<SelectItem> cboVista;
     private List<SelectItem> cboRequerido;
+    private String urlOld = "";
+    private String rutaServidorArchivos;
+    private boolean linkProbado = false;
+    private boolean mostrarLink = false;
+    private String pagDurac="PAGINAS";
 
     public List<SelectItem> getCboRequerido() {
         cboRequerido.add(new SelectItem(0, "Requerido"));
         cboRequerido.add(new SelectItem(1, "No Requerido"));
         return cboRequerido;
+    }
+
+    public boolean isMostrarLink() {
+        return mostrarLink;
+    }
+
+    public void setMostrarLink(boolean mostrarLink) {
+        this.mostrarLink = mostrarLink;
     }
 
     public void setCboRequerido(List<SelectItem> cboRequerido) {
@@ -51,6 +68,24 @@ public class perfilDocumentalDetalleBean {
 
     public String getPerfilSelect() {
         return perfilSelect;
+    }
+
+    public String getPagDurac() {
+        if(perfilControl!=null){
+         if (perfilControl.equals("6")) {
+            pagDurac = "DURACION";
+        } else {
+            pagDurac = "PAGINAS";
+
+        }
+        
+        }
+       
+        return pagDurac;
+    }
+
+    public void setPagDurac(String pagDurac) {
+        this.pagDurac = pagDurac;
     }
 
     public void setPerfilSelect(String perfilSelect) {
@@ -145,23 +180,24 @@ public class perfilDocumentalDetalleBean {
     }
 
     public void editarPerfilDocumentalDetalle() {
-int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-        int upd = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle,idUsuario);
+        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        int upd = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle, idUsuario);
 
     }
 //    private void msjCorrecto(String growl, String m) {
 //        FacesContext context = FacesContext.getCurrentInstance();
 //        context.addMessage(growl, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito!", m));
 //    }
-//        private void msjError(String growl, String m) {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.addMessage(growl, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", m));
-//    }
+
+    private void msjError(String growl, String m) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(growl, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", m));
+    }
 
     public String actualizarTabla() {
-           int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-        int n = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle,idUsuario);
-     
+        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        int n = objPerfilDocumentalDetalleDao.editarListPerfildocumentaldetalle(lstPerfilDocumentalDetalle, idUsuario);
+
         if (n > 0) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito!", "ACTUALIZADO EXITOSAMENTE"));
             RequestContext.getCurrentInstance().update("gMensaje");
@@ -190,10 +226,12 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     //ludwig
     private String idDocumentalControl = "";
     private documentalDao ddao = new documentalDao();
+    private PublicacionDao pubDao = new PublicacionDao();
     private ArrayList<Documental> listaDoc = new ArrayList<Documental>();
+    private ArrayList<PublicacionDto> ldocumentalpublicado = new ArrayList<PublicacionDto>();
     private Publicacion pub = new Publicacion();
     private List<Documental> filterDocumental;
-    
+    private ArrayList<PublicacionDto> ldocumentalpublicadofiltrado = new ArrayList<PublicacionDto>();
 
     public List<Documental> getFilterDocumental() {
         return filterDocumental;
@@ -232,8 +270,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
         listaDoc = ddao.listDocumentalPublicacion(perfilControl, idBiblioteca);
         RequestContext.getCurrentInstance().update("frmControl:tblControlDocumental");
     }
-    
-    
+
     private List<String> publicar;
     public boolean mostrarTipoArchivo = true;
     public String tipoArchivo = "";
@@ -247,7 +284,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     public void setPublicar(List<String> publicar) {
         this.publicar = publicar;
     }
-    
+
     public boolean isMostrarTipoArchivo() {
         return mostrarTipoArchivo;
     }
@@ -265,7 +302,7 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
     }
 
     public String getArchivo() {
-        
+
         return archivo;
     }
 
@@ -281,128 +318,217 @@ int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().g
         this.archivofinal = archivofinal;
     }
 
-   
-    public void mostrarTipo(String id){
-        if(perfilControl.equals("6")){
-            archivo=ddao.nombreArchivo(id);
+    public void mostrarTipo(String id) {
+        if (perfilControl.equals("6")) {
+            archivo = ddao.nombreArchivo(id);
             mostrarTipoArchivo = false;
-            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");            
-        }else{
+            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+        } else {
             mostrarTipoArchivo = true;
-            archivo=ddao.nombreArchivo(id);
+            archivo = ddao.nombreArchivo(id);
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         }
         RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
     }
-    
+
     public void handleKeyEvent() {
-       
+
         archivo = archivo.toLowerCase();
     }
     public String valor0;
+
     public void mostrarMsgcheck() {
         //List<String> listaOut = new ArrayList<String>();
-        String msg = "";        
-        int l = publicar.size();        
+        String msg = "";
+        int l = publicar.size();
         String valorI = "";
-        switch(l){
+        switch (l) {
             case 1:
-                valorI = publicar.get(l-1);
+                valorI = publicar.get(l - 1);
                 //listaOut = publicar;
-                if(valorI.equals("1")){
+                if (valorI.equals("1")) {
                     msg = "Se agregará este documental al catálogo.";
-                }else{
+                } else {
                     msg = "No agregará este documental al catálogo.";
-                } 
+                }
                 valor0 = valorI;
                 break;
             case 2:
-                if(publicar.contains(valor0)){
+                if (publicar.contains(valor0)) {
                     int position = publicar.indexOf(valor0);
                     publicar.remove(position);
                 }
                 int s = publicar.size();
-                String valorII = publicar.get(s-1);
-                if(valorII.equals("1")){
+                String valorII = publicar.get(s - 1);
+                if (valorII.equals("1")) {
                     msg = "Se agregará este documental al catálogo.";
-                }else{
+                } else {
                     msg = "No agregará este documental al catálogo.";
-                } 
+                }
                 valor0 = valorII;
                 break;
             default:
-                
-                break;                    
+
+                break;
         }
         FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(msg));
         RequestContext.getCurrentInstance().update("gMensaje");
         RequestContext.getCurrentInstance().update("frmDlgControl:chkPublicar");
 
-               
     }
-    
+
     public void cambiarLabel() {
         String concat = "";
-        String r = "resources/";
+        String idBiblioteca = "2";
+        String r = "recursos";
         switch (tipoArchivo) {
             case "FlippingBook":
-                concat = r+tipoArchivo.toLowerCase()+"/"+archivo+"/index.html";
+                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
+
                 break;
             case "PDF":
-                concat = r+tipoArchivo.toLowerCase()+"/"+archivo+".pdf";
+                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
                 break;
             case "Imagen":
-                concat = r+tipoArchivo.toLowerCase()+"/"+archivo+".jpg";
+                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
                 break;
         }
-        archivofinal=concat;
+        mostrarLink = true;
+        // urlOld = documentalPnlControl.getURL();
+        archivofinal = concat;
+        //documentalPnlControl.setURL(concat);
         RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
+        RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
     }
-    
-    public void limpiar(){
-        archivo= "";
+
+    public void limpiar() {
+        archivo = "";
         archivofinal = "";
         tipoArchivo = "";
-        publicar=new ArrayList<>();
-      
+        publicar = new ArrayList<>();
+
+//        if (perfilControl.equals("6")) {
+//            if (urlOld.length() > 0) {
+//                documentalPnlControl.setURL(urlOld);
+//            } else {
+//                documentalPnlControl.setURL("");
+//            }
+//
+//        }
+        tipoArchivo = "";
+        archivofinal = "";
+        publicar = new ArrayList<>();
+        linkProbado = false;
+        mostrarLink = false;
+
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
     }
-    
-    public void registrarControlado(){
-        
-  if(perfilControl.equals("6")){
-  
-  
-  
-  
-  }else{
-      
-     
-  
-    String idDoc=documentalPnlControl.getID_DOCUMENTAL();
-        String url=archivofinal;
-        int idUsuario=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-      String publicado;
-        if(publicar.get(0).equals("1")){
-   publicado="SI";
-        }else{
-        publicado="NO";
+
+    public void registrarControlado() {
+        String idDoc = documentalPnlControl.getID_DOCUMENTAL();
+        //archivofinal = documentalPnlControl.getURL();
+        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        String publicado;
+        if (publicar.size() > 0) {
+            publicado = publicar.get(0).toString();
+        } else {
+            publicado = "0";
         }
-        String mensage=ddao.controlDocumental(idDoc, url, idUsuario,publicado);
-        limpiar();
-        publicar=new ArrayList<>();
-        FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
-        RequestContext.getCurrentInstance().update("gMensaje");
-        RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
-        listarTablaxPerfil();
-  
-  
-  
-  }
-      
-        //RequestContext.getCurrentInstance().update("frmDlgControl");  
-        
-        
+        ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+        rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
+
+        //****validaciones
+        ArrayList<String> lstErrores = new ArrayList<>();
+
+        switch (perfilControl) {
+            case "6":
+
+                break;
+            default:
+                if (archivofinal.trim().length() == 0) {
+                    lstErrores.add("Campo Ruta Final esta Vacio");
+                }
+
+                boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+                if (!existe) {
+                    lstErrores.add("El Fichero no existe en el Servidor de Archivos");
+                }
+                if (!linkProbado) {
+                    lstErrores.add("Debe validar el Link antes de Aceptar");
+                }
+
+                break;
+
+        }
+
+        //---------------
+        if (lstErrores.size() == 0) {
+            String mensage = ddao.controlDocumental(idDoc, archivofinal, idUsuario, publicado, perfilControl);
+            limpiar();
+            publicar = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
+            RequestContext.getCurrentInstance().update("gMensaje");
+            RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
+            listarTablaxPerfil();
+
+        } else {
+            String mensaje = "No se pudo insertar el documento.\nPor los motivos:<br/>";
+            for (int i = 0; i < lstErrores.size(); i++) {
+                String motivo = "-" + lstErrores.get(i) + "<br/>";
+                mensaje = mensaje + motivo;
+            }
+            msjError("gMensaje", mensaje);
+            RequestContext.getCurrentInstance().update("gMensaje");
+
+        }
+
+    }
+
+    public void listarDocumentalPublicado() {
+        String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
+        ldocumentalpublicado = pubDao.listPublicacion(perfilControl, idBiblioteca);
+
+        RequestContext.getCurrentInstance().update("frmPublicacion:tblPublicacion");
+
+    }
+
+    public ArrayList<PublicacionDto> getLdocumentalpublicado() {
+        ldocumentalpublicado = pubDao.listPublicacion("1", "2");
+        return ldocumentalpublicado;
+    }
+
+    public void setLdocumentalpublicado(ArrayList<PublicacionDto> ldocumentalpublicado) {
+        this.ldocumentalpublicado = ldocumentalpublicado;
+    }
+
+    public ArrayList<PublicacionDto> getLdocumentalpublicadofiltrado() {
+        return ldocumentalpublicadofiltrado;
+    }
+
+    public void setLdocumentalpublicadofiltrado(ArrayList<PublicacionDto> ldocumentalpublicadofiltrado) {
+        this.ldocumentalpublicadofiltrado = ldocumentalpublicadofiltrado;
+    }
+
+    public void redirectUrl() throws IOException {
+        if (archivofinal.trim().length() > 0) {
+            ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+            rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
+            String url = "http://localhost:8080/draco/" + archivofinal;
+
+            boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+            if (!existe) {
+
+                String mensaje = "El Fichero no existe en el Servidor de Archivos";
+                msjError("gMensaje", mensaje);
+                RequestContext.getCurrentInstance().update("gMensaje");
+            } else {
+                RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'blue !important'}); ");
+                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+                RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
+                linkProbado = true;
+            }
+
+        }
     }
 
 }

@@ -57,7 +57,10 @@
     top:50% !important;
     margin:0 auto;
 }
-
+.cambiarColorControlLink{
+    color: blue !important;
+    
+}
 .claseInplace > span:nth-child(1){
     margin-left:10px;
 }

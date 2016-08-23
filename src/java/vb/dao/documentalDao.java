@@ -1,5 +1,6 @@
 package vb.dao;
 
+import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -389,19 +390,19 @@ public class documentalDao implements entidadService<Biblioteca> {
         return nombreArchivo;
     }
     
-    public String controlDocumental(String idDoc, String url,int idUsuario,String publicado){
+    public String controlDocumental(String idDoc, String url,int idUsuario,String publicado,String perfil){
    
      
      
         String msg = "";
        
-    String[] parametros = new String[5];
+    String[] parametros = new String[6];
         parametros[0] =idDoc ;
         parametros[1] = url;
         parametros[2] = "4";
         parametros[3] = String.valueOf(idUsuario);
         parametros[4] = publicado;
-        
+        parametros[5] = perfil;
          ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_CONTROL_DOCUMENTAL]", parametros);
 
         for (Object[] d : data) {
@@ -413,5 +414,21 @@ public class documentalDao implements entidadService<Biblioteca> {
         
     return msg;
     }
+    
 
+public boolean validarFichero(String servArch,String archivo){
+    boolean existe=false;
+     String url=servArch+archivo;
+        File fichero = new File(url);
+
+        if (fichero.exists()) {
+           existe=true;
+        } else {
+          existe=false;
+        }
+     
+    
+    return existe;
+    
+    }
 }

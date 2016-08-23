@@ -3,7 +3,7 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../template/plantilla0.1.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <ui:define name="breadcumb">
@@ -69,7 +69,7 @@
                 <p:column headerText="URL" filterStyle="display:none" filterBy="#{cd.URL}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.URL}"/>
                 </p:column>
-                <p:column headerText="PAGINAS" filterStyle="display:none" filterBy="#{cd.NUMERO_PAGINAS}" filterMatchMode="contains">
+                <p:column headerText="#{perfilDocumentalDetalleBean.pagDurac}" filterStyle="display:none" filterBy="#{cd.NUMERO_PAGINAS}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.NUMERO_PAGINAS}"/>
                 </p:column>
             </p:dataTable>
@@ -154,7 +154,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel value="Publicar :"/>
+                            <p:outputLabel value="Visible en la Web :"/>
                         </p:column>
                         <p:column>
                             <p:selectManyMenu id="chkPublicar" showCheckbox="true" value="#{perfilDocumentalDetalleBean.publicar}"  styleClass="Wid70">
@@ -193,14 +193,17 @@
                             <p:outputLabel value="Ruta Final :" style="font-weight: bold !important"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="txtMuestra" value="#{perfilDocumentalDetalleBean.archivofinal}" styleClass="Wid100" disabled="true"/>
+                            <p:inputText  id="txtMuestra"  value="#{perfilDocumentalDetalleBean.archivofinal}" styleClass="Wid100" disabled="true"/>
+                            
                         </p:column>
                     </p:row>
+                   
                     <p:row>
                         <p:column>
                             <p:spacer/>
                         </p:column>
                         <p:column>
+                             <p:commandButton  value="Probar link" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
                             <p:commandButton value="Aceptar" update=":frmControl:tblControlDocumental" actionListener="#{perfilDocumentalDetalleBean.registrarControlado()}"/>
                             <p:commandButton value="Cancelar" update=":frmControl:tblControlDocumental :frmDlgControl:grdControl" actionListener="#{perfilDocumentalDetalleBean.limpiar()}" onclick="PF('dlgControl').hide();"/> 
                         </p:column>

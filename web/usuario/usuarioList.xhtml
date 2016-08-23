@@ -34,9 +34,11 @@
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Busque un usuario"/>
-                        <p:inputText id="globalFilter" onkeyup="PF('tblUsuario').filter()"
+                        <p:inputText id="globalFilter" 
                                      style="width:200px;margin-left:30px;border-radius:18px;"
                                      placeholder="Ingrese su bsqueda..." />
+                         <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblUsuario').filter()" value="Filtrar"></p:commandButton>
+                        
                     </p:outputPanel>
 
                 </f:facet> 
