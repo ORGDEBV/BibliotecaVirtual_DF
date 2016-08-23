@@ -7,6 +7,7 @@ import vb.entidad.Personal;
 import vb.util.sql;
 public class personalDao {
     sql conector = new sql();
+    
         public int crearEntidad(Personal p ,int idUsuario) {
         int n = 0;
         String[] parametros = new String[11];
