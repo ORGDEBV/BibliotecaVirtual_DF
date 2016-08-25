@@ -311,7 +311,21 @@ public class bibliotecaDao  {
         return lstMapBibliotecas;
     }
 
-    
+    public  Biblioteca oobtenerServidorBiblioteca(String idBiblioteca){
+    Biblioteca bib=new Biblioteca();
+     List<Object[]> objBiblioteca;
+        String[] parametros = new String[1];
+        parametros[0] = idBiblioteca;
+     objBiblioteca=conector.execProcedure("BV.SP_BIBLIOTECA_GEOLOCALIZACION", parametros);
+      for (Object[] obj : objBiblioteca) {
+           bib.setURL(obj[0].toString());
+           bib.setDIRECTORIO(obj[1].toString());
+
+        }
+     
+     
+    return bib;
+    }
 
     
 

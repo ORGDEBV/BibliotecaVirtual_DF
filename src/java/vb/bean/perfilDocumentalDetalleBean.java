@@ -426,7 +426,7 @@ public class perfilDocumentalDetalleBean {
 
     public void registrarControlado() {
         String idDoc = documentalPnlControl.getID_DOCUMENTAL();
-        //archivofinal = documentalPnlControl.getURL();
+        
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         String publicado;
         if (publicar.size() > 0) {

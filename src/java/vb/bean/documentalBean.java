@@ -767,12 +767,21 @@ public class documentalBean {
     }
 
     public void pasar() {
-        selectedContenidos = listaTemas;
+        selectedContenidos=new ArrayList<>();
+        selectedContenidos.addAll(listaTemas);
+        //update=":frmAddDocumental:listContenidos"
+        // onclick="PF('dlgIndice').hide()" 
+              
+          RequestContext rc = RequestContext.getCurrentInstance();
+        rc.execute("PF('dlgIndice').hide()");
+        RequestContext.getCurrentInstance().update("frmAddDocumental:listContenidos");
 
     }
 
     public void limpiar() {
-        listaTemas = new ArrayList<>();
+         listaTemas = selectedContenidos;
+         RequestContext.getCurrentInstance().execute("PF('dlgIndice').hide()");
+        RequestContext.getCurrentInstance().update("frmTablaContenido:tblContenido");
     }
 
     public void insertar() {
@@ -780,6 +789,7 @@ public class documentalBean {
             msjError("gMensaje", "El campo de tema es obligatorio");
         } else {
             Integer a = 0;
+            
             if (!listaTemas.isEmpty()) {
                 for (AuxContenido con : listaTemas) {
                     if (aux.getIndice().equals(con.getIndice())) {
@@ -1011,9 +1021,12 @@ public class documentalBean {
                 cont.setCONTRIBUIDOR(c.getCONTRIBUIDOR());
                 selectedContribuidor.add(cont);
             }
-            //lstContribuidorAux= lstContribuidor;
-            System.out.println("SE PASARON LOS REGISTROS");
+          
         }
+      //  onclick="PF('dlgContribuidor').hide()" update=":frmAddDocumental:listContribuidores" 
+      RequestContext.getCurrentInstance().execute("PF('dlgContribuidor').hide()");
+      RequestContext.getCurrentInstance().update("frmAddDocumental:listContribuidores" );
+        
     }
 
     public void pasarContribuidores(String ID_DOCUMENTAL) {
@@ -1035,7 +1048,11 @@ public class documentalBean {
     }
 
     public void limpiarContribuidores() {
-        lstContribuidor = new ArrayList<>();
+        lstContribuidor = selectedContribuidor;
+        
+        RequestContext.getCurrentInstance().execute("PF('dlgContribuidor').hide()");
+        RequestContext.getCurrentInstance().update("frmContribuidor:tblContribuidor");
+        
     }
 
     public void insertarContribuidores() {
