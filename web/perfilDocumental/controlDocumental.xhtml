@@ -52,8 +52,8 @@
                         <f:setPropertyActionListener value="#{cd}"  target="#{perfilDocumentalDetalleBean.documentalPnlControl}"  />
                     </p:commandButton>
                 </p:column>
-                
-                    <p:column filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="DETALLE" width="6%" style="text-align: center;">
+
+                <p:column filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="DETALLE" width="6%" style="text-align: center;">
                     <p:commandButton actionListener="#{documentalBean.cargaDataControl(cd.ID_DOCUMENTAL)}" icon="fa fa-search">
                     </p:commandButton>
                 </p:column>
@@ -194,16 +194,16 @@
                         </p:column>
                         <p:column>
                             <p:inputText  id="txtMuestra"  value="#{perfilDocumentalDetalleBean.archivofinal}" styleClass="Wid100" disabled="true"/>
-                            
+
                         </p:column>
                     </p:row>
-                   
+
                     <p:row>
                         <p:column>
                             <p:spacer/>
                         </p:column>
                         <p:column>
-                             <p:commandButton  value="Probar link" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
+                            <p:commandButton  value="Probar link" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
                             <p:commandButton value="Aceptar" update=":frmControl:tblControlDocumental" actionListener="#{perfilDocumentalDetalleBean.registrarControlado()}"/>
                             <p:commandButton value="Cancelar" update=":frmControl:tblControlDocumental :frmDlgControl:grdControl" actionListener="#{perfilDocumentalDetalleBean.limpiar()}" onclick="PF('dlgControl').hide();"/> 
                         </p:column>

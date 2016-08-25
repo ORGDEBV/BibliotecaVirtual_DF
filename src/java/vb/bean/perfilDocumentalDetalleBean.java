@@ -209,10 +209,8 @@ public class perfilDocumentalDetalleBean {
     private documentalDao ddao = new documentalDao();
     private PublicacionDao pubDao = new PublicacionDao();
     private ArrayList<Documental> listaDoc = new ArrayList<Documental>();
-    private ArrayList<PublicacionDto> ldocumentalpublicado = new ArrayList<PublicacionDto>();
     private Publicacion pub = new Publicacion();
     private List<Documental> filterDocumental;
-    private ArrayList<PublicacionDto> ldocumentalpublicadofiltrado = new ArrayList<PublicacionDto>();
 
     public List<Documental> getFilterDocumental() {
         return filterDocumental;
@@ -463,27 +461,6 @@ public class perfilDocumentalDetalleBean {
 
         }
 
-    }
-
-    public void listarDocumentalPublicado() {
-        String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
-        ldocumentalpublicado = pubDao.listPublicacion(perfilControl, idBiblioteca);
-    }
-
-    public ArrayList<PublicacionDto> getLdocumentalpublicado() {
-        return ldocumentalpublicado;
-    }
-
-    public void setLdocumentalpublicado(ArrayList<PublicacionDto> ldocumentalpublicado) {
-        this.ldocumentalpublicado = ldocumentalpublicado;
-    }
-
-    public ArrayList<PublicacionDto> getLdocumentalpublicadofiltrado() {
-        return ldocumentalpublicadofiltrado;
-    }
-
-    public void setLdocumentalpublicadofiltrado(ArrayList<PublicacionDto> ldocumentalpublicadofiltrado) {
-        this.ldocumentalpublicadofiltrado = ldocumentalpublicadofiltrado;
     }
 
     public void redirectUrl() throws IOException {

@@ -13,18 +13,28 @@ import java.util.Date;
  */
 public class PublicacionDto {
 
+    private String ID_PUBLICACION;
     private String ID_DOCUMENTAL;
     private String OTRO;
     private String TITULO;
     private String URL;
-    private Integer NRO_VISITAS;
-    private Integer ID_USUARIO;
+    private int NRO_VISITAS;
+    private int ID_USUARIO;
     private String NOMBRE;
     private String APELLIDO_PATERNO;
     private String APELLIDO_MATERNO;
     private Date FECHA_PUBLICACION;
     private int VISIBLE;
     private String CLASS_VISIBLE;
+    private String ICONO_VISIBLE;
+
+    public String getID_PUBLICACION() {
+        return ID_PUBLICACION;
+    }
+
+    public void setID_PUBLICACION(String ID_PUBLICACION) {
+        this.ID_PUBLICACION = ID_PUBLICACION;
+    }
 
     public String getID_DOCUMENTAL() {
         return ID_DOCUMENTAL;
@@ -58,19 +68,19 @@ public class PublicacionDto {
         this.URL = URL;
     }
 
-    public Integer getNRO_VISITAS() {
+    public int getNRO_VISITAS() {
         return NRO_VISITAS;
     }
 
-    public void setNRO_VISITAS(Integer NRO_VISITAS) {
+    public void setNRO_VISITAS(int NRO_VISITAS) {
         this.NRO_VISITAS = NRO_VISITAS;
     }
 
-    public Integer getID_USUARIO() {
+    public int getID_USUARIO() {
         return ID_USUARIO;
     }
 
-    public void setID_USUARIO(Integer ID_USUARIO) {
+    public void setID_USUARIO(int ID_USUARIO) {
         this.ID_USUARIO = ID_USUARIO;
     }
 
@@ -120,6 +130,14 @@ public class PublicacionDto {
 
     public void setCLASS_VISIBLE(String CLASS_VISIBLE) {
         this.CLASS_VISIBLE = CLASS_VISIBLE;
+    }
+
+    public String getICONO_VISIBLE() {
+        return ICONO_VISIBLE;
+    }
+
+    public void setICONO_VISIBLE(String ICONO_VISIBLE) {
+        this.ICONO_VISIBLE = ICONO_VISIBLE;
     }
 
 }
