@@ -14,7 +14,6 @@ import org.primefaces.context.RequestContext;
 import vb.dao.PublicacionDao;
 import vb.dao.documentalDao;
 import vb.dao.perfilDocumentalDetalleDao;
-import vb.dto.PublicacionDto;
 import vb.entidad.Documental;
 import vb.entidad.PerfilDocumentalDetalle;
 import vb.entidad.Publicacion;
@@ -228,10 +227,8 @@ public class perfilDocumentalDetalleBean {
     private documentalDao ddao = new documentalDao();
     private PublicacionDao pubDao = new PublicacionDao();
     private ArrayList<Documental> listaDoc = new ArrayList<Documental>();
-    private ArrayList<PublicacionDto> ldocumentalpublicado = new ArrayList<PublicacionDto>();
     private Publicacion pub = new Publicacion();
     private List<Documental> filterDocumental;
-    private ArrayList<PublicacionDto> ldocumentalpublicadofiltrado = new ArrayList<PublicacionDto>();
 
     public List<Documental> getFilterDocumental() {
         return filterDocumental;
@@ -482,31 +479,6 @@ public class perfilDocumentalDetalleBean {
 
         }
 
-    }
-
-    public void listarDocumentalPublicado() {
-        String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
-        ldocumentalpublicado = pubDao.listPublicacion(perfilControl, idBiblioteca);
-
-        RequestContext.getCurrentInstance().update("frmPublicacion:tblPublicacion");
-
-    }
-
-    public ArrayList<PublicacionDto> getLdocumentalpublicado() {
-        ldocumentalpublicado = pubDao.listPublicacion("1", "2");
-        return ldocumentalpublicado;
-    }
-
-    public void setLdocumentalpublicado(ArrayList<PublicacionDto> ldocumentalpublicado) {
-        this.ldocumentalpublicado = ldocumentalpublicado;
-    }
-
-    public ArrayList<PublicacionDto> getLdocumentalpublicadofiltrado() {
-        return ldocumentalpublicadofiltrado;
-    }
-
-    public void setLdocumentalpublicadofiltrado(ArrayList<PublicacionDto> ldocumentalpublicadofiltrado) {
-        this.ldocumentalpublicadofiltrado = ldocumentalpublicadofiltrado;
     }
 
     public void redirectUrl() throws IOException {
