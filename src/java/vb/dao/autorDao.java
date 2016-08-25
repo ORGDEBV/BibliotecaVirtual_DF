@@ -124,6 +124,44 @@ public class autorDao implements entidadService<Autor> {
         }
         return n;
     }
+    
+    public int buscarEntidadAlternativo(Autor aut) {
+        int n = 0;
+        List<Object[]> listaIn;
+        String[] parametros = new String[5];
+        parametros[0] = "";        
+        parametros[1] = aut.getID_PAIS();
+        parametros[2] = "FIND_ALTERNATIVO";
+        parametros[3] = aut.getID_BIBLIOTECA_REGISTRO();
+        parametros[4] = aut.getALTERNATIVO();
+        listaIn = conector.execProcedure("BV.SP_MANTENIMIENTO_AUTOR_ALTERNATIVO", parametros);
+        for (Object[] dato : listaIn) {
+            if (dato[0].toString().equals("1")) {
+                n = 1;
+            }
+        }
+        return n;
+    }
+    
+    public int crearEntidadAlternativo(Autor aut,int idUsuario) {
+        int n = 0;
+        List<Object[]> listaIn;
+        String[] parametros = new String[5];
+        parametros[0] = "";        
+        parametros[1] = aut.getID_PAIS();
+        parametros[2] = "ADD_AUTOR_ALTERNATIVO";
+        parametros[3] = aut.getID_BIBLIOTECA_REGISTRO();
+        parametros[4] = aut.getALTERNATIVO();
+        listaIn = conector.execProcedure("BV.SP_MANTENIMIENTO_AUTOR_ALTERNATIVO", parametros);
+        for (Object[] dato : listaIn) {
+            if (dato[0].toString().equals("1")) {
+                n = 1;
+                logTablaDao.registrarLogTabla(new LogTabla("BV", "AUTOR", "", "1", String.valueOf(idUsuario)));
+            }
+        }
+        return n;
+    }
+    
 
     @Override
     public Autor buscarEntidad(int codigo) {

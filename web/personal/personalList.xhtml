@@ -36,9 +36,9 @@
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Busque un Personal"/>
-                        <p:inputText id="globalFilter" onkeyup="PF('tblPersonal').filter()" 
-                                     style="width:200px;margin-left:30px;border-radius:18px;" 
+                        <p:inputText id="globalFilter" style="width:200px;margin-left:30px;border-radius:18px;" 
                                      placeholder="Ingrese su búsqueda..."/>
+                         <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblPersonal').filter()" value="Filtrar"></p:commandButton>
                     </p:outputPanel>
                 </f:facet>
                 <p:column filterStyle="display:none" filterBy="#{personal.ID_PERSONAL_BIBLIOTECA}" filterMatchMode="contains" headerText="ID" width="1%" style="text-align:center;">

@@ -5,6 +5,7 @@ package vb.entidad;
  * @author Renato Vásquez Tejada - renatovt11@gmail.com
  */
 public class Personal {
+
     private int ID_PERSONAL_BIBLIOTECA;
     private String NOMBRES;
     private String PATERNO;
@@ -13,9 +14,10 @@ public class Personal {
     private int ID_BIBLIOTECA_MEDIADOR;
     private String BIBLIOTECA_MEDIADOR;
     //variables auxiliares
-    private  String idTipoUsuario;
- private boolean boolREPRESENTANTE;
- private boolean boolActivo;
+    private String idTipoUsuario;
+    private boolean boolREPRESENTANTE;
+    private boolean boolActivo;
+
     public String getIdTipoUsuario() {
         return idTipoUsuario;
     }
@@ -45,7 +47,6 @@ public class Personal {
     public void setBoolActivo(boolean boolActivo) {
         this.boolActivo = boolActivo;
     }
-    
 
     public boolean isBoolREPRESENTANTE() {
         return boolREPRESENTANTE;
@@ -54,7 +55,6 @@ public class Personal {
     public void setBoolREPRESENTANTE(boolean boolREPRESENTANTE) {
         this.boolREPRESENTANTE = boolREPRESENTANTE;
     }
- 
 
     public String getREPRESENTANTE() {
         return REPRESENTANTE;
@@ -63,10 +63,6 @@ public class Personal {
     public void setREPRESENTANTE(String REPRESENTANTE) {
         this.REPRESENTANTE = REPRESENTANTE;
     }
-
-    
-   
-    
 
     public int getID_PERSONAL_BIBLIOTECA() {
         return ID_PERSONAL_BIBLIOTECA;
@@ -132,5 +128,4 @@ public class Personal {
         this.CORREO = CORREO;
     }
 
-    
 }

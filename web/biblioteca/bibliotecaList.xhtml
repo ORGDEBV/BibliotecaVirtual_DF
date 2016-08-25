@@ -36,7 +36,8 @@
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Busque una biblioteca:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('tblBiblioteca').filter()" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                        <p:inputText id="globalFilter" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..."/>
+                     <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblBiblioteca').filter()" value="Filtrar"></p:commandButton>
                     </p:outputPanel>
                 </f:facet>
 

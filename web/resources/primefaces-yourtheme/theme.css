@@ -21,6 +21,14 @@
 .ui-spinner-button{
     position: absolute !important;
 }
+
+.autorAux1{
+    display: none;
+}
+.autorAux2{
+    display: none;
+}
+
 .claseAux2{
     top:2% !important;
     margin:0 auto;

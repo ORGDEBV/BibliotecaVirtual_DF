@@ -20,7 +20,7 @@ public class temaDao implements entidadService<Tema>{
         ArrayList<Object[]> data = null;
         String[] parametros = new String[4];
         parametros[0] = "";
-        parametros[1] = tema.getTEMA();
+        parametros[1] = tema.getTEMA().trim();
         parametros[2] = "TEMA_INS";
         parametros[3] = tema.getID_BIBLIOTECA_REGISTRO();
         data = conector.execProcedure("BV.SP_MANTENIMIENTO_TEMA",parametros);

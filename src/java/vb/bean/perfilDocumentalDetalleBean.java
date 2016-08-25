@@ -14,7 +14,6 @@ import org.primefaces.context.RequestContext;
 import vb.dao.PublicacionDao;
 import vb.dao.documentalDao;
 import vb.dao.perfilDocumentalDetalleDao;
-import vb.dto.PublicacionDto;
 import vb.entidad.Documental;
 import vb.entidad.PerfilDocumentalDetalle;
 import vb.entidad.Publicacion;
@@ -36,6 +35,7 @@ public class perfilDocumentalDetalleBean {
     private String rutaServidorArchivos;
     private boolean linkProbado = false;
     private boolean mostrarLink = false;
+    private String pagDurac="PAGINAS";
 
     public List<SelectItem> getCboRequerido() {
         cboRequerido.add(new SelectItem(0, "Requerido"));
@@ -67,6 +67,24 @@ public class perfilDocumentalDetalleBean {
 
     public String getPerfilSelect() {
         return perfilSelect;
+    }
+
+    public String getPagDurac() {
+        if(perfilControl!=null){
+         if (perfilControl.equals("6")) {
+            pagDurac = "DURACION";
+        } else {
+            pagDurac = "PAGINAS";
+
+        }
+        
+        }
+       
+        return pagDurac;
+    }
+
+    public void setPagDurac(String pagDurac) {
+        this.pagDurac = pagDurac;
     }
 
     public void setPerfilSelect(String perfilSelect) {
@@ -465,6 +483,8 @@ public class perfilDocumentalDetalleBean {
 
     public void redirectUrl() throws IOException {
         if (archivofinal.trim().length() > 0) {
+            ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+            rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
             String url = "http://localhost:8080/draco/" + archivofinal;
 
             boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);

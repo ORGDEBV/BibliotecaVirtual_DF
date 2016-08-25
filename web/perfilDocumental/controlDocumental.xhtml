@@ -69,7 +69,7 @@
                 <p:column headerText="URL" filterStyle="display:none" filterBy="#{cd.URL}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.URL}"/>
                 </p:column>
-                <p:column headerText="PAGINAS" filterStyle="display:none" filterBy="#{cd.NUMERO_PAGINAS}" filterMatchMode="contains">
+                <p:column headerText="#{perfilDocumentalDetalleBean.pagDurac}" filterStyle="display:none" filterBy="#{cd.NUMERO_PAGINAS}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.NUMERO_PAGINAS}"/>
                 </p:column>
             </p:dataTable>
