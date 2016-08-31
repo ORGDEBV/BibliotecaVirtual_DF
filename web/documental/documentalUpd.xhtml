@@ -803,13 +803,13 @@
                         <div class="CardFooterBtn White xboton" >
                             <h4>
                                 <i class="fa fa-check-circle-o Fs20"/>
-                                <p:commandLink value=" Aceptar" onclick="PF('dlgIndice').hide()" actionListener="#{bibliotecaBean.pasar()}" update=":frmAddDocumental:listContenidos" />
+                                <p:commandLink value=" Aceptar" actionListener="#{documentalBean.pasar()}" />
                             </h4>
                         </div>
                         <div class="CardFooterBtn White xboton" >
                             <h4>
                                 <i class="icon-cancel19 Fs18"/>
-                                <p:commandLink value=" Cancelar" type="reset" onclick="PF('dlgIndice').hide()" actionListener="#{documentalBean.limpiar}" update=":frmTablaContenido:tblContenido" />
+                                <p:commandLink value=" Cancelar" type="reset" actionListener="#{documentalBean.limpiar}"  />
                             </h4>
                         </div>
                     </div>
@@ -1014,13 +1014,13 @@
                         <div class="CardFooterBtn White xboton" >
                             <h4>
                                 <i class="fa fa-check-circle-o Fs20"/>
-                                <p:commandLink value=" Aceptar" onclick="PF('dlgContribuidor').hide()" actionListener="#{documentalBean.pasarContribuidores}" update=":frmAddDocumental:listContribuidores" />
+                                <p:commandLink value=" Aceptar" actionListener="#{documentalBean.pasarContribuidores}"/>
                             </h4>
                         </div>
                         <div class="CardFooterBtn White xboton" >
                             <h4>
                                 <i class="icon-cancel19 Fs18"/>
-                                <p:commandLink value=" Cancelar" type="reset" onclick="PF('dlgContribuidor').hide()" actionListener="#{documentalBean.limpiarContribuidores}" update=":frmContribuidor:tblContribuidor" />
+                                <p:commandLink value=" Cancelar" type="reset"  actionListener="#{documentalBean.limpiarContribuidores}"/>
                             </h4>
                         </div>
                     </div>

@@ -12,8 +12,10 @@ import javax.faces.model.SelectItem;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.context.RequestContext;
 import vb.dao.PublicacionDao;
+import vb.dao.bibliotecaDao;
 import vb.dao.documentalDao;
 import vb.dao.perfilDocumentalDetalleDao;
+import vb.entidad.Biblioteca;
 import vb.entidad.Documental;
 import vb.entidad.PerfilDocumentalDetalle;
 import vb.entidad.Publicacion;
@@ -36,7 +38,7 @@ public class perfilDocumentalDetalleBean {
     private boolean linkProbado = false;
     private boolean mostrarLink = false;
     private String pagDurac="PAGINAS";
-
+bibliotecaDao bDao=new bibliotecaDao();
     public List<SelectItem> getCboRequerido() {
         cboRequerido.add(new SelectItem(0, "Requerido"));
         cboRequerido.add(new SelectItem(1, "No Requerido"));
@@ -376,7 +378,7 @@ public class perfilDocumentalDetalleBean {
 
     public void cambiarLabel() {
         String concat = "";
-        String idBiblioteca = "2";
+         String idBiblioteca = "2";
         String r = "recursos";
         switch (tipoArchivo) {
             case "FlippingBook":
@@ -423,7 +425,7 @@ public class perfilDocumentalDetalleBean {
 
     public void registrarControlado() {
         String idDoc = documentalPnlControl.getID_DOCUMENTAL();
-        //archivofinal = documentalPnlControl.getURL();
+        
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         String publicado;
         if (publicar.size() > 0) {
@@ -485,7 +487,7 @@ public class perfilDocumentalDetalleBean {
         if (archivofinal.trim().length() > 0) {
             ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
             rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
-            String url = "http://localhost:8080/draco/" + archivofinal;
+           String url = "http://localhost:8080/draco/" + archivofinal;
 
             boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
             if (!existe) {

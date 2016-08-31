@@ -499,7 +499,7 @@ public class bibliotecaBean implements Serializable {
         RequestContext.getCurrentInstance().update("frmAddBiblioteca:grdMap");
 
     }
-
+///-----------------------------------------------------------------------------------------
     public void pasar() {
         biblioteca.setTITULO_MAPA(title);
         biblioteca.setLATITUD(String.valueOf(lat));
