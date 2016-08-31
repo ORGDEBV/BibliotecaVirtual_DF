@@ -316,7 +316,7 @@ public class bibliotecaDao  {
      List<Object[]> objBiblioteca;
         String[] parametros = new String[1];
         parametros[0] = idBiblioteca;
-     objBiblioteca=conector.execProcedure("BV.SP_BIBLIOTECA_GEOLOCALIZACION", parametros);
+     objBiblioteca=conector.execProcedure("BV.SP_BIBLIOTECA_SERVIDOR", parametros);
       for (Object[] obj : objBiblioteca) {
            bib.setURL(obj[0].toString());
            bib.setDIRECTORIO(obj[1].toString());
