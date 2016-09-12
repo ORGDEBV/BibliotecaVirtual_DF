@@ -105,7 +105,7 @@
 
                 <p:column filterStyle="display:none" filterBy="#{biblioteca.CODIGO_SNB}" filterMatchMode="contains" headerText="Eliminar" width="5%" style="text-align: center;">
                     <p:commandButton ajax="true" update=":formListBiblioteca:tblBiblioteca :gMensaje" icon="ui-icon-trash" actionListener="#{bibliotecaBean.delBiblioteca(biblioteca)}">
-                        <p:confirm header="Confirme la acción" message="¿Está seguro de eliminar este registro?" icon="ui-icon-info" />
+                        <p:confirm  header="Confirme la acción" message="¿Está seguro de realizar este cambio ? " icon="ui-icon-info"/>
                     </p:commandButton>
                 </p:column>
             </p:dataTable>

@@ -6,6 +6,7 @@
 package bv.dao;
 
 import java.util.List;
+import vb.dto.PerfilDto;
 import vb.entidad.PerfilDocumentalDetalle;
 
 /**
@@ -19,5 +20,7 @@ public interface PerfilDocumentalDetalleDao {
     List<Object[]> obtenerPerfiles();
 
     int editarListPerfildocumentaldetalle(List<PerfilDocumentalDetalle> lstPerfilDocumentalDetalle, int idUsuario);
+
+    PerfilDto obtenerPerfilXidDocumental(String idDocumental);
 
 }

@@ -8,7 +8,7 @@
 
     <f:metadata>
         <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{perfilDocumentalDetalleBean.perfil}" />
-        <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{tipoBean.perfil}" />x
+        <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{tipoBean.perfil}" />
         <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{documentalBean.perfil}" />
         <f:viewParam name="PERFIL_DOCUMENTAL" value="#{documentalBean.perfil_documental}" />
     </f:metadata>
@@ -70,9 +70,8 @@
                         <p:confirm header="Confirme la acción" message="¿Está seguro de eliminar este registro?" icon="fa fa-fw fa-trash-o" />
                     </p:commandButton>
                 </p:column>
+                
                 <p:column filterStyle="display:none" filterBy="#{biblioteca.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="Editar" width="5%" style="text-align: center;">
-
-
                     <p:commandButton  actionListener="#{documentalBean.redireccionar(documentalBean.perfil,documentalBean.perfil_documental,documental.ID_DOCUMENTAL)}" icon="fa fa-fw fa-edit" >
                     </p:commandButton>
 
