@@ -13,8 +13,6 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
-import vb.entidad.TipoOtro;
-
 /**
  *
  * @author Renato Vásquez Tejada - renatovt11@gmail.com
@@ -23,7 +21,6 @@ import vb.entidad.TipoOtro;
 @RequestScoped
 public class tipoOtroBean {
 
-    private TipoOtro TipoOtro;
     private final TipoOtroDao tipoOtroDao;
     private List<SelectItem> cboTipoOtro;
     /**
@@ -31,16 +28,7 @@ public class tipoOtroBean {
      */
     public tipoOtroBean() {
         DaoFactory factory = DaoFactory.getInstance();
-        TipoOtro = new TipoOtro();
         tipoOtroDao = factory.getTipoOtroDao(TIPO_OTRO);
-    }
-
-    public TipoOtro getTipoOtro() {
-        return TipoOtro;
-    }
-
-    public void setTipoOtro(TipoOtro TipoOtro) {
-        this.TipoOtro = TipoOtro;
     }
 
     public List<SelectItem> getCboTipoOtro() {
