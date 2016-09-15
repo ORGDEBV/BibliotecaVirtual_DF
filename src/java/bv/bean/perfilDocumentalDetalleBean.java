@@ -23,6 +23,8 @@ import static bv.util.Constantes.PUBLICACION;
 import vb.entidad.Documental;
 import vb.entidad.PerfilDocumentalDetalle;
 import vb.entidad.Publicacion;
+import vb.dto.PerfilDto;
+import vb.entidad.Biblioteca;
 
 @ManagedBean
 @ViewScoped
@@ -50,7 +52,9 @@ public class perfilDocumentalDetalleBean {
     private ArrayList<Documental> listaDoc = new ArrayList<>();
     private Publicacion pub = new Publicacion();
     private List<Documental> filterDocumental;
-
+    //-------------
+    private String ID_PERFIL;
+private String PERFIL_CBO;
     public perfilDocumentalDetalleBean() {
         DaoFactory factory = DaoFactory.getInstance();
         objPerfilDocumentalDetalleDao = factory.getPerfilDocumentalDetalleDao(PERFIL_DOCUMENTAL_DETALLE);
@@ -58,6 +62,22 @@ public class perfilDocumentalDetalleBean {
         ddao = factory.getDocumentalDao(DOCUMENTAL);
         pubDao = factory.getPublicacionDao(PUBLICACION);
         documentalPnlControl = new Documental();
+    }
+
+    public String getPERFIL_CBO() {
+        return PERFIL_CBO;
+    }
+
+    public void setPERFIL_CBO(String PERFIL_CBO) {
+        this.PERFIL_CBO = PERFIL_CBO;
+    }
+
+    public String getID_PERFIL() {
+        return ID_PERFIL;
+    }
+
+    public void setID_PERFIL(String ID_PERFIL) {
+        this.ID_PERFIL = ID_PERFIL;
     }
 
     public List<SelectItem> getCboRequerido() {
@@ -247,14 +267,18 @@ public class perfilDocumentalDetalleBean {
     }
 
     public void listarTablaxPerfil() {
+        
         String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
+        if(perfilControl==null){
+        perfilControl="1";
+        }
         listaDoc = ddao.listDocumentalPublicacion(perfilControl, idBiblioteca);
         RequestContext.getCurrentInstance().update("frmControl:tblControlDocumental");
     }
 
     private List<String> publicar;
     public boolean mostrarTipoArchivo = true;
-    public String tipoArchivo = "";
+    public String tipoArchivo = "FlippingBook";
     public String archivo = "";
     public String archivofinal = "";
 
@@ -303,10 +327,13 @@ public class perfilDocumentalDetalleBean {
         if (perfilControl.equals("6")) {
             archivo = ddao.nombreArchivo(id);
             mostrarTipoArchivo = false;
+            
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         } else {
             mostrarTipoArchivo = true;
             archivo = ddao.nombreArchivo(id);
+            cambiarLabel();
+           
             RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
         }
         RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
@@ -357,20 +384,45 @@ public class perfilDocumentalDetalleBean {
         RequestContext.getCurrentInstance().update("frmDlgControl:chkPublicar");
     }
 
+//    public void cambiarLabell() {
+//        String concat = "";
+//        String idBiblioteca = "2";
+//        String r = "recursos";
+//        switch (tipoArchivo) {
+//            case "FlippingBook":
+//                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
+//
+//                break;
+//            case "PDF":
+//                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
+//                break;
+//            case "Imagen":
+//                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
+//                break;
+//        }
+//        mostrarLink = true;
+//        // urlOld = documentalPnlControl.getURL();
+//        archivofinal = concat;
+//        //documentalPnlControl.setURL(concat);
+//        RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
+//        RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+//    }
     public void cambiarLabel() {
         String concat = "";
-        String idBiblioteca = "2";
-        String r = "recursos";
+        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+        String idBiblioteca = String.valueOf(ID_BIBLIOTECA_FUENTE);
+
+        
         switch (tipoArchivo) {
             case "FlippingBook":
-                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
+                concat = tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
 
                 break;
             case "PDF":
-                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
+                concat = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
                 break;
             case "Imagen":
-                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
+                concat = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
                 break;
         }
         mostrarLink = true;
@@ -380,6 +432,7 @@ public class perfilDocumentalDetalleBean {
         RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
     }
+
 
     public void limpiar() {
         archivo = "";
@@ -427,8 +480,9 @@ public class perfilDocumentalDetalleBean {
                 if (archivofinal.trim().length() == 0) {
                     lstErrores.add("Campo Ruta Final esta Vacio");
                 }
-
-                boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+                Biblioteca bib = obtenerServidorBiblioteca();
+                //boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+                boolean existe = ddao.validarFichero(rutaServidorArchivos + bib.getDIRECTORIO(), archivofinal);
                 if (!existe) {
                     lstErrores.add("El Fichero no existe en el Servidor de Archivos");
                 }
@@ -462,14 +516,30 @@ public class perfilDocumentalDetalleBean {
         }
 
     }
+    public void redireccionar(String ID_DOCUMENTAL) {
+        try {
+           PerfilDto pdto=objPerfilDocumentalDetalleDao.obtenerPerfilXidDocumental(ID_DOCUMENTAL);
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta!", "Modificando DOCUMENTAL: " + ID_DOCUMENTAL));
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/perfilDocumental/UpdCont?ID_PERFIL_DOCUMENTAL=" + pdto.getID_perfil() + "&PERFIL_DOCUMENTAL=" + pdto.getPerfil() + "&ID_DOCUMENTAL=" + ID_DOCUMENTAL+"&CONT=1");
+        } catch (IOException ex) {
+            System.out.println("error" + ex);
+        }
+
+    }
 
     public void redirectUrl() throws IOException {
         if (archivofinal.trim().length() > 0) {
             ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
             rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
-            String url = "http://localhost:8080/draco/" + archivofinal;
+            //String url = "http://localhost:8080/draco/" + archivofinal;
+           // String url = "http://eudora:8080/bnp/" + archivofinal;
+            
+            Biblioteca bib = obtenerServidorBiblioteca();
+            
+              String url = bib.getURL() + bib.getDIRECTORIO() + archivofinal;
 
-            boolean existe = ddao.validarFichero(rutaServidorArchivos, archivofinal);
+              boolean existe = ddao.validarFichero(rutaServidorArchivos + bib.getDIRECTORIO(), archivofinal);
             if (!existe) {
 
                 String mensaje = "El Fichero no existe en el Servidor de Archivos";
@@ -477,12 +547,25 @@ public class perfilDocumentalDetalleBean {
                 RequestContext.getCurrentInstance().update("gMensaje");
             } else {
                 RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'blue !important'}); ");
-                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
-                RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
+                
+                 // RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
+                 RequestContext.getCurrentInstance().execute("pasarPagina('" + url + "')");
+                 RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
                 linkProbado = true;
             }
 
         }
     }
+      
+    
+    public Biblioteca obtenerServidorBiblioteca() {
+        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+        String idBiblioteca = String.valueOf(ID_BIBLIOTECA_FUENTE);
+
+        Biblioteca bib = bDao.oobtenerServidorBiblioteca(idBiblioteca);
+        return bib;
+
+    }
+    
 
 }

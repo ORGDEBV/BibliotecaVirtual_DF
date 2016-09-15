@@ -7,7 +7,7 @@
 
     <context-param>
         <param-name>rutaServidorArchivos</param-name>
-        <param-value>C:\glassfish-4.1.1\glassfish4\glassfish\domains\domain1\docroot\draco\</param-value>
+        <param-value>C:\glassfish-4.1.1\glassfish4\glassfish\domains\domain1\docroot\</param-value>
     </context-param>
 
        

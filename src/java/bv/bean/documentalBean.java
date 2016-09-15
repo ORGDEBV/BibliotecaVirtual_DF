@@ -20,6 +20,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import bv.dao.AutorDao;
+import bv.dao.BibliotecaDao;
 import bv.dao.ColeccionDao;
 import bv.dao.ContribuidorDao;
 import bv.dao.DocumentalDao;
@@ -33,8 +34,11 @@ import bv.dao.TemaDao;
 import bv.dao.TransaccionDao;
 import bv.dao.impl.DaoFactory;
 import static bv.util.Constantes.*;
+import javax.faces.context.ExternalContext;
+import vb.dto.PerfilDto;
 import vb.entidad.Autor;
 import vb.entidad.AuxContenido;
+import vb.entidad.Biblioteca;
 import vb.entidad.Cobertura;
 import vb.entidad.Coleccion;
 import vb.entidad.Contribuidor;
@@ -133,12 +137,16 @@ public class documentalBean {
     //LENGUAJE
     private final LenguajeDao lenguajeDao;
     private ArrayList<String> selectedLenguaje = new ArrayList<>();
-
+    private String Control = "0";
+//---------------------
+    private final BibliotecaDao bDao;
 //-------------------------------------------------------------------------------------------------------------------------
+
     public documentalBean() {
         DaoFactory factory = DaoFactory.getInstance();
 
         //FACTORY DE DAOS
+        bDao = factory.getBibliotecaDao(BIBLIOTECA);
         conntribuidorDao = factory.getContribuidorDao(CONTRIBUIDOR);
         objPerfilDocumentalDetalleDao = factory.getPerfilDocumentalDetalleDao(PERFIL_DOCUMENTAL_DETALLE);
         autorDao = factory.getAutorDao(AUTOR);
@@ -180,6 +188,14 @@ public class documentalBean {
         }
 
         return registrartModificar;
+    }
+
+    public String getControl() {
+        return Control;
+    }
+
+    public void setControl(String Control) {
+        this.Control = Control;
     }
 
     public void setRegistrartModificar(String registrartModificar) {
@@ -1140,7 +1156,14 @@ public class documentalBean {
         if (upd.equals("1")) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito!", "Documental modificado exitosamente."));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/Documental/Upd?ID_PERFIL_DOCUMENTAL=" + perfil + "&PERFIL_DOCUMENTAL=" + perfil_documental);
+            if (Control.equals("0")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/Documental/Upd?ID_PERFIL_DOCUMENTAL=" + perfil + "&PERFIL_DOCUMENTAL=" + perfil_documental);
+            } else if (Control.equals("1")) {//si es de control que redireccione a la pagina de control
+                PerfilDto pdto = objPerfilDocumentalDetalleDao.obtenerPerfilXidDocumental(ID_DOCUMENTAL);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/perfilDocumental/UpdCont?ID_PERFIL_DOCUMENTAL=" + pdto.getID_perfil() + "&PERFIL_DOCUMENTAL=" + pdto.getPerfil() + "&ID_DOCUMENTAL=" + "");
+                Control = "0";
+            }
+
             ID_DOCUMENTAL = "";
             documental = new Documental();
         } else {
@@ -1546,8 +1569,35 @@ public class documentalBean {
         listdetlenguaje = lenguajeDao.listarSerieIdDocumental(idDocumental);
         listdettema = temaDao.listarSerieIdDocumental(idDocumental);
         listdetcontribuidor = conntribuidorDao.listarContribuidorIdDocumental(idDocumental);
+
         RequestContext.getCurrentInstance().update("dlgDocumental");
         RequestContext.getCurrentInstance().execute("PF('dlgDocumental').show();");
+    }
+
+    public void redirectUrlControlPublicacion() throws IOException {
+
+        ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+        String rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
+        Biblioteca bib = obtenerServidorBiblioteca();
+        String url = bib.getURL() + bib.getDIRECTORIO() + documental.getURL();
+        boolean existe = documentalDao.validarFichero(rutaServidorArchivos + bib.getDIRECTORIO(), documental.getURL());
+        if (!existe) {
+            String mensaje = "El Fichero no existe en el Servidor de Archivos";
+            msjError("gMensaje", mensaje);
+            RequestContext.getCurrentInstance().update("gMensaje");
+        } else {
+            RequestContext.getCurrentInstance().execute("pasarPagina('" + url + "')");
+            //RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+        }
+    }
+
+    public Biblioteca obtenerServidorBiblioteca() {
+        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+        String idBiblioteca = String.valueOf(ID_BIBLIOTECA_FUENTE);
+
+        Biblioteca bib = bDao.oobtenerServidorBiblioteca(idBiblioteca);
+        return bib;
+
     }
 
 }

@@ -56,14 +56,15 @@ public class bibliotecaBean implements Serializable {
     private double lat;
     private double lng;
     int idUsuario;
-    
+
     public String getZoom() {
         return zoom;
     }
+
     public void setZoom(String zoom) {
         this.zoom = zoom;
     }
-    
+
     public bibliotecaBean() {
         DaoFactory factory = DaoFactory.getInstance();
         idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
@@ -91,6 +92,16 @@ public class bibliotecaBean implements Serializable {
 
     public void setComboProvincia(List<SelectItem> comboProvincia) {
         this.comboProvincia = comboProvincia;
+    }
+
+    public String verGeomap() {
+        String verGeomap = "false";
+
+        if (upd.equals("1")) {
+            verGeomap = "true";
+
+        }
+        return verGeomap;
     }
 
     public List<SelectItem> getComboRegion() {

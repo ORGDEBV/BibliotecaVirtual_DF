@@ -32,9 +32,23 @@ public class BibliotecaDaoImpl implements BibliotecaDao{
         parametros[10] = "INSERT_BIBLIOTECA";
         parametros[11] = biblioteca.getURL();
         parametros[12] = biblioteca.getDIRECTORIO();
+        
+        
+        if(biblioteca.getTITULO_MAPA()==null){
+        biblioteca.setTITULO_MAPA("");
+        }
         parametros[13] = biblioteca.getTITULO_MAPA();
+        
+         if(biblioteca.getLATITUD()==null){
+        biblioteca.setLATITUD("");
+        }
         parametros[14] = biblioteca.getLATITUD();
+        
+         if(biblioteca.getLONGITUD()==null){
+        biblioteca.setLONGITUD("");
+        }
         parametros[15] = biblioteca.getLONGITUD();
+        
         ArrayList<Object[]> data = conector.execProcedure("BV.SP_MANTENIMIENTO_BIBLIOTECA", parametros);
         for (Object[] dat : data) {
             if (dat[0].toString().equals("1")) {

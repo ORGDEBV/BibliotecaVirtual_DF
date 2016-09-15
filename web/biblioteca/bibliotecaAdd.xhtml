@@ -62,9 +62,6 @@
         </script>
 
 
-
-
-
         <f:event listener="#{bibliotecaBean.listarBiblioteca()}" type="preRenderView"/>
 
         <p:tabMenu activeIndex="1" rendered="#{bibliotecaBean.mostrarPestaniaListado}" >
@@ -102,8 +99,8 @@
                                 <p:inputText required="true" id="txtDireccion" value="#{bibliotecaBean.biblioteca.DIRECCION}" styleClass="Wid100"/>
                                 <p:outputLabel value=""  />
                                 <p:outputLabel for="txtEmail" value="CORREO ELECTRÓNICO: "  />
-                                <p:inputText required="true" id="txtEmail" value="#{bibliotecaBean.biblioteca.EMAIL}" styleClass="Wid100">
-                                    <f:validator validatorId="bv.emailValidador" />
+                                <p:inputText  id="txtEmail" value="#{bibliotecaBean.biblioteca.EMAIL}" styleClass="Wid100">
+                                    
                                 </p:inputText>
                                 <p:outputLabel value=""  />
                                 <p:outputLabel for="region" value="REGION: " />
@@ -138,32 +135,33 @@
                     </div>
                 </div>
             </p:panel>
-            
-                <p:panel header="GEOLOCALIZACION EN MAPA" style="center" >
-                    <div class="ui-grid ui-grid-responsive">
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-10">
-                                <p:panelGrid id="grdMap" columns="3"  styleClass="Wid100" columnClasses="Wid20,Wid60,Wid10">
-                                    <p:outputLabel for="txtTituloEnMapa" value="TITULO EN MAPA:" />
-                                    <p:inputText  id="txtTituloEnMapa" value="#{bibliotecaBean.title}" styleClass="Wid100Imp" />
-                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar Cooredanadas" onclick="PF('dlgGmap').show()"></p:commandButton>
-                                    <p:outputLabel for="txtLatitud" value="LATITUD:" />
-                                    <p:inputText  id="txtLatitud" value="#{bibliotecaBean.lat}" styleClass="Wid100Imp" />
-                                    <p:spacer/>
-                                    <p:outputLabel for="txtLongitud" value="LONGITUD: " />
-                                    <p:inputText  id="txtLongitud" value="#{bibliotecaBean.lng}" styleClass="Wid100Imp" />
-                                    <p:spacer/>
-                                    <p:outputLabel value=""  />
-                                    <p:commandButton  value="#{bibliotecaBean.boton}" action="#{bibliotecaBean.creaBiblioteca}" styleClass="Wid100Imp">
-                                    </p:commandButton>
-                                </p:panelGrid>
+
+            <p:panel header="GEOLOCALIZACION EN MAPA" style="center" rendered="#{bibliotecaBean.verGeomap()}">
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-10">
+                            <p:panelGrid id="grdMap" columns="3"  styleClass="Wid100" columnClasses="Wid20,Wid60,Wid10">
+                                <p:outputLabel for="txtTituloEnMapa" value="TITULO EN MAPA:" />
+                                <p:inputText  id="txtTituloEnMapa" value="#{bibliotecaBean.biblioteca.TITULO_MAPA}" styleClass="Wid100Imp" />
+                                <p:commandButton icon="ui-icon-plusthick" title="Agregar Cooredanadas" onclick="PF('dlgGmap').show()"></p:commandButton>
+                                <p:outputLabel for="txtLatitud" value="LATITUD:" />
+                                <p:inputText  id="txtLatitud" value="#{bibliotecaBean.lat}" styleClass="Wid100Imp" />
+                                <p:spacer/>
+                                <p:outputLabel for="txtLongitud" value="LONGITUD: " />
+                                <p:inputText  id="txtLongitud" value="#{bibliotecaBean.lng}" styleClass="Wid100Imp" />
+                                
+                                
+                            </p:panelGrid>
 
 
-                            </div>
                         </div>
                     </div>
-                </p:panel>
-            
+                </div>
+            </p:panel>
+       
+
+<p:commandButton  value="#{bibliotecaBean.boton}" action="#{bibliotecaBean.creaBiblioteca}" styleClass="Wid100Imp">
+                                </p:commandButton>
         </h:form>
 
 
@@ -187,12 +185,12 @@
                   showEffect="puff" widgetVar="dlgGmap" hideEffect="puff" styleClass="Wid50Imp" style="height:1000px !important;">
 
             <h:form prependId="false">
-              
+
                 <h:panelGrid columns="3" styleClass="Wid100" columnClasses="Wid20,Wid60,Wid10" >
                     <p:outputLabel for="localizar" value="Localizar:" />
                     <p:inputText id="localizar" styleClass="Wid100" />
                     <p:commandButton value="Buscar" icon="ui-icon-search" onclick="geocode()" type="button" />
-                    </h:panelGrid>
+                </h:panelGrid>
 
                 <p:gmap id="map" center="#{bibliotecaBean.centerGeoMap}" zoom="#{bibliotecaBean.zoom}" type="ROADMAP"  style="width:100%;height:600px" model="#{bibliotecaBean.emptyModel}"
                         onPointClick="handlePointClick(event);" widgetVar="map" >
@@ -208,7 +206,7 @@
 
                         <f:facet name="footer">
                             <p:commandButton value="Add" actionListener="#{bibliotecaBean.addMarker}"  action="#{bibliotecaBean.pasar()}" onclick="PF('dlgMap').hide()"
-                                              oncomplete="markerAddComplete()"/>
+                                             oncomplete="markerAddComplete()"/>
                             <p:commandButton value="Cancel" onclick="return cancel()" />
                         </f:facet>
                     </h:panelGrid>
@@ -217,7 +215,7 @@
                     <h:inputHidden id="lng" value="#{bibliotecaBean.lng}" />
                 </h:form>
             </p:dialog>
-     
+
 
 
 

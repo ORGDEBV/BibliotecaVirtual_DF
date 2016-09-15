@@ -27,6 +27,8 @@ public class PublicacionDto {
     private int VISIBLE;
     private String CLASS_VISIBLE;
     private String ICONO_VISIBLE;
+    
+    private String Responsable;
 
     public String getID_PUBLICACION() {
         return ID_PUBLICACION;
@@ -38,6 +40,15 @@ public class PublicacionDto {
 
     public String getID_DOCUMENTAL() {
         return ID_DOCUMENTAL;
+    }
+
+    public String getResponsable() {
+        
+        return Responsable=APELLIDO_PATERNO+ " "+APELLIDO_MATERNO+", "+NOMBRE;
+    }
+
+    public void setResponsable(String Responsable) {
+        this.Responsable = Responsable;
     }
 
     public void setID_DOCUMENTAL(String ID_DOCUMENTAL) {

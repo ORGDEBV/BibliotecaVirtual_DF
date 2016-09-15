@@ -11,6 +11,7 @@ import java.util.List;
 import vb.entidad.LogTabla;
 import vb.entidad.PerfilDocumentalDetalle;
 import bv.util.sql;
+import vb.dto.PerfilDto;
 
 /**
  *
@@ -86,6 +87,23 @@ public class PerfilDocumentalDetalleDaoImpl implements PerfilDocumentalDetalleDa
             }
         }
         return cont;
+    }
+
+    
+
+    @Override
+    public PerfilDto obtenerPerfilXidDocumental(String idDocumental) {
+        PerfilDto pDto=new PerfilDto();
+        String[] array = new String[1];
+        array[0] = idDocumental;
+       ArrayList<Object[]> data = conector.execProcedure("BV.SP_GET_idPerfil_Perfil", array);
+       
+     for(Object[] d : data ){
+         pDto.setID_perfil(d[0].toString());
+         pDto.setPerfil(d[1].toString());
+     }
+        
+        return pDto;
     }
 
 }
