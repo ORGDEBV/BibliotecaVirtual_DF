@@ -21,7 +21,7 @@ import bv.util.dateConverter;
  *
  * @author Renato Vásquez Tejada - renatovt11@gmail.com
  */
-public class TransaccionDaoImpl implements TransaccionDao{
+public class TransaccionDaoImpl implements TransaccionDao {
 
     dateConverter converter;
 
@@ -190,12 +190,14 @@ public class TransaccionDaoImpl implements TransaccionDao{
             callHistorial.setInt(5, ID_USUARIO);
             callHistorial.setString(6, "HISTORIA_ACCION_INS");
             callHistorial.executeQuery();
-            
-            CallableStatement callAlbum = conn.prepareCall("{CALL BV.SP_INSERT_ALBUM_DOCUMENTAL (?,?)}");
-            callAlbum.setInt(1, documental.getID_ALBUM());
-            callAlbum.setString(2, documental.getID_DOCUMENTAL());
-            callAlbum.executeQuery();
-            
+
+            if (documental.getID_TIPO() == 18) {
+                CallableStatement callAlbum = conn.prepareCall("{CALL BV.SP_INSERT_ALBUM_DOCUMENTAL (?,?)}");
+                callAlbum.setInt(1, documental.getID_ALBUM());
+                callAlbum.setString(2, documental.getID_DOCUMENTAL());
+                callAlbum.executeQuery();
+            }
+
             conn.commit();
             insert = "1";
         } catch (SQLException ex) {

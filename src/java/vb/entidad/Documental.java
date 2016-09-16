@@ -67,7 +67,7 @@ public class Documental {
     //// VARIABLE AUXILIAR DTO
     private String TIPO_OTRO;
 
-    private int ID_ALBUM;
+    private Integer ID_ALBUM;
 
     public Documental() {
 
@@ -450,11 +450,11 @@ public class Documental {
         this.PROVINCIA = PROVINCIA;
     }
 
-    public int getID_ALBUM() {
+    public Integer getID_ALBUM() {
         return ID_ALBUM;
     }
 
-    public void setID_ALBUM(int ID_ALBUM) {
+    public void setID_ALBUM(Integer ID_ALBUM) {
         this.ID_ALBUM = ID_ALBUM;
     }
 
