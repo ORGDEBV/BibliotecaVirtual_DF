@@ -96,7 +96,7 @@ public class TransaccionDaoImpl implements TransaccionDao{
             }
             callDocumental.setString(24, documental.getURL());
             callDocumental.setString(25, documental.getISBN());
-            callDocumental.setString(26, documental.getOTRO());
+            callDocumental.setString(26, documental.getOTRO().trim());
             callDocumental.setString(27, documental.getNUMERO_PAGINAS());
             callDocumental.setInt(28, 0);
             callDocumental.setInt(29, documental.getID_TIPO_OTRO());
@@ -190,6 +190,12 @@ public class TransaccionDaoImpl implements TransaccionDao{
             callHistorial.setInt(5, ID_USUARIO);
             callHistorial.setString(6, "HISTORIA_ACCION_INS");
             callHistorial.executeQuery();
+            
+            CallableStatement callAlbum = conn.prepareCall("{CALL BV.SP_INSERT_ALBUM_DOCUMENTAL (?,?)}");
+            callAlbum.setInt(1, documental.getID_ALBUM());
+            callAlbum.setString(2, documental.getID_DOCUMENTAL());
+            callAlbum.executeQuery();
+            
             conn.commit();
             insert = "1";
         } catch (SQLException ex) {

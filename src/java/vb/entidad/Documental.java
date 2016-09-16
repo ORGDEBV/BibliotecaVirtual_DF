@@ -25,7 +25,7 @@ public class Documental {
     //variable extendida
     private String DOCUMENTAL_RELACION;
     private String TIENE_COMO_VERSION;
-    private String ES_PARTE_DE="";
+    private String ES_PARTE_DE = "";
     private String TIENE_PARTE_DE;
     private Integer ID_COBERTURA_ESPACIAL;
     //variable extendida
@@ -53,7 +53,7 @@ public class Documental {
     private String AUDIENCIA;
     private String URL;
     private String ISBN;
-     
+
     private String OTRO;
     private String NUMERO_PAGINAS;
     private Integer ACTIVO;
@@ -63,12 +63,14 @@ public class Documental {
     private Integer PAGINA_INICIO;
     private Integer PAGINA_FIN;
     private String NOTA;
-    
+
     //// VARIABLE AUXILIAR DTO
-     private String TIPO_OTRO;
-    
-    public Documental (){
-        
+    private String TIPO_OTRO;
+
+    private int ID_ALBUM;
+
+    public Documental() {
+
     }
 
     public String getTIPO_OTRO() {
@@ -118,7 +120,6 @@ public class Documental {
     public void setOTRO(String OTRO) {
         this.OTRO = OTRO;
     }
-   
 
     public String getID_DOCUMENTAL() {
         return ID_DOCUMENTAL;
@@ -175,7 +176,7 @@ public class Documental {
     public void setID_BIBLIOTECA_FUENTE(Integer ID_BIBLIOTECA_FUENTE) {
         this.ID_BIBLIOTECA_FUENTE = ID_BIBLIOTECA_FUENTE;
     }
-    
+
     public String getID_DOCUMENTAL_RELACION() {
         return ID_DOCUMENTAL_RELACION;
     }
@@ -271,7 +272,7 @@ public class Documental {
     public void setFORMATO(String FORMATO) {
         this.FORMATO = FORMATO;
     }
-    
+
     public String getFORMATO_EXTENSION() {
         return FORMATO_EXTENSION;
     }
@@ -286,7 +287,7 @@ public class Documental {
 
     public void setID_FORMATO_MEDIO(Integer ID_FORMATO_MEDIO) {
         this.ID_FORMATO_MEDIO = ID_FORMATO_MEDIO;
-    } 
+    }
 
     public String getFORMATO_MEDIO_DESCRIPCION() {
         return FORMATO_MEDIO_DESCRIPCION;
@@ -295,7 +296,7 @@ public class Documental {
     public void setFORMATO_MEDIO_DESCRIPCION(String FORMATO_MEDIO_DESCRIPCION) {
         this.FORMATO_MEDIO_DESCRIPCION = FORMATO_MEDIO_DESCRIPCION;
     }
-    
+
     public Integer getID_EDITORIAL() {
         return ID_EDITORIAL;
     }
@@ -327,9 +328,8 @@ public class Documental {
     public void setID_AUDIENCIA(Integer ID_AUDIENCIA) {
         this.ID_AUDIENCIA = ID_AUDIENCIA;
     }
-    
-    //VARIABLES EXTENDIDAS
 
+    //VARIABLES EXTENDIDAS
     public String getTIPO() {
         return TIPO;
     }
@@ -392,7 +392,7 @@ public class Documental {
 
     public void setNUMERO_PAGINAS(String NUMERO_PAGINAS) {
         this.NUMERO_PAGINAS = NUMERO_PAGINAS;
-    }    
+    }
 
     public Integer getACTIVO() {
         return ACTIVO;
@@ -449,5 +449,13 @@ public class Documental {
     public void setPROVINCIA(String PROVINCIA) {
         this.PROVINCIA = PROVINCIA;
     }
-    
+
+    public int getID_ALBUM() {
+        return ID_ALBUM;
+    }
+
+    public void setID_ALBUM(int ID_ALBUM) {
+        this.ID_ALBUM = ID_ALBUM;
+    }
+
 }

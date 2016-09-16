@@ -376,6 +376,18 @@ public class DaoFactory {
         }
         return dao;
     }
+    
+    public AlbumDao getAlbumDao(int tipo) {
+        AlbumDao dao;
+        switch (tipo) {
+            case ALBUM:
+                dao = new AlbumDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
 
     public static DaoFactory getInstance() {
         return DaoFactoryHolder.INSTANCE;

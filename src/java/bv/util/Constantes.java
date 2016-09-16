@@ -41,8 +41,6 @@ public class Constantes {
     public static final int TIPO_OTRO = 0;
     public static final int TRANSACCION = 0;
     public static final int USUARIO = 0;
-    
-    
-    
+    public static final int ALBUM = 0;
     
 }

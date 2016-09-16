@@ -591,6 +591,26 @@
                             <p:commandButton id="btnEditarColeccion" icon="fa fa-pencil" title="Editar Colecciones" actionListener="#{documentalBean.editarColeccion()}"></p:commandButton>
                         </p:column>
                     </p:row>
+                    <p:row rendered="#{documentalBean.isVisible('ALBUM')}">
+                        <p:column>
+                            <p:outputLabel for="cboAlbum" value="ALBUM"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="cboAlbum" 
+                                             filter="true"
+                                             filterMatchMode="contains"
+                                             required="false"
+                                             widgetVar="cboAlbum"
+                                             value="#{documentalBean.documental.ID_ALBUM}"
+                                             styleClass="Wid100Imp cboAlbum">
+                                <f:selectItem itemLabel="Seleccione un tipo" itemValue="-1" noSelectionOption="true" />
+                                <f:selectItems value="#{albumBean.cboAlbum}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column styleClass="Wid15">
+                            <p:commandButton icon="fa fa-plus" title="Agregar Album" onclick="PF('dlgAlbum').show()"/>
+                        </p:column>
+                    </p:row>
                     <p:row rendered="#{documentalBean.isVisible('NUMERO_PAGINAS')}">
                         <p:column>
                             <p:outputLabel for="txtNroPaginas" value="#{documentalBean.lblNropag_Duracion} "/>
@@ -721,6 +741,16 @@
 
             </p:panelGrid>
         </h:form>
+        
+        <p:dialog id="dlgAlbum" widgetVar="dlgAlbum" styleClass="claseAux35" closeOnEscape="true" modal="true" header="NUEVO ALBUM :" resizable="false" showEffect="puff" hideEffect="puff">
+            <h:form id="frmAlbum">
+                <h:panelGrid id="gridAlbum" columns="2" cellpadding="5" columnClasses="label, value">
+                    <p:outputLabel for="txtAlbum" value="ALBUM : " />
+                    <p:inputText id="txtAlbum" style="width: 370px" value="#{albumBean.album.DESCRIPCION}"/>
+                    <p:commandButton value="REGISTRAR TEMA" actionListener="#{albumBean.creaAlbum}" update=":frmAlbum:gridAlbum :frmAddDocumental:cboAlbum" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
 
         <p:dialog id="dlgTema" widgetVar="dlgTema" styleClass="claseAux35" closeOnEscape="true" modal="true" header="NUEVO TEMA :" resizable="false" showEffect="puff" hideEffect="puff">
             <h:form id="frmTema">
