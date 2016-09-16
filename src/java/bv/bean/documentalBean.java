@@ -1407,6 +1407,16 @@ public class documentalBean {
                     if (pd.isVISTA() && pd.isREQUERIDO()) {
                     }
                     break;
+                case "ALBUM":
+                    if (pd.isVISTA() && pd.isREQUERIDO()) {
+                        if (documental.getID_ALBUM() == -1) {
+                            arrayErrores.add("No ha seleccionado un album.");
+                            execJs.execute("validarCampo('.cboAlbum')");
+                        } else {
+                            execJs.execute("$('.cboAlbum').style('border','','important');");
+                        }
+                    }
+                    break;
                 default:
                     System.out.println("no requiere validacion");
                     break;

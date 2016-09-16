@@ -49,7 +49,7 @@
 
             <p:dataTable lazy="false" id="tblControlDocumental" 
                          var="cd" value="#{perfilDocumentalDetalleBean.listaDoc}" 
-                         paginator="true" rows="15" 
+                         paginator="true" rows="80" 
                          widgetVar="tblControlDocumental"
                          filteredValue="#{perfilDocumentalDetalleBean.filterDocumental}" 
                          paginatorPosition="top" emptyMessage="No se encontraron registros.">
@@ -62,7 +62,7 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:column headerText="DIFUSION"  width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains">
+                <p:column headerText="VINCULAR"  width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains">
 
                     <p:commandButton  icon="fa fa-unlink" actionListener="#{perfilDocumentalDetalleBean.mostrarCarpetaUbicacion(cd.ID_DOCUMENTAL,cd.URL)}">
 
@@ -155,7 +155,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog id="dlgControl" widgetVar="dlgControl" header="Control Documental" modal="true" showEffect="explode" hideEffect="explode" closable="false" styleClass="Wid50">
+        <p:dialog id="dlgControl" widgetVar="dlgControl" header="Control Documental" modal="true" showEffect="explode" hideEffect="explode" closable="false" styleClass="Wid40">
             <h:form id="frmDlgControl">
                 <p:panelGrid id="grdControl" styleClass="Wid100">
                     <p:row>
@@ -164,6 +164,14 @@
                         </p:column>
                         <p:column>
                             <p:inputText value="#{perfilDocumentalDetalleBean.documentalPnlControl.ID_DOCUMENTAL}" disabled="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="TITULO:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea value="#{perfilDocumentalDetalleBean.documentalPnlControl.TITULO}" disabled="true" style="width: 100%"/> 
                         </p:column>
                     </p:row>
 
@@ -226,7 +234,7 @@
                                 <f:selectItem itemLabel="Youtube" itemValue="youtube" />
                                 <f:selectItem itemLabel="Audio" itemValue="audio" />
                                 <f:selectItem itemLabel="Video" itemValue="video" />
-                                
+
 
                             </p:selectOneRadio>
                         </p:column>
