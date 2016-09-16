@@ -11,16 +11,16 @@
             <p:menuitem url="/principal" />
             <p:menuitem value="Control Documental" url="#" />
         </p:breadCrumb>
-        
+
     </ui:define>
-    
-     <f:metadata>
-       
-         <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{perfilDocumentalDetalleBean.perfilControl}" />
-         
-        
+
+    <f:metadata>
+
+        <f:viewParam name="ID_PERFIL_DOCUMENTAL" value="#{perfilDocumentalDetalleBean.perfilControl}" />
+
+
     </f:metadata>
-    
+
 
     <ui:define name="content">
         <script>
@@ -28,9 +28,9 @@
                 window.open(url, '', 'width=auto,height=auto');
             }
         </script>
-        
+
         <h:form id="frmControl">
-<f:event listener="#{perfilDocumentalDetalleBean.listarTablaxPerfil()}" type="preRenderView"/>
+            <f:event listener="#{perfilDocumentalDetalleBean.listarTablaxPerfil()}" type="preRenderView"/>
             <p:panelGrid styleClass="Wid50"  columnClasses="Wid10,Wid50">
                 <p:column>
                     <p:outputLabel value="Perfil"/>
@@ -63,14 +63,14 @@
                 </f:facet>
 
                 <p:column headerText="DIFUSION"  width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains">
-                    
-                    <p:commandButton  icon="fa fa-unlink" actionListener="#{perfilDocumentalDetalleBean.mostrarTipo(cd.ID_DOCUMENTAL)}">
-                       
+
+                    <p:commandButton  icon="fa fa-unlink" actionListener="#{perfilDocumentalDetalleBean.mostrarCarpetaUbicacion(cd.ID_DOCUMENTAL,cd.URL)}">
+
                         <f:setPropertyActionListener value="#{cd}"  target="#{perfilDocumentalDetalleBean.documentalPnlControl}"  />
                     </p:commandButton>
                 </p:column>
-          
-                  <p:column filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="DETALLE" width="6%" style="text-align: center;">
+
+                <p:column filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains" headerText="DETALLE" width="6%" style="text-align: center;">
                     <p:commandButton actionListener="#{documentalBean.cargaDataControl(cd.ID_DOCUMENTAL)}" icon="fa fa-search">
                     </p:commandButton>
                 </p:column>
@@ -86,7 +86,7 @@
                 <p:column headerText="URL" filterStyle="display:none" filterBy="#{cd.URL}" filterMatchMode="contains">
                     <p:outputLabel value="#{cd.URL}"/>
                 </p:column>
-                
+
             </p:dataTable>
 
         </h:form>
@@ -189,16 +189,45 @@
                             </p:inputText> 
                         </p:column>
                     </p:row>
-                    <p:row rendered="#{perfilDocumentalDetalleBean.mostrarTipoArchivo}">
+                    <p:row rendered="#{perfilDocumentalDetalleBean.flipPdf}">
                         <p:column>
-                            <p:outputLabel value="Tipo :" rendered="#{perfilDocumentalDetalleBean.mostrarTipoArchivo}" />
+                            <p:outputLabel value="Carpeta Ubicacion :"  />
                         </p:column>
                         <p:column>
-                            <p:selectOneRadio id="tipo" value="#{perfilDocumentalDetalleBean.tipoArchivo}" >
+                            <p:selectOneRadio  value="#{perfilDocumentalDetalleBean.tipoArchivo}" >
                                 <p:ajax listener="#{perfilDocumentalDetalleBean.cambiarLabel()}"/>
                                 <f:selectItem itemLabel="Flipping Book" itemValue="FlippingBook" />
                                 <f:selectItem itemLabel="PDF" itemValue="PDF" />
-                                <f:selectItem itemLabel="Imagen" itemValue="Imagen" />
+
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+
+                    <p:row rendered="#{perfilDocumentalDetalleBean.fotMapPln}">
+                        <p:column>
+                            <p:outputLabel value="Carpeta Ubicacion :"  />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneRadio  value="#{perfilDocumentalDetalleBean.tipoArchivo}" >
+                                <p:ajax listener="#{perfilDocumentalDetalleBean.cambiarLabel()}"/>
+                                <f:selectItem itemLabel="Fotos" itemValue="fotos" />
+                                <f:selectItem itemLabel="Mapas y Planos" itemValue="mapas_planos" />
+
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{perfilDocumentalDetalleBean.audVdo}">
+                        <p:column>
+                            <p:outputLabel value="Carpeta Ubicacion :"  />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneRadio  value="#{perfilDocumentalDetalleBean.tipoArchivo}" >
+                                <p:ajax listener="#{perfilDocumentalDetalleBean.cambiarLabel()}"/>
+                                <f:selectItem itemLabel="Youtube" itemValue="youtube" />
+                                <f:selectItem itemLabel="Audio" itemValue="audio" />
+                                <f:selectItem itemLabel="Video" itemValue="video" />
+                                
+
                             </p:selectOneRadio>
                         </p:column>
                     </p:row>

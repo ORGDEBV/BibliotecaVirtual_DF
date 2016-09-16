@@ -45,7 +45,7 @@ public class perfilDocumentalDetalleBean {
     private boolean mostrarLink = false;
     private String pagDurac = "PAGINAS";
     private final BibliotecaDao bDao;
-    
+
     private String idDocumentalControl = "";
     private final DocumentalDao ddao;
     private final PublicacionDao pubDao;
@@ -54,7 +54,8 @@ public class perfilDocumentalDetalleBean {
     private List<Documental> filterDocumental;
     //-------------
     private String ID_PERFIL;
-private String PERFIL_CBO;
+    private String PERFIL_CBO;
+
     public perfilDocumentalDetalleBean() {
         DaoFactory factory = DaoFactory.getInstance();
         objPerfilDocumentalDetalleDao = factory.getPerfilDocumentalDetalleDao(PERFIL_DOCUMENTAL_DETALLE);
@@ -267,18 +268,20 @@ private String PERFIL_CBO;
     }
 
     public void listarTablaxPerfil() {
-        
+
         String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
-        if(perfilControl==null){
-        perfilControl="1";
+        if (perfilControl == null) {
+            perfilControl = "1";
         }
         listaDoc = ddao.listDocumentalPublicacion(perfilControl, idBiblioteca);
         RequestContext.getCurrentInstance().update("frmControl:tblControlDocumental");
     }
 
     private List<String> publicar;
-    public boolean mostrarTipoArchivo = true;
-    public String tipoArchivo = "FlippingBook";
+    public boolean flipPdf = false;
+    public boolean fotMapPln = false;
+    public boolean audVdo = false;
+    public String tipoArchivo;
     public String archivo = "";
     public String archivofinal = "";
 
@@ -290,12 +293,28 @@ private String PERFIL_CBO;
         this.publicar = publicar;
     }
 
-    public boolean isMostrarTipoArchivo() {
-        return mostrarTipoArchivo;
+    public boolean isFlipPdf() {
+        return flipPdf;
     }
 
-    public void setMostrarTipoArchivo(boolean mostrarTipoArchivo) {
-        this.mostrarTipoArchivo = mostrarTipoArchivo;
+    public void setFlipPdf(boolean flipPdf) {
+        this.flipPdf = flipPdf;
+    }
+
+    public boolean isFotMapPln() {
+        return fotMapPln;
+    }
+
+    public void setFotMapPln(boolean fotMapPln) {
+        this.fotMapPln = fotMapPln;
+    }
+
+    public boolean isAudVdo() {
+        return audVdo;
+    }
+
+    public void setAudVdo(boolean audVdo) {
+        this.audVdo = audVdo;
     }
 
     public String getTipoArchivo() {
@@ -323,20 +342,57 @@ private String PERFIL_CBO;
         this.archivofinal = archivofinal;
     }
 
-    public void mostrarTipo(String id) {
-        if (perfilControl.equals("6")) {
-            archivo = ddao.nombreArchivo(id);
-            mostrarTipoArchivo = false;
-            
-            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
-        } else {
-            mostrarTipoArchivo = true;
-            archivo = ddao.nombreArchivo(id);
-            cambiarLabel();
-           
-            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+    String urlYt;
+
+    public void mostrarCarpetaUbicacion(String id, String urlYoutube) {
+
+        switch (perfilControl) {
+            case "6":
+                flipPdf = false;
+                fotMapPln = false;
+                audVdo = true;
+                archivo = id;
+                tipoArchivo = "youtube";
+                urlYt = urlYoutube;
+                cambiarLabel();
+                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+                break;
+            case "5":
+                flipPdf = false;
+                fotMapPln = true;
+                audVdo = false;
+                archivo = id;
+                tipoArchivo = "fotos";
+                cambiarLabel();
+                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+                break;
+
+            default:
+                flipPdf = true;
+                fotMapPln = false;
+                audVdo = false;
+                archivo = id;
+                tipoArchivo = "FlippingBook";
+                cambiarLabel();
+                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+                // RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
+                break;
         }
         RequestContext.getCurrentInstance().execute("PF('dlgControl').show()");
+//        if (perfilControl.equals("6")) {
+//            archivo = ddao.nombreArchivo(id);
+//            mostrarTipoArchivo = false;
+//
+//            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+//        } else {
+//            mostrarTipoArchivo = true;
+//            //archivo = ddao.nombreArchivo(id);
+//            archivo = id;
+//            cambiarLabel();
+//
+//            RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
+//        }
+
     }
 
     public void handleKeyEvent() {
@@ -384,55 +440,46 @@ private String PERFIL_CBO;
         RequestContext.getCurrentInstance().update("frmDlgControl:chkPublicar");
     }
 
-//    public void cambiarLabell() {
-//        String concat = "";
-//        String idBiblioteca = "2";
-//        String r = "recursos";
-//        switch (tipoArchivo) {
-//            case "FlippingBook":
-//                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
-//
-//                break;
-//            case "PDF":
-//                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
-//                break;
-//            case "Imagen":
-//                concat = r + "/" + idBiblioteca + "/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
-//                break;
-//        }
-//        mostrarLink = true;
-//        // urlOld = documentalPnlControl.getURL();
-//        archivofinal = concat;
-//        //documentalPnlControl.setURL(concat);
-//        RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
-//        RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
-//    }
     public void cambiarLabel() {
         String concat = "";
         int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
         String idBiblioteca = String.valueOf(ID_BIBLIOTECA_FUENTE);
 
-        
         switch (tipoArchivo) {
             case "FlippingBook":
-                concat = tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
+                archivofinal = tipoArchivo.toLowerCase() + "/" + archivo.trim() + "/index.html";
 
                 break;
             case "PDF":
-                concat = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
+                archivofinal = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".pdf";
                 break;
-            case "Imagen":
-                concat = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
+            case "fotos":
+                archivofinal = "imagen/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
+                break;
+            case "mapas_planos":
+                archivofinal = "imagen/" + tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".jpg";
+                break;
+            case "audio":
+                archivofinal = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".mp3";
+                break;
+            case "video":
+                archivofinal = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".mp4";
+
+                // archivofinal = documentalPnlControl.getURL();
+                break;
+            case "youtube":
+                //archivofinal = tipoArchivo.toLowerCase() + "/" + archivo.trim() + ".mp4";
+
+                archivofinal = urlYt;
                 break;
         }
         mostrarLink = true;
         // urlOld = documentalPnlControl.getURL();
-        archivofinal = concat;
+        // archivofinal = concat;
         //documentalPnlControl.setURL(concat);
         RequestContext.getCurrentInstance().update("frmDlgControl:txtMuestra");
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
     }
-
 
     public void limpiar() {
         archivo = "";
@@ -472,9 +519,15 @@ private String PERFIL_CBO;
 
         //****validaciones
         ArrayList<String> lstErrores = new ArrayList<>();
+
         switch (perfilControl) {
             case "6":
-
+                if (archivofinal.trim().length() == 0) {
+                    lstErrores.add("Campo Ruta Final esta Vacio");
+                }
+                if (!linkProbado) {
+                    lstErrores.add("Debe validar el Link antes de Aceptar");
+                }
                 break;
             default:
                 if (archivofinal.trim().length() == 0) {
@@ -516,12 +569,13 @@ private String PERFIL_CBO;
         }
 
     }
+
     public void redireccionar(String ID_DOCUMENTAL) {
         try {
-           PerfilDto pdto=objPerfilDocumentalDetalleDao.obtenerPerfilXidDocumental(ID_DOCUMENTAL);
+            PerfilDto pdto = objPerfilDocumentalDetalleDao.obtenerPerfilXidDocumental(ID_DOCUMENTAL);
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta!", "Modificando DOCUMENTAL: " + ID_DOCUMENTAL));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/perfilDocumental/UpdCont?ID_PERFIL_DOCUMENTAL=" + pdto.getID_perfil() + "&PERFIL_DOCUMENTAL=" + pdto.getPerfil() + "&ID_DOCUMENTAL=" + ID_DOCUMENTAL+"&CONT=1");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/perfilDocumental/UpdCont?ID_PERFIL_DOCUMENTAL=" + pdto.getID_perfil() + "&PERFIL_DOCUMENTAL=" + pdto.getPerfil() + "&ID_DOCUMENTAL=" + ID_DOCUMENTAL + "&CONT=1");
         } catch (IOException ex) {
             System.out.println("error" + ex);
         }
@@ -532,32 +586,37 @@ private String PERFIL_CBO;
         if (archivofinal.trim().length() > 0) {
             ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
             rutaServidorArchivos = ext.getInitParameter("rutaServidorArchivos");
-            //String url = "http://localhost:8080/draco/" + archivofinal;
-           // String url = "http://eudora:8080/bnp/" + archivofinal;
-            
             Biblioteca bib = obtenerServidorBiblioteca();
-            
-              String url = bib.getURL() + bib.getDIRECTORIO() + archivofinal;
 
-              boolean existe = ddao.validarFichero(rutaServidorArchivos + bib.getDIRECTORIO(), archivofinal);
+            String url = bib.getURL() + bib.getDIRECTORIO() + archivofinal;
+
+            boolean existe = ddao.validarFichero(rutaServidorArchivos + bib.getDIRECTORIO(), archivofinal);
             if (!existe) {
 
-                String mensaje = "El Fichero no existe en el Servidor de Archivos";
-                msjError("gMensaje", mensaje);
-                RequestContext.getCurrentInstance().update("gMensaje");
+                if (tipoArchivo.equals("youtube")) {
+                    RequestContext.getCurrentInstance().execute("pasarPagina('" + urlYt + "')");
+                    RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+                    linkProbado = true;
+
+                } else {
+                    String mensaje = "El Fichero no existe en el Servidor de Archivos";
+                    msjError("gMensaje", mensaje);
+                    RequestContext.getCurrentInstance().update("gMensaje");
+
+                }
+
             } else {
                 RequestContext.getCurrentInstance().execute(" $('.cambiarColorControlLink').css({'color':'blue !important'}); ");
-                
-                 // RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
-                 RequestContext.getCurrentInstance().execute("pasarPagina('" + url + "')");
-                 RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
+
+                // RequestContext.getCurrentInstance().execute("window.open('" + url + "','_blank');");
+                RequestContext.getCurrentInstance().execute("pasarPagina('" + url + "')");
+                RequestContext.getCurrentInstance().update("frmDlgControl:grdControl:link");
                 linkProbado = true;
             }
 
         }
     }
-      
-    
+
     public Biblioteca obtenerServidorBiblioteca() {
         int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
         String idBiblioteca = String.valueOf(ID_BIBLIOTECA_FUENTE);
@@ -566,6 +625,5 @@ private String PERFIL_CBO;
         return bib;
 
     }
-    
 
 }
