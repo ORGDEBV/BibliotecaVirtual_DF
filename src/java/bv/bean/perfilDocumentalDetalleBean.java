@@ -35,14 +35,18 @@ public class perfilDocumentalDetalleBean {
     private String perfil;
     private String perfilSelect;
     private String perfilControl;
+    private String observaciones;
+    private String EstadoContRecSelec;
     private Documental documentalPnlControl;
     private List<SelectItem> cboPerfiles;
+    private List<SelectItem> cboEstadoControlRecurso=new ArrayList<>();
     private List<SelectItem> cboVista;
     private List<SelectItem> cboRequerido;
     private String urlOld = "";
     private String rutaServidorArchivos;
     private boolean linkProbado = false;
     private boolean mostrarLink = false;
+    private boolean mostrarVincular = true;
     private String pagDurac = "PAGINAS";
     private final BibliotecaDao bDao;
 
@@ -73,6 +77,14 @@ public class perfilDocumentalDetalleBean {
         this.PERFIL_CBO = PERFIL_CBO;
     }
 
+    public String getEstadoContRecSelec() {
+        return EstadoContRecSelec;
+    }
+
+    public void setEstadoContRecSelec(String EstadoContRecSelec) {
+        this.EstadoContRecSelec = EstadoContRecSelec;
+    }
+
     public String getID_PERFIL() {
         return ID_PERFIL;
     }
@@ -85,6 +97,14 @@ public class perfilDocumentalDetalleBean {
         cboRequerido.add(new SelectItem(0, "Requerido"));
         cboRequerido.add(new SelectItem(1, "No Requerido"));
         return cboRequerido;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
     public boolean isMostrarLink() {
@@ -159,6 +179,21 @@ public class perfilDocumentalDetalleBean {
         return cboPerfiles;
     }
 
+    public List<SelectItem> getCboEstadoControlRecurso() {
+        List<Object[]> lista = objPerfilDocumentalDetalleDao.obtenerestadoControlRec("CTR_RECURSO");
+        cboEstadoControlRecurso = new ArrayList<>();
+        if (lista != null) {
+            for (Object[] fila : lista) {
+                cboEstadoControlRecurso.add(new SelectItem(fila[0], fila[1].toString()));
+            }
+        }
+
+        return cboEstadoControlRecurso;
+    }
+
+    public void setCboEstadoControlRecurso(List<SelectItem> cboEstadoControlRecurso) {
+        this.cboEstadoControlRecurso = cboEstadoControlRecurso;
+    }
     public void setCboPerfiles(List<SelectItem> cboPerfiles) {
         this.cboPerfiles = cboPerfiles;
     }
@@ -271,9 +306,17 @@ public class perfilDocumentalDetalleBean {
 
         String idBiblioteca = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString();
         if (perfilControl == null) {
-            perfilControl = "1";
+            perfilControl = "-1";
         }
-        listaDoc = ddao.listDocumentalPublicacion(perfilControl, idBiblioteca);
+        if (EstadoContRecSelec == null) {
+            EstadoContRecSelec = "-1";
+        }
+         if (EstadoContRecSelec.endsWith("2")) {
+            mostrarVincular=false;
+        }else{
+         mostrarVincular=true;
+         }
+        listaDoc = ddao.listDocumentalPublicacion(perfilControl, idBiblioteca, EstadoContRecSelec);
         RequestContext.getCurrentInstance().update("frmControl:tblControlDocumental");
     }
 
@@ -340,6 +383,14 @@ public class perfilDocumentalDetalleBean {
 
     public void setArchivofinal(String archivofinal) {
         this.archivofinal = archivofinal;
+    }
+
+    public boolean isMostrarVincular() {
+        return mostrarVincular;
+    }
+
+    public void setMostrarVincular(boolean mostrarVincular) {
+        this.mostrarVincular = mostrarVincular;
     }
 
     String urlYt;
@@ -500,6 +551,7 @@ public class perfilDocumentalDetalleBean {
         publicar = new ArrayList<>();
         linkProbado = false;
         mostrarLink = false;
+        observaciones="";
 
         RequestContext.getCurrentInstance().update("frmDlgControl:grdControl");
     }
@@ -569,6 +621,17 @@ public class perfilDocumentalDetalleBean {
         }
 
     }
+    public void registrarObservacion(){
+        String idDoc = documentalPnlControl.getID_DOCUMENTAL();
+        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        String mensage = ddao.controlDocumentalObservacion(idDoc, "1", observaciones, idUsuario);
+        limpiar();
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(mensage));
+            RequestContext.getCurrentInstance().update("gMensaje");
+            RequestContext.getCurrentInstance().execute("PF('dlgControl').hide()");
+            listarTablaxPerfil();
+    
+    }
 
     public void redireccionar(String ID_DOCUMENTAL) {
         try {
@@ -577,7 +640,7 @@ public class perfilDocumentalDetalleBean {
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/perfilDocumental/UpdCont?ID_PERFIL_DOCUMENTAL=" + pdto.getID_perfil() + "&PERFIL_DOCUMENTAL=" + pdto.getPerfil() + "&ID_DOCUMENTAL=" + ID_DOCUMENTAL + "&CONT=1");
         } catch (IOException ex) {
-            System.out.println("error" + ex);
+            System.out.println(ex.getMessage()+" method : redireccionar");
         }
 
     }

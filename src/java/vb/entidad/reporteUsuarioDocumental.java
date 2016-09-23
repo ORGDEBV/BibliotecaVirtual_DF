@@ -1,5 +1,4 @@
 package vb.entidad;
-
 /**
  *
  * @author Renato Vásquez Tejada - renatovt11@gmail.com
@@ -33,6 +32,5 @@ public class reporteUsuarioDocumental {
     public void setMES(int MES) {
         this.MES = MES;
     }
-    
     
 }

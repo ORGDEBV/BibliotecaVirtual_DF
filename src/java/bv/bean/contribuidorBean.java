@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bv.bean;
 
 import bv.dao.impl.DaoFactory;
@@ -63,11 +58,8 @@ public class contribuidorBean {
     }
 
     public void pasarContribuidores() {
-        if (lstContribuidor.isEmpty()) {
-            System.out.println("No hay registros en esta lista");
-        } else {
+        if (!lstContribuidor.isEmpty()) {
             lstContribuidorAux = lstContribuidor;
-            System.out.println("SE PASARON LOS REGISTROS");
         }
     }
 

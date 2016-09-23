@@ -18,6 +18,7 @@ public interface PerfilDocumentalDetalleDao {
     List<PerfilDocumentalDetalle> listarPerfilDocumentalDetalle(String perfil);
 
     List<Object[]> obtenerPerfiles();
+    List<Object[]> obtenerestadoControlRec(String grupo);
 
     int editarListPerfildocumentaldetalle(List<PerfilDocumentalDetalle> lstPerfilDocumentalDetalle, int idUsuario);
 

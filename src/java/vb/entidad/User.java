@@ -1,4 +1,3 @@
-
 package vb.entidad;
 
 public class User {

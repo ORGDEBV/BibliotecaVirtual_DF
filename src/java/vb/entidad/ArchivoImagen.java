@@ -1,4 +1,3 @@
-
 package vb.entidad;
 
 import java.io.Serializable;

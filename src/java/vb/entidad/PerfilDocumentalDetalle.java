@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vb.entidad;
 
 /**
@@ -15,7 +10,7 @@ public class PerfilDocumentalDetalle {
     private int ID_PERFIL_DOCUMENTAL_DETALLE;
     private String TABLA;
     private String CAMPO;
-  private boolean REQUERIDO;
+    private boolean REQUERIDO;
     private boolean VISTA;
     private String strRequerido;
     private String strVista;
@@ -35,7 +30,6 @@ public class PerfilDocumentalDetalle {
     public void setStrVista(String strVista) {
         this.strVista = strVista;
     }
-    
 
     public boolean isVISTA() {
         return VISTA;
@@ -52,7 +46,6 @@ public class PerfilDocumentalDetalle {
     public void setREQUERIDO(boolean REQUERIDO) {
         this.REQUERIDO = REQUERIDO;
     }
-  
 
     public PerfilDocumentalDetalle() {
     }
@@ -89,5 +82,4 @@ public class PerfilDocumentalDetalle {
         this.CAMPO = CAMPO;
     }
 
-    
 }

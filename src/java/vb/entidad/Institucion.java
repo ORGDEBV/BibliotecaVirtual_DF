@@ -1,4 +1,5 @@
 package vb.entidad;
+
 public class Institucion {
     public int ID_INSTITUCION;
     public String NOMBRE_INSTITUCION="";

@@ -4,7 +4,7 @@
                 template="./../template/plantilla0.1.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html">
 
     <ui:define name="breadcumb">
         <p:breadCrumb styleClass="ShowOnDesktop" >
@@ -31,20 +31,36 @@
 
         <h:form id="frmControl">
             <f:event listener="#{perfilDocumentalDetalleBean.listarTablaxPerfil()}" type="preRenderView"/>
-            <p:panelGrid styleClass="Wid50"  columnClasses="Wid10,Wid50">
+            <p:panelGrid styleClass="Wid60" columns="4">
                 <p:column>
                     <p:outputLabel value="Perfil"/>
                 </p:column>
                 <p:column>
                     <p:selectOneMenu id="perfilControl"
-                                     filter="true" 
+                                     filter="false" 
                                      widgetVar="cboperfilControl" 
-                                     value="#{perfilDocumentalDetalleBean.perfilControl}" required="true" styleClass="Wid100Imp">
+                                     value="#{perfilDocumentalDetalleBean.perfilControl}" styleClass="Wid100Imp">
                         <p:ajax listener="#{perfilDocumentalDetalleBean.listarTablaxPerfil()}"/>
-                        <f:selectItem itemLabel="Seleccione un Perfil" itemValue="-1" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="todos" itemValue="-1" noSelectionOption="true"/>
                         <f:selectItems value="#{perfilDocumentalDetalleBean.cboPerfiles}"/>
                     </p:selectOneMenu>
                 </p:column>
+                <p:column>
+                    <p:outputLabel value="Estados"/>
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu id="estadoControl"
+                                     filter="false" 
+                                     widgetVar="estadoControl" 
+                                     value="#{perfilDocumentalDetalleBean.estadoContRecSelec}" styleClass="Wid100Imp">
+                        <p:ajax listener="#{perfilDocumentalDetalleBean.listarTablaxPerfil()}"/>
+                        <f:selectItem itemLabel="Seleccione un estado" itemValue="-1" noSelectionOption="true"/>
+                        <f:selectItems value="#{perfilDocumentalDetalleBean.cboEstadoControlRecurso}"/>
+                    </p:selectOneMenu>
+                </p:column>
+
+
+
             </p:panelGrid>
 
             <p:dataTable lazy="false" id="tblControlDocumental" 
@@ -62,7 +78,7 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:column headerText="VINCULAR"  width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains">
+                <p:column headerText="VINCULAR"  width="60" style="text-align: center" filterStyle="display:none" filterBy="#{cd.ID_DOCUMENTAL}" filterMatchMode="contains" rendered="#{perfilDocumentalDetalleBean.mostrarVincular}">
 
                     <p:commandButton  icon="fa fa-unlink" actionListener="#{perfilDocumentalDetalleBean.mostrarCarpetaUbicacion(cd.ID_DOCUMENTAL,cd.URL)}">
 
@@ -249,6 +265,15 @@
 
                         </p:column>
                     </p:row>
+                          <p:row>
+                        <p:column>
+                            <p:outputLabel value="Observaciones:" style="font-weight: bold !important"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea  id="txtObs"  value="#{perfilDocumentalDetalleBean.observaciones}" styleClass="Wid100" />
+
+                        </p:column>
+                    </p:row>
 
                     <p:row>
                         <p:column>
@@ -256,10 +281,12 @@
                         </p:column>
                         <p:column> 
                             <p:commandButton  value="Probar link" actionListener="#{perfilDocumentalDetalleBean.redirectUrl()}" />
+                            <p:commandButton  value="Observar" actionListener="#{perfilDocumentalDetalleBean.registrarObservacion()}" />
                             <p:commandButton value="Aceptar" update=":frmControl:tblControlDocumental" actionListener="#{perfilDocumentalDetalleBean.registrarControlado()}"/>
                             <p:commandButton value="Cancelar" update=":frmControl:tblControlDocumental :frmDlgControl:grdControl" actionListener="#{perfilDocumentalDetalleBean.limpiar()}" onclick="PF('dlgControl').hide();"/> 
                         </p:column>
                     </p:row>
+                 
                 </p:panelGrid>
             </h:form>
         </p:dialog>

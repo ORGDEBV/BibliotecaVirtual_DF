@@ -3,7 +3,7 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="../template/plantilla0.1.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <f:metadata>
@@ -82,7 +82,9 @@
                             <p:inputText id="txtOtro" 
                                          required="false" 
                                          value="#{documentalBean.documental.OTRO}"
-                                         styleClass="Wid40 txtOtro"/>
+                                         styleClass="Wid40 txtOtro">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                             <p:tooltip  for="txtOtro" value="#{metadataTablaBean.obtenerAyuda('OTRO')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
                     </p:row>
@@ -94,7 +96,9 @@
                         </p:column>
                         <p:column styleClass="Wid50" rendered="true">
 
-                            <p:inputText id="txtTitulo" required="false" value="#{documentalBean.documental.TITULO}" styleClass="Wid100 txtTitulo"/>
+                            <p:inputText id="txtTitulo" required="false" value="#{documentalBean.documental.TITULO}" styleClass="Wid100 txtTitulo">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
 
                             <p:tooltip id="ttpTitulo" for="txtTitulo" value="#{metadataTablaBean.obtenerAyuda('TITULO')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
@@ -118,7 +122,9 @@
                             <p:inputText id="txtTituloAlternativo" 
                                          required="false" 
                                          value="#{documentalBean.documental.TITULO_ALTERNATIVO}"
-                                         styleClass="Wid100 txtTituloAlternativo"/>
+                                         styleClass="Wid100 txtTituloAlternativo">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                             <p:tooltip  for="txtTituloAlternativo" value="#{metadataTablaBean.obtenerAyuda('TITULO_ALTERNATIVO')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
                     </p:row>
@@ -155,7 +161,9 @@
                                              styleClass="Wid100 txtDescripcion"
                                              counter="countDescripcion"
                                              maxlength="#{metadataTablaBean.obtenerLongitud('DESCRIPCION')}"
-                                             counterTemplate="{0} caracteres."/>
+                                             counterTemplate="{0} caracteres.">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputTextarea>
                             <p:tooltip  for="txtDescripcion" value="#{metadataTablaBean.obtenerAyuda('DESCRIPCION')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                             <p:outputLabel id="countDescripcion" style="float: right" />
                         </p:column>
@@ -173,7 +181,9 @@
                                              maxlength="#{metadataTablaBean.obtenerLongitud('RESUMEN')}"
                                              counter="countResumen" 
                                              counterTemplate="{0} caracteres."
-                                             styleClass="Wid100 txtResumen"/>
+                                             styleClass="Wid100 txtResumen">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputTextarea>
                             <p:tooltip  for="txtResumen" value="#{metadataTablaBean.obtenerAyuda('RESUMEN')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                             <p:outputLabel id="countResumen" style="float: right" />
                         </p:column>
@@ -203,7 +213,9 @@
                             <p:outputLabel for="txtNota" value="NOTA: "  />
                         </p:column>
                         <p:column>
-                            <p:inputTextarea id="txtNota" value="#{documentalBean.documental.NOTA}" styleClass="Wid100Imp"/>
+                            <p:inputTextarea id="txtNota" value="#{documentalBean.documental.NOTA}" styleClass="Wid100Imp">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputTextarea>
                         </p:column>
                     </p:row>
                     <p:row rendered="#{documentalBean.isVisible('ID_TIPO')}">
@@ -275,7 +287,9 @@
                             <p:inputText id="txtVersion" 
                                          required="false" 
                                          value="#{documentalBean.documental.TIENE_COMO_VERSION}"
-                                         styleClass="Wid100 txtVersion"/>
+                                         styleClass="Wid100 txtVersion">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                         </p:column>
                         <p:column>
                             <p:tooltip  for="txtVersion" value="#{metadataTablaBean.obtenerAyuda('TIENE_COMO_VERSION')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
@@ -318,7 +332,9 @@
                             <p:inputText id="txtTieneParte" 
                                          required="false" 
                                          value="#{documentalBean.documental.TIENE_PARTE_DE}"
-                                         styleClass="Wid100 txtTieneParte"/>
+                                         styleClass="Wid100 txtTieneParte">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
 
                         </p:column>
                         <p:column>
@@ -470,7 +486,9 @@
                             <p:inputText id="txtDerecho" 
                                          required="false" 
                                          value="#{documentalBean.documental.DERECHO}"
-                                         styleClass="Wid100 txtDerecho"/>
+                                         styleClass="Wid100 txtDerecho">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                             <p:tooltip  for="txtDerecho" value="#{metadataTablaBean.obtenerAyuda('DERECHOS')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
                     </p:row>
@@ -482,7 +500,9 @@
                             <p:inputText id="txtDerechoAcceso" 
                                          required="false" 
                                          value="#{documentalBean.documental.DERECHO_ACCESO}"
-                                         styleClass="Wid100 txtDerechoAcceso"/>
+                                         styleClass="Wid100 txtDerechoAcceso">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                             <p:tooltip  for="txtDerechoAcceso" value="#{metadataTablaBean.obtenerAyuda('DERECHOS_ACCESO')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
                     </p:row>
@@ -515,7 +535,9 @@
                             <p:outputLabel for="txtFechaPublicacion" value="FECHA PUBLICACION"/>
                         </p:column>
                         <p:column styleClass="Wid50">
-                            <p:inputText id="txtFechaPublicacion" value="#{documentalBean.documental.FECHA_PUBLICACION}" styleClass="Wid100 txtFechaPublicacion"/>
+                            <p:inputText id="txtFechaPublicacion" value="#{documentalBean.documental.FECHA_PUBLICACION}" styleClass="Wid100 txtFechaPublicacion">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                         </p:column>
                         <p:column styleClass="Wid15">
                             <p:tooltip  for="txtFechaPublicacion" value="#{metadataTablaBean.obtenerAyuda('FECHA_PUBLICACION')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
@@ -619,7 +641,9 @@
                             <p:inputMask id="txtduracion" required="false" value="#{documentalBean.documental.NUMERO_PAGINAS}" styleClass="Wid100Imp txtNroPaginas" mask="99:99:99"/>                            
                         </p:column>
                         <p:column  rendered="#{documentalBean.rnropag}">
-                            <p:inputText id="txtNroPaginas" required="false" value="#{documentalBean.documental.NUMERO_PAGINAS}" styleClass="Wid100Imp txtNroPaginas" />                            
+                            <p:inputText id="txtNroPaginas" required="false" value="#{documentalBean.documental.NUMERO_PAGINAS}" styleClass="Wid100Imp txtNroPaginas" >
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>                            
                         </p:column>
                     </p:row>
                     <p:row rendered="#{documentalBean.isVisible('ID_FORMATO')}">
@@ -697,7 +721,9 @@
                             <p:inputText id="txtURL" 
                                          required="false" 
                                          value="#{documentalBean.documental.URL}"
-                                         styleClass="Wid100 txtURL"/>
+                                         styleClass="Wid100 txtURL">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                             <p:tooltip  for="txtURL" value="#{metadataTablaBean.obtenerAyuda('URL')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
                     </p:row>
@@ -709,7 +735,9 @@
                             <p:inputText id="txtISBN" 
                                          required="false" 
                                          value="#{documentalBean.documental.ISBN}"
-                                         styleClass="Wid100 txtISBN"/>
+                                         styleClass="Wid100 txtISBN">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputText>
                             <p:tooltip  for="txtISBN" value="#{metadataTablaBean.obtenerAyuda('ISBN')}" rendered="#{metadataTablaBean.activarayuda}" escape="false"/>
                         </p:column>
                     </p:row>
@@ -738,15 +766,16 @@
 
             <p:panelGrid>                
                 <p:commandButton  value="#{documentalBean.registrartModificar.toUpperCase()}" actionListener="#{documentalBean.insertDocumentalXperfil()}" styleClass="Wid100"/>         
-
             </p:panelGrid>
         </h:form>
-        
+
         <p:dialog id="dlgAlbum" widgetVar="dlgAlbum" styleClass="claseAux35" closeOnEscape="true" modal="true" header="NUEVO ALBUM :" resizable="false" showEffect="puff" hideEffect="puff">
             <h:form id="frmAlbum">
                 <h:panelGrid id="gridAlbum" columns="2" cellpadding="5" columnClasses="label, value">
                     <p:outputLabel for="txtAlbum" value="ALBUM : " />
-                    <p:inputText id="txtAlbum" style="width: 370px" value="#{albumBean.album.DESCRIPCION}"/>
+                    <p:inputText id="txtAlbum" style="width: 370px" value="#{albumBean.album.DESCRIPCION}">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:commandButton value="REGISTRAR TEMA" actionListener="#{albumBean.creaAlbum}" update=":frmAlbum:gridAlbum :frmAddDocumental:cboAlbum" />
                 </h:panelGrid>
             </h:form>
@@ -756,7 +785,9 @@
             <h:form id="frmTema">
                 <h:panelGrid id="gridTema" columns="2" cellpadding="5" columnClasses="label, value">
                     <p:outputLabel for="txtTema" value="TEMA : " />
-                    <p:inputText id="txtTema" style="width: 370px" value="#{temaBean.tema.TEMA}"/>
+                    <p:inputText id="txtTema" style="width: 370px" value="#{temaBean.tema.TEMA}">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:commandButton value="REGISTRAR TEMA" actionListener="#{temaBean.creaTema}" update=":frmTema:gridTema :frmAddDocumental:cboTema" />
                 </h:panelGrid>
             </h:form>
@@ -775,7 +806,9 @@
                                     <p:spacer/>
 
                                     <h:outputLabel value="DESCRIPCIÓN:" />
-                                    <p:inputTextarea value="#{documentalBean.aux.tema}" styleClass="Wid100" rows="2" autoResize="false" />
+                                    <p:inputTextarea value="#{documentalBean.aux.tema}" styleClass="Wid100" rows="2" autoResize="false" >
+                                        <f:converter converterId="trimConverter"/>
+                                    </p:inputTextarea>
                                     <p:commandButton value="Agregar"
                                                      actionListener="#{documentalBean.insertar}" styleClass="Wid100" update=":frmTablaContenido"/>
                                 </p:panelGrid> 
@@ -799,7 +832,9 @@
                                     <h:outputText value="#{x.indice}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{x.indice}" disabled="true" style="width:100%"/>
+                                    <p:inputText value="#{x.indice}" disabled="true" style="width:100%">
+                                        <f:converter converterId="trimConverter"/>
+                                    </p:inputText>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -809,7 +844,9 @@
                                     <h:outputText value="#{x.tema}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{x.tema}" style="width:100%"/>
+                                    <p:inputText value="#{x.tema}" style="width:100%">
+                                        <f:converter converterId="trimConverter"/>
+                                    </p:inputText>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -857,22 +894,23 @@
                   draggable="false">
             <h:form id="frmCobertura">
                 <h:panelGrid id="gridCobertura" columns="2" cellpadding="5" columnClasses="Wid30,Wid70">
-                    <p:outputLabel for="txtIdPais" value="PAIS:" />
-
-                    <p:selectOneMenu id="txtIdPais" filter="true" filterMatchMode="contains"
-                                     widgetVar="txtIdPais" 
+                    <p:outputLabel for="txtIdPaisAgregar" value="PAIS:" />
+                    <p:selectOneMenu id="txtIdPaisAgregar" filter="true" filterMatchMode="contains"
+                                     widgetVar="txtIdPaisAgregar" 
                                      value="#{coberturaBean.cobertura.ID_PAIS}" 
                                      required="false"
                                      style="width: 300px">
                         <f:selectItem itemLabel="Seleccione un país" itemValue="-1" noSelectionOption="true" />
                         <f:selectItems value="#{coberturaBean.cboPais}"/>
                     </p:selectOneMenu>
-
-
-                    <p:outputLabel for="txtIdColeccion" value="CIUDAD ACTUAL:" />
-                    <p:inputText id="txtIdColeccion" value="#{coberturaBean.cobertura.CIUDAD_ACTUAL}" styleClass="Wid100"></p:inputText>
-                    <p:outputLabel for="txtColeccion" value="CIUDAD ANTIGUA: " />
-                    <p:inputText id="txtColeccion" value="#{coberturaBean.cobertura.CIUDAD_ANTIGUA}" styleClass="Wid100"></p:inputText>
+                    <p:outputLabel for="txtCiudadActualAgregar" value="CIUDAD ACTUAL:" />
+                    <p:inputText id="txtCiudadActualAgregar" value="#{coberturaBean.cobertura.CIUDAD_ACTUAL}" styleClass="Wid100">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
+                    <p:outputLabel for="txtCiudadAntiguaAgregar" value="CIUDAD ANTIGUA: " />
+                    <p:inputText id="txtCiudadAntiguaAgregar" value="#{coberturaBean.cobertura.CIUDAD_ANTIGUA}" styleClass="Wid100">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel value="" />
                     <p:commandButton value="REGISTRAR COBERTURA" actionListener="#{coberturaBean.creaCobertura}">
                     </p:commandButton>
@@ -902,17 +940,18 @@
                         <f:selectItems value="#{coberturaBean.cboPais}"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="txtCiudad" value="CIUDAD ACTUAL:" />
-                    <p:inputText id="txtCiudad" value="#{coberturaBean.cobertura.CIUDAD_ACTUAL}" styleClass="Wid100"></p:inputText>
+                    <p:inputText id="txtCiudad" value="#{coberturaBean.cobertura.CIUDAD_ACTUAL}" styleClass="Wid100">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel for="txtCiudadAntigua" value="CIUDAD ANTIGUA: " />
-                    <p:inputText id="txtCiudadAntigua" value="#{coberturaBean.cobertura.CIUDAD_ANTIGUA}" styleClass="Wid100"></p:inputText>
+                    <p:inputText id="txtCiudadAntigua" value="#{coberturaBean.cobertura.CIUDAD_ANTIGUA}" styleClass="Wid100">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel value="" />
-                    <p:commandButton value="MODIFICAR COBERTURA" actionListener="#{coberturaBean.editarCobertura()}" update=":frmCobertura:gridCobertura :frmAddDocumental:cboCobertura">
-                    </p:commandButton>
+                    <p:commandButton value="MODIFICAR COBERTURA" actionListener="#{coberturaBean.editarCobertura()}" update=":frmCobertura:gridCobertura :frmAddDocumental:cboCobertura"/>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
-
-
 
         <p:dialog id="dlgAutor" widgetVar="dlgAutor" styleClass="claseAux30" closeOnEscape="true" modal="true" header="..:: MANTENIMIENTO AUTOR ::.." resizable="false" showEffect="puff"  hideEffect="puff" draggable="false">
             <h:form id="frmAutor">
@@ -926,11 +965,17 @@
                 </h:panelGrid>
                 <h:panelGrid id="gridAutor1" columns="2" cellpadding="5" columnClasses="label, value" class="autorAux1">
                     <p:outputLabel for="nombre" value="NOMBRES: "/>
-                    <p:inputText id="nombre" value="#{autor.autAdd.NOMBRE}" />
+                    <p:inputText id="nombre" value="#{autor.autAdd.NOMBRE}" >
+                    <f:converter converterId="trimConverter"/>                    
+                    </p:inputText>
                     <p:outputLabel for="paterno" value="AP. PATERNO: "/>
-                    <p:inputText id="paterno" value="#{autor.autAdd.APELLIDO_PATERNO}" />
+                    <p:inputText id="paterno" value="#{autor.autAdd.APELLIDO_PATERNO}" >
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel for="materno" value="AP. MATERNO: "/>
-                    <p:inputText id="materno" value="#{autor.autAdd.APELLIDO_MATERNO}" />  
+                    <p:inputText id="materno" value="#{autor.autAdd.APELLIDO_MATERNO}" >
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>  
                     <p:outputLabel for="pais" value="NACIONALIDAD : "/>
                     <p:selectOneMenu id="pais" filter="true" filterMatchMode="contains" widgetVar="cboPaisAutor" value="#{autor.autAdd.ID_PAIS}" style="width: 310px;overflow-y: 150px;">
                         <f:selectItem itemLabel="Seleccione un país" itemValue="-1" noSelectionOption="true" />
@@ -941,7 +986,9 @@
                 </h:panelGrid>
                 <h:panelGrid id="gridAutor2" columns="2" cellpadding="5" columnClasses="label, value" class="autorAux2">
                     <p:outputLabel for="alternativo" value="ALTERNATIVO : "/>
-                    <p:inputText id="alternativo" value="#{autor.autAddAlternativo.ALTERNATIVO}" />
+                    <p:inputText id="alternativo" value="#{autor.autAddAlternativo.ALTERNATIVO}" >
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel for="pais2" value="NACIONALIDAD : "/>
                     <p:selectOneMenu id="pais2" filter="true" filterMatchMode="contains" widgetVar="cboPaisAutor2" value="#{autor.autAddAlternativo.ID_PAIS}" style="width: 310px;overflow-y: 150px;">
                         <f:selectItem itemLabel="Seleccione un país" itemValue="-1" noSelectionOption="true" />
@@ -956,7 +1003,9 @@
             <h:form id="frmEditorial" >
                 <h:panelGrid id="gridEditorial" columns="2" cellpadding="5" columnClasses="label, value">
                     <p:outputLabel for="txtEeditorial" value="EDITORIAL: " />
-                    <p:inputText id="txtEeditorial" value="#{editorialBean.editorial.NOMBRE_EDITORIAL}"/>
+                    <p:inputText id="txtEeditorial" value="#{editorialBean.editorial.NOMBRE_EDITORIAL}">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:commandButton value="REGISTRAR EDITORIAL" actionListener="#{editorialBean.crearEditorial()}"/>
                 </h:panelGrid>
             </h:form>
@@ -965,9 +1014,13 @@
             <h:form id="frmEditEditorial" >
                 <h:panelGrid id="gridEditEditorial" columns="2" cellpadding="5" columnClasses="label, value">
                     <p:outputLabel for="txtEditIdEditorial" value="ID: " />
-                    <p:inputText id="txtEditIdEditorial" value="#{editorialBean.editEditorial.ID_EDITORIAL}" disabled="true"/>
+                    <p:inputText id="txtEditIdEditorial" value="#{editorialBean.editEditorial.ID_EDITORIAL}" disabled="true">
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel for="txtEditEditorial" value="EDITORIAL: " />
-                    <p:inputText id="txtEditEditorial" value="#{editorialBean.editEditorial.NOMBRE_EDITORIAL}"/>
+                    <p:inputText id="txtEditEditorial" value="#{editorialBean.editEditorial.NOMBRE_EDITORIAL}">
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:spacer/>
                     <p:commandButton value="EDITAR EDITORIAL" actionListener="#{editorialBean.modificarEd()}"/>                    
                 </h:panelGrid>
@@ -985,7 +1038,9 @@
                                     <p:spacer/>
 
                                     <h:outputLabel value="DESCRIPCIÓN:" ></h:outputLabel>
-                                    <p:inputTextarea value="#{documentalBean.objContribuidor.CONTRIBUIDOR}" styleClass="Wid100" rows="2" autoResize="false" />
+                                    <p:inputTextarea value="#{documentalBean.objContribuidor.CONTRIBUIDOR}" styleClass="Wid100" rows="2" autoResize="false" >
+                                        <f:converter converterId="trimConverter"/>
+                                    </p:inputTextarea>
                                     <p:commandButton value="Agregar" update=":frmContribuidor:pnlContribuidor :frmContribuidor:tblContribuidor" 
                                                      actionListener="#{documentalBean.insertarContribuidores()}" styleClass="Wid100" />
                                 </p:panelGrid>
@@ -1072,7 +1127,9 @@
                                              value="#{serieBean.serie.SERIE}" 
                                              maxlength="#{metadataTablaBean.obtenerLongitud('SERIE')}"
                                              counter="countSerie" styleClass="Wid100"
-                                             counterTemplate="{0} caracteres."/><br/>
+                                             counterTemplate="{0} caracteres.">
+                                <f:converter converterId="trimConverter"/>
+                            </p:inputTextarea><br/>
                             <p:outputLabel id="countSerie" style="float: right" /><br/>
                             <p:commandButton id="btnAddSerie" value="REGISTRAR SERIE" actionListener="#{serieBean.crearSerie()}" />
                         </p:row>
@@ -1084,9 +1141,13 @@
             <h:form id="frmColeccion">
                 <h:panelGrid id="gridColeccion" columns="2" cellpadding="5" columnClasses="label, value">
                     <p:outputLabel for="txtIdColeccion" value="COD COLECCIÓN: " />
-                    <p:inputText id="txtIdColeccion" value="#{coleccionBean.coleccion.COD_COLECCION}" required="true"></p:inputText>
+                    <p:inputText id="txtIdColeccion" value="#{coleccionBean.coleccion.COD_COLECCION}" required="true">
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel for="txtColeccion" value="NOMBRE DE LA COLECCIÓN: " />
-                    <p:inputText id="txtColeccion" value="#{coleccionBean.coleccion.DESCRIPCION}" required="true"></p:inputText>
+                    <p:inputText id="txtColeccion" value="#{coleccionBean.coleccion.DESCRIPCION}" required="true">
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:commandButton value="REGISTRAR COLECCIÓN" actionListener="#{coleccionBean.creaColeccion()}" update=":frmColeccion:gridColeccion :frmAddDocumental:cboColeccion" />
                 </h:panelGrid>
             </h:form>
@@ -1095,7 +1156,9 @@
             <h:form id="frmFormatoMedio">
                 <h:panelGrid id="gridFormatoMedio" columns="2" cellpadding="5" columnClasses="label, value">                    
                     <p:outputLabel for="descripcion" value="DESCRIPCION : "/>
-                    <p:inputText id="descripcion" value="#{formatoMedioBean.formatomedio.DESCRIPCION}" required="true"/>                                           
+                    <p:inputText id="descripcion" value="#{formatoMedioBean.formatomedio.DESCRIPCION}" required="true">
+                        <f:converter converterId="trimConverter"/>
+                    </p:inputText>                                           
                     <p:spacer/>
                     <p:commandButton value="REGISTRAR" update=":frmFormatoMedio:gridFormatoMedio :frmAddDocumental:cboFormatoMedio" actionListener="#{formatoMedioBean.agregarFormatoMedio()}" />
                 </h:panelGrid>
@@ -1105,9 +1168,13 @@
             <h:form id="frmEditFormatoMedio">
                 <h:panelGrid id="gridEditFormatoMedio" columns="2" cellpadding="5" columnClasses="label, value">
                     <p:outputLabel for="idEditFormatoMedio" value="ID : "/>
-                    <p:inputText id="idEditFormatoMedio" value="#{documentalBean.fm.ID_FORMATO_MEDIO}" required="false" disabled="true"/>
+                    <p:inputText id="idEditFormatoMedio" value="#{documentalBean.fm.ID_FORMATO_MEDIO}" required="false" disabled="true">
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>
                     <p:outputLabel for="Editdescripcion" value="DESCRIPCION : "/>
-                    <p:inputText id="Editdescripcion" value="#{documentalBean.fm.DESCRIPCION}" required="true"/>                                           
+                    <p:inputText id="Editdescripcion" value="#{documentalBean.fm.DESCRIPCION}" required="true">
+                    <f:converter converterId="trimConverter"/>
+                    </p:inputText>                                           
                     <p:spacer/>
                     <p:commandButton value="ACTUALIZAR" update=":frmEditFormatoMedio:gridEditFormatoMedio :frmAddDocumental:cboFormatoMedio"  onclick="PF('dlgEditFormatoMedio').hide()" actionListener="#{documentalBean.actualizarFormatoMedio()}" />
                 </h:panelGrid>
@@ -1115,19 +1182,19 @@
         </p:dialog>
         <p:dialog id="dlgEditSerie" widgetVar="dlgEditSerie" styleClass="claseAux30 Wid60Imp" closeOnEscape="true" modal="true" header="..: EDITAR SERIES SELECCIONADAS :.." resizable="false" showEffect="puff"  hideEffect="puff" draggable="false">
             <h:form id="frmEditSerie" >
-                <p:dataTable editable="true" id="tblEditSerie" value="#{documentalBean.listSerie}" var="x">
+                <p:dataTable editable="true" id="tblEditSerie" value="#{documentalBean.listSerie}" var="se">
                     <p:ajax event="rowEdit" listener="#{documentalBean.cellEditSerie}"/>
                     <p:ajax event="rowEditCancel" listener="#{documentalBean.cellCancelSerie}"/>
                     <p:column headerText="ID_SERIE" styleClass="Wid15">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{x.ID_SERIE}" /></f:facet>
-                            <f:facet name="input"><h:outputText value="#{x.ID_SERIE}" style="width:100%"/></f:facet>
+                            <f:facet name="output"><h:outputText value="#{se.ID_SERIE}" /></f:facet>
+                            <f:facet name="input"><h:outputText value="#{se.ID_SERIE}" style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </p:column>
                     <p:column headerText="SERIE" styleClass="Wid85">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{x.SERIE}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{x.SERIE}" style="width:100%"/></f:facet>
+                            <f:facet name="output"><h:outputText value="#{se.SERIE}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{se.SERIE}" style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </p:column>
                     <p:column style="width:32px">
@@ -1178,13 +1245,13 @@
                     <p:column headerText="COD_COLECCION" styleClass="Wid85">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{x.COD_COLECCION}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{x.COD_COLECCION}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{x.COD_COLECCION}" style="width:100%"><f:converter converterId="trimConverter"/></p:inputText></f:facet>
                         </p:cellEditor>
                     </p:column>
                     <p:column headerText="COLECCION" styleClass="Wid85">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{x.DESCRIPCION}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{x.DESCRIPCION}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{x.DESCRIPCION}" style="width:100%"><f:converter converterId="trimConverter"/></p:inputText></f:facet>
                         </p:cellEditor>
                     </p:column>
                     <p:column style="width:32px">

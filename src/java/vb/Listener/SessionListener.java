@@ -8,11 +8,11 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Se creo una conexion");
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("se cerro una conexion");
     }
 }

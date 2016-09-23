@@ -134,7 +134,7 @@ public class tablacontenido {
             }
             respuesta = "Importación exitosa";
         } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
-            System.out.println("errores excel:" + e.getMessage());
+            System.out.println(e.getMessage()+" method : Importar()");
         }
         return respuesta;
     }

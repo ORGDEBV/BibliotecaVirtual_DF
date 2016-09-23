@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bv.bean;
 
 import bv.dao.TipoOtroDao;
@@ -23,9 +18,8 @@ public class tipoOtroBean {
 
     private final TipoOtroDao tipoOtroDao;
     private List<SelectItem> cboTipoOtro;
-    /**
-     * Creates a new instance of tipoOtroBean
-     */
+    
+    
     public tipoOtroBean() {
         DaoFactory factory = DaoFactory.getInstance();
         tipoOtroDao = factory.getTipoOtroDao(TIPO_OTRO);
