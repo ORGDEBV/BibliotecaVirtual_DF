@@ -42,8 +42,7 @@
 
                 <p:panel header="#{nov.TITULO_CORTO}" style="text-align:center">
                     <h:panelGrid columns="1" style="width:100%">
-                        <p:graphicImage name="C:/REPOSITORIO_LOCAL/Bvirtual/web/resources/#{nov.URL_IMAGEN}"/> 
-
+                        <img src="#{nov.URL_IMAGEN}" width="200px" height="200px"/>  
                         <h:outputText value="Fecha : #{nov.s_FECHA_NOVEDAD}" />
                         <p:panelGrid columns="2" style="margin: 0 auto">
                             <p:commandLink  title="Ver Detalles" onclick="PF('dlgDetalle').show()" update=":frmNovedadList:detalle" >
