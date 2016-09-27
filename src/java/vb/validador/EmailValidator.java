@@ -14,9 +14,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import org.primefaces.validate.ClientValidator;
  
-/**
- * Custom JSF Validator for Email input
- */
+
 @FacesValidator("bv.emailValidador")
 public class EmailValidator implements Validator, ClientValidator {
  
@@ -29,6 +27,7 @@ public class EmailValidator implements Validator, ClientValidator {
         pattern = Pattern.compile(EMAIL_PATTERN);
     }
  
+    @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if(value == null) {
             return;
@@ -39,10 +38,12 @@ public class EmailValidator implements Validator, ClientValidator {
         }
     }
  
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
  
+    @Override
     public String getValidatorId() {
         return "bv.emailValidador";
     }

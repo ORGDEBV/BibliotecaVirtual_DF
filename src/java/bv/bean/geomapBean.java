@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bv.bean;
 
 import java.io.Serializable;
@@ -99,9 +94,6 @@ public class geomapBean implements Serializable {
         emptyModel.addOverlay(marker);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
-        System.out.println("latitud" + String.valueOf(lat));
-        System.out.println("longitud" + String.valueOf(lng));
-        System.out.println("title" + title);
     }
     
      public void closeDialog() {

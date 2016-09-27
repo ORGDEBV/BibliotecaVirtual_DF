@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vb.dto;
 
 import java.util.Date;
@@ -27,7 +22,6 @@ public class PublicacionDto {
     private int VISIBLE;
     private String CLASS_VISIBLE;
     private String ICONO_VISIBLE;
-    
     private String Responsable;
 
     public String getID_PUBLICACION() {

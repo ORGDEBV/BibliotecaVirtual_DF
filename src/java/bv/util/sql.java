@@ -177,7 +177,6 @@ public class sql {
                     sql = sql + "'" + parametros[i] + "',";
                 }
                 sql = sql.substring(0, sql.length() - 1);
-                System.out.println(sql);
                 ResultSet rs = st.executeQuery(sql);
                 ResultSetMetaData rm = rs.getMetaData();
                 int numcol = rm.getColumnCount();
@@ -191,7 +190,7 @@ public class sql {
                 //cn.close();
 
             } catch (SQLException e) {
-                System.out.println("ERROR EN EXECTRANSPROCEDURE" + e);
+                System.out.println(e.getMessage());
             }
         }
         return array;

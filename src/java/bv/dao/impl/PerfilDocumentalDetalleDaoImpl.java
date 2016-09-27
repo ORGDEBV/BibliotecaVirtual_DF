@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bv.dao.impl;
 
 import bv.dao.PerfilDocumentalDetalleDao;
@@ -56,6 +51,14 @@ public class PerfilDocumentalDetalleDaoImpl implements PerfilDocumentalDetalleDa
         String[] parametros = new String[1];
         parametros[0] = "LISTAR_PERFILES";
         List<Object[]> lstPerfiles = conector.execProcedure("BV.SP_LISTAR_PERFIL", parametros);
+        return lstPerfiles;
+
+    }
+    @Override
+        public List<Object[]> obtenerestadoControlRec(String grupo) {
+        String[] parametros = new String[1];
+        parametros[0] = grupo;
+        List<Object[]> lstPerfiles = conector.execProcedure("BV.SP_ESTADO_CONTROL_listado", parametros);
         return lstPerfiles;
 
     }

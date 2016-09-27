@@ -326,15 +326,16 @@ public class DocumentalDaoImpl implements DocumentalDao {
     }
 
     @Override
-    public ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca) {
+    public ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca,String idEstadoControl) {
         ArrayList<Documental> lstDocPublicacion = new ArrayList<>();
         Documental doc;
-        String[] parametros = new String[4];
-        parametros[0] = "LIST_DOCUMENTAL_PUBLICACION";
+        String[] parametros = new String[5];
+        parametros[0] = "1";
         parametros[1] = perfilControl;
         parametros[2] = "";
         parametros[3] = idBiblioteca;
-        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_LISTAR_DOCUMENTAL]", parametros);
+        parametros[4] = idEstadoControl;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_PUBLICACION_LISTA]", parametros);
         for (Object[] d : data) {
             doc = new Documental();
             doc.setID_DOCUMENTAL(d[0].toString());
@@ -385,5 +386,22 @@ public class DocumentalDaoImpl implements DocumentalDao {
         existe = fichero.exists();
         return existe;
 
+    }
+
+    @Override
+    public String controlDocumentalObservacion(String idDoc, String estadoCont, String observacion, int idUsuario) {
+       String msg = "";
+        String[] parametros = new String[4];
+        parametros[0] = idDoc;
+        parametros[1] = estadoCont;
+        parametros[2] = observacion;
+        parametros[3] = String.valueOf(idUsuario);
+     
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_DOCUMENTAL_ESTADO_CONTROL_Insertar]", parametros);
+        for (Object[] d : data) {
+            msg = d[1].toString();
+        }
+        return msg;
+        
     }
 }

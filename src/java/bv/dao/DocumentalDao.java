@@ -33,11 +33,12 @@ public interface DocumentalDao {
 
     ArrayList<String> listDocumentalRelacionXidDocumental(String idDocumental);
 
-    ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca);
+    ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca,String idEstadoControl);
 
     String nombreArchivo(String id);
 
     String controlDocumental(String idDoc, String url, int idUsuario, String publicado, String perfil);
+    String controlDocumentalObservacion(String idDoc, String estadoCont, String observacion, int idUsuario);
 
     boolean validarFichero(String servArch, String archivo);
 

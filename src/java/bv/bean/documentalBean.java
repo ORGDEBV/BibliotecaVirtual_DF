@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bv.bean;
 
 import java.io.IOException;
@@ -1002,33 +997,11 @@ public class documentalBean {
         this.disabledContribuidor = disabledContribuidor;
     }
 
-    public void pasarContribuidores() {
-        selectedContribuidor = new ArrayList<>();
-        String ID_DOCUMENTAL_CONT = "LI_00001";
-        Contribuidor cont;
-        if (lstContribuidor.isEmpty()) {
-            System.out.println("No hay registros en esta lista");
-        } else {
-            for (Contribuidor c : lstContribuidor) {
-                cont = new Contribuidor();
-                cont.setIndice(c.getIndice());
-                cont.setID_DOCUMENTAL(ID_DOCUMENTAL_CONT);
-                cont.setCONTRIBUIDOR(c.getCONTRIBUIDOR());
-                selectedContribuidor.add(cont);
-            }
-
-        }
-        //  onclick="PF('dlgContribuidor').hide()" update=":frmAddDocumental:listContribuidores" 
-        RequestContext.getCurrentInstance().execute("PF('dlgContribuidor').hide()");
-        RequestContext.getCurrentInstance().update("frmAddDocumental:listContribuidores");
-
-    }
-
     public void pasarContribuidores(String ID_DOCUMENTAL) {
         //String ID_DOCUMENTAL="LI_00001";
         Contribuidor cont;
         if (lstContribuidor.isEmpty()) {
-            System.out.println("No hay registros en esta lista");
+         
         } else {
             for (Contribuidor c : lstContribuidor) {
                 cont = new Contribuidor();
@@ -1038,7 +1011,7 @@ public class documentalBean {
                 selectedContribuidor.add(cont);
             }
             //lstContribuidorAux= lstContribuidor;
-            System.out.println("SE PASARON LOS REGISTROS");
+           
         }
     }
 
@@ -1145,7 +1118,7 @@ public class documentalBean {
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/Documental/Upd?ID_PERFIL_DOCUMENTAL=" + perfil + "&PERFIL_DOCUMENTAL=" + perfil_documental + "&ID_DOCUMENTAL=" + ID_DOCUMENTAL);
         } catch (IOException ex) {
-            System.out.println("error" + ex);
+            
         }
 
     }
@@ -1407,8 +1380,17 @@ public class documentalBean {
                     if (pd.isVISTA() && pd.isREQUERIDO()) {
                     }
                     break;
+                case "ALBUM":
+                    if (pd.isVISTA() && pd.isREQUERIDO()) {
+                        if (documental.getID_ALBUM() == -1) {
+                            arrayErrores.add("No ha seleccionado un album.");
+                            execJs.execute("validarCampo('.cboAlbum')");
+                        } else {
+                            execJs.execute("$('.cboAlbum').style('border','','important');");
+                        }
+                    }
+                    break;
                 default:
-                    System.out.println("no requiere validacion");
                     break;
             }
         }
@@ -1431,7 +1413,7 @@ public class documentalBean {
             //seteo de campos
             documental.setID_DOCUMENTAL(ID_DOCUMENTAL_INSERT);
             documental.setID_BIBLIOTECA_FUENTE(ID_BIBLIOTECA_FUENTE);
-            ArrayList<String> arrayErrores; //= new ArrayList<>();
+            ArrayList<String> arrayErrores; 
             //lstPerfilDocumentalDetalle
             arrayErrores = listValidacion();
             if (arrayErrores.isEmpty()) {
@@ -1452,7 +1434,7 @@ public class documentalBean {
             //seteo de campos
             documental.setID_DOCUMENTAL(ID_DOCUMENTAL);
             documental.setID_BIBLIOTECA_FUENTE(ID_BIBLIOTECA_FUENTE);
-            ArrayList<String> arrayErrores; //= new ArrayList<>();
+            ArrayList<String> arrayErrores; 
             //lstPerfilDocumentalDetalle
             arrayErrores = listValidacion();
             if (arrayErrores.isEmpty()) {

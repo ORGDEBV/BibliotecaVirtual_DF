@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bv.bean;
 
 import java.io.IOException;
@@ -24,6 +19,7 @@ import bv.dao.impl.DaoFactory;
 import static bv.util.Constantes.LOGIN;
 import static bv.util.Constantes.PERSONAL;
 import static bv.util.Constantes.USUARIO;
+import javax.servlet.http.HttpSession;
 import vb.entidad.Personal;
 import vb.entidad.Usuario;
 
@@ -34,7 +30,7 @@ import vb.entidad.Usuario;
 @ManagedBean
 @ViewScoped
 public class usuarioBean implements Serializable {
-    
+
     private Boolean Representante;
     private Boolean Administrador;
     private Usuario usuario;
@@ -49,15 +45,15 @@ public class usuarioBean implements Serializable {
     private int valor;
     String nom_Biblioteca;
     String tipoUsuario;
-    
+
     public int getValor() {
         return valor;
     }
-    
+
     public void setValor(int valor) {
         this.valor = valor;
     }
-    
+
     public usuarioBean() {
         DaoFactory factory = DaoFactory.getInstance();
         loginDao = factory.getLoginDao(LOGIN);
@@ -67,23 +63,23 @@ public class usuarioBean implements Serializable {
         usuarioDao = factory.getUsuarioDao(USUARIO);
         personal = new Personal();
     }
-    
+
     public String getNom_Biblioteca() {
         return nom_Biblioteca;
     }
-    
+
     public void setNom_Biblioteca(String nom_Biblioteca) {
         this.nom_Biblioteca = nom_Biblioteca;
     }
-    
+
     public String getTipoUsuario() {
         return tipoUsuario;
     }
-    
+
     public void setTipoUsuario(String tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
-    
+
     public List<SelectItem> getCboTipoUsuario() {
         String idTipoUsuario = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario"));
         List<Object[]> lista = usuarioDao.obtenerTipousuario(idTipoUsuario, idTipoUsuario, idTipoUsuario);
@@ -95,11 +91,11 @@ public class usuarioBean implements Serializable {
         }
         return cboTipoUsuario;
     }
-    
+
     public void setCboTipoUsuario(List<SelectItem> cboTipoUsuario) {
         this.cboTipoUsuario = cboTipoUsuario;
     }
-    
+
     public List<Usuario> getListUsuario() {
         String idTipoUsuario = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario"));
         String idBibliotecaMediador = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente"));
@@ -107,7 +103,7 @@ public class usuarioBean implements Serializable {
         ListUsuario = usuarioDao.obtenerEntidadesParametros(idTipoUsuario, idBibliotecaMediador, idPersonalBiblioteca);
         return ListUsuario;
     }
-    
+
     public void updUsuario() {
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         int dataUpdate = usuarioDao.actualizarEntidad(usuarioUpd, idUsuario);
@@ -122,7 +118,7 @@ public class usuarioBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo editar este registro."));
         }
     }
-    
+
     public void resetContrasena() {
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         String idTipoUsuario = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario"));
@@ -145,33 +141,33 @@ public class usuarioBean implements Serializable {
             rc.execute("PF('tblUsuario').clearFilters();");
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No tiene los permisos o la contraseña ya fue reseteada."));
         }
-        
+
     }
-    
+
     public void setListUsuario(List<Usuario> ListUsuario) {
-        
+
         this.ListUsuario = ListUsuario;
     }
-    
+
     public Usuario getUsuarioUpd() {
         return usuarioUpd;
     }
-    
+
     public void setUsuarioUpd(Usuario usuarioUpd) {
         this.usuarioUpd = usuarioUpd;
     }
-    
+
     public List<Usuario> getFilterListUsuario() {
         return filterListUsuario;
     }
-    
+
     public void setFilterListUsuario(List<Usuario> filterListUsuario) {
         this.filterListUsuario = filterListUsuario;
     }
-    
+
     public void loginUsuario() throws IOException {
         usuario = loginDao.validar(usuario.getUSUARIO(), usuario.getCONTRASENA());
-        
+
         if (usuario != null) {
             personal = personalDao.buscarEntidad(usuario.getID_PERSONAL_BIBLIOTECA());
             String idBiblioteca = String.valueOf(personal.getID_BIBLIOTECA_MEDIADOR());
@@ -198,11 +194,11 @@ public class usuarioBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario y/o Contraseña incorrecta."));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/Error/AccesoDenegado");
-            
+
         }
-        
+
     }
-    
+
     public void recuperaUsuario() {
         int Recuperar = loginDao.recuperar("");
         if (Recuperar != 0) {
@@ -211,7 +207,7 @@ public class usuarioBean implements Serializable {
             JOptionPane.showMessageDialog(null, "El correo no esta registrado :(");
         }
     }
-    
+
     public void validaLogin() throws IOException {
         nom_Biblioteca = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("nombreBiblioteca");
         tipoUsuario = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tipoUsuario");
@@ -238,18 +234,25 @@ public class usuarioBean implements Serializable {
             }
         }
     }
-    
+
     public void cierraSesion() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(false);
+        HttpSession httpSession = (HttpSession) session;
+        httpSession.invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/");
-        int cambioContrasena = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cambioContrasena").toString());
-        if (cambioContrasena == 0) {
-            FacesContext.getCurrentInstance().addMessage("gMsj", new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", "No ha actualizado su contraseña por defecto."));
+    }
+
+    public void validaLogOut() throws IOException {
+        Object ID_USUARIO = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+        if (ID_USUARIO != null) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/BibliotecaVirtual/bv/inicio.xhtml");
         }
     }
-    
+
     public void cambiaContrasena() {
-        
+
         if (usuario.getCONTRASENA_NUEVA1().equals(usuario.getCONTRASENA_NUEVA2())) {
             String contrasena = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalContrasena");
             if (usuario.getCONTRASENA_ANT().equals(contrasena)) {
@@ -260,7 +263,7 @@ public class usuarioBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Su contraseña ha sido actualizada."));
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("personalContrasena", usuario.getCONTRASENA_NUEVA1());
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cambioContrasena", '1');
-                    
+
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un error al intentar cambiar su contraseña."));
                 }
@@ -273,37 +276,37 @@ public class usuarioBean implements Serializable {
             usuario = new Usuario();
         }
     }
-    
+
     public Usuario getUsuario() {
         return usuario;
     }
-    
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
+
     public Personal getPersonal() {
         return personal;
     }
-    
+
     public void setPersonal(Personal personal) {
         this.personal = personal;
     }
-    
+
     public Boolean getRepresentante() {
         return Representante;
     }
-    
+
     public void setRepresentante(Boolean Representante) {
         this.Representante = Representante;
     }
-    
+
     public Boolean getAdministrador() {
         return Administrador;
     }
-    
+
     public void setAdministrador(Boolean Administrador) {
         this.Administrador = Administrador;
     }
-    
+
 }

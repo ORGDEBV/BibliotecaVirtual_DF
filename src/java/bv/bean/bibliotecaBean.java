@@ -262,8 +262,6 @@ public class bibliotecaBean implements Serializable {
             limpiarCampos();
             upd = "x";
             biblioteca = new Biblioteca();
-            RequestContext.getCurrentInstance().update("frmAddBiblioteca");
-            RequestContext.getCurrentInstance().update("gMensaje");
         } else if (upd.equals("################")) {
             int dataInsert = bibliotecaDao.crearEntidad(biblioteca, idUsuario);
             if (dataInsert == 0) {
@@ -273,10 +271,9 @@ public class bibliotecaBean implements Serializable {
             }
             biblioteca = new Biblioteca();
             limpiarCampos();
-            RequestContext.getCurrentInstance().update("frmAddBiblioteca");
-            RequestContext.getCurrentInstance().update("gMensaje");
         }
-
+        RequestContext.getCurrentInstance().update("frmAddBiblioteca");
+        RequestContext.getCurrentInstance().update("gMensaje");
     }
 
     public void updBiblioteca() {
@@ -423,17 +420,6 @@ public class bibliotecaBean implements Serializable {
         biblioteca.setTITULO_MAPA(listaIn.get(0));
         biblioteca.setLATITUD(listaIn.get(1));
         biblioteca.setLONGITUD(listaIn.get(2));
-        System.out.println(biblioteca);
-//        RequestContext.getCurrentInstance().update("frmAddBiblioteca:grdMap:txtLatitud");
-//        RequestContext.getCurrentInstance().update("frmAddBiblioteca:grdMap:txtLongitud");
-//        RequestContext.getCurrentInstance().update("frmAddBiblioteca:txtLatitud");
-//        RequestContext.getCurrentInstance().update("frmAddBiblioteca:txtLongitud");
-
-//        lstaUpd.add("frmAddBiblioteca:txtTituloEnMapa");
-//        lstaUpd.add("frmAddBiblioteca:txtLatitud");
-//        lstaUpd.add("frmAddBiblioteca:txtLongitud");
-//        
-//        RequestContext.getCurrentInstance().update(lstaUpd);
     }
 
     ////***************
@@ -530,16 +516,10 @@ public class bibliotecaBean implements Serializable {
         biblioteca.setTITULO_MAPA(listaIn.get(0));
         biblioteca.setLATITUD(listaIn.get(1));
         biblioteca.setLONGITUD(listaIn.get(2));
-        System.out.println(biblioteca);
         RequestContext.getCurrentInstance().update("frmAddBiblioteca:grdMap:txtLatitud");
         RequestContext.getCurrentInstance().update("frmAddBiblioteca:grdMap:txtLongitud");
         RequestContext.getCurrentInstance().update("frmAddBiblioteca:txtLatitud");
 
-//        lstaUpd.add("frmAddBiblioteca:txtTituloEnMapa");
-//        lstaUpd.add("frmAddBiblioteca:txtLatitud");
-//        lstaUpd.add("frmAddBiblioteca:txtLongitud");
-//        
-//        RequestContext.getCurrentInstance().update(lstaUpd);
     }
 
 }

@@ -9,7 +9,6 @@
         <param-name>rutaServidorArchivos</param-name>
         <param-value>C:\glassfish-4.1.1\glassfish4\glassfish\domains\domain1\docroot\</param-value>
     </context-param>
-
        
     <listener>
         <description>HttpSessionListener</description>
@@ -25,7 +24,7 @@
         <url-pattern>/bv/*</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>720</session-timeout>
+        <session-timeout>500</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>/</welcome-file>

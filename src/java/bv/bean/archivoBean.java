@@ -74,7 +74,7 @@ public class archivoBean implements Serializable {
                 stream.write(contenido);
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+" method : grabrArchivoTemporal");
         }
     }
 
@@ -117,7 +117,7 @@ public class archivoBean implements Serializable {
                 stream.write(contenido);
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+" method : grabrArchivoTemporal2");
         }
     }
 
