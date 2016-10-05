@@ -201,6 +201,17 @@ public class novedadBean {
     }
 
     public Novedad getNov() {
+        if (nov.getACTIVO()!=null && nov.getMOSTAR_INICIO()!=null) {
+            if (nov.getMOSTAR_INICIO().equals("1")) {
+                nov.setMOSTAR_INICIO("Si");
+            }
+            if (nov.getACTIVO().equals("1")) {
+                nov.setACTIVO("Si");
+            } else if (nov.getACTIVO().equals("0") || nov.getMOSTAR_INICIO().equals("0")) {
+                nov.setACTIVO("No");
+                nov.setMOSTAR_INICIO("No");
+            }
+        }
         return nov;
     }
 

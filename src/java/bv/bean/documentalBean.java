@@ -908,7 +908,7 @@ public class documentalBean {
 
     //TIPO ENCUADERNADO
     public void changeCboTipo() {
-        if (documental.getID_TIPO() == 25) {
+        if (documental.getID_TIPO() == 25 || documental.getID_TIPO() == 28 || documental.getID_TIPO() == 29 || documental.getID_TIPO() == 30 || documental.getID_TIPO() == 24) {
             RequestContext.getCurrentInstance().execute(" $('.rowPaginaInicio').css({'display':'table-row'}); ");
             RequestContext.getCurrentInstance().execute(" $('.rowPaginaFin').css({'display':'table-row'}); ");
         } else {

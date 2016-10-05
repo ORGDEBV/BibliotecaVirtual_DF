@@ -32,7 +32,7 @@
 
         <h:form id="frmNovedadList">
             <p:dataGrid var="nov" value="#{novedadBean.lstNovedad}" columns="3" layout="grid"
-                        rows="12" paginator="true" id="tblNovedades"
+                        rows="12" paginator="true" id="tblNovedades" 
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                         rowsPerPageTemplate="12">
 
@@ -40,18 +40,17 @@
                     Lista de novedades
                 </f:facet>
 
-                <p:panel header="#{nov.TITULO_CORTO}" style="text-align:center">
+                <p:panel header="#{nov.TITULO_CORTO}" style="text-align:center;height: 330px">
                     <h:panelGrid columns="1" style="width:100%">
-                        <p:graphicImage name="C:/REPOSITORIO_LOCAL/Bvirtual/web/resources/#{nov.URL_IMAGEN}"/> 
-
+                        <img src="#{nov.URL_IMAGEN}" width="200px" height="200px"/>  
                         <h:outputText value="Fecha : #{nov.s_FECHA_NOVEDAD}" />
                         <p:panelGrid columns="2" style="margin: 0 auto">
                             <p:commandLink  title="Ver Detalles" onclick="PF('dlgDetalle').show()" update=":frmNovedadList:detalle" >
-                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                <i class="icon-round52 Fs25 Blue"></i>
                                 <f:setPropertyActionListener value="#{nov}" target="#{novedadBean.nov}" />
                             </p:commandLink>
-                            <p:commandLink title="Borrar" >
-                                <h:outputText styleClass="ui-icon ui-icon-trash" style="margin:0 auto;" />
+                            <p:commandLink title="Borrar"  >
+                                <i class="fa fa-trash-o Fs25 Blue"></i>
                                 <p:confirm header="Confirmar" message="¿Estas seguro de borrar esta publicacion?" icon="ui-icon-alert" />
                             </p:commandLink>
                         </p:panelGrid> 
@@ -137,7 +136,7 @@
                                 <h:outputText value="Portada:" />
                             </p:column>
                             <p:column>
-                                <p:graphicImage name="C:/REPOSITORIO_LOCAL/Bvirtual/web/resources/#{nov.URL_IMAGEN}"/> 
+                                <img src="#{novedadBean.nov.URL_IMAGEN}" width="200px" height="200px"/>
                             </p:column>                            
                         </p:row>
                     </p:panelGrid>
