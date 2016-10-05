@@ -19,7 +19,11 @@ import bv.dao.impl.DaoFactory;
 import static bv.util.Constantes.LOGIN;
 import static bv.util.Constantes.PERSONAL;
 import static bv.util.Constantes.USUARIO;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import vb.entidad.Personal;
 import vb.entidad.Usuario;
 
@@ -36,15 +40,15 @@ public class usuarioBean implements Serializable {
     private Usuario usuario;
     private Personal personal;
     private final LoginDao loginDao;
-    private UsuarioDao usuarioDao;
-    Usuario usuarioUpd;
-    private List<Usuario> filterListUsuario;
-    private List<Usuario> ListUsuario;
+    private final UsuarioDao usuarioDao;
+    private Usuario usuarioUpd;
+    //private List<Usuario> filterListUsuario;
+    //private List<Usuario> ListUsuario;
     private List<SelectItem> cboTipoUsuario;
     private final PersonalDao personalDao;
     private int valor;
-    String nom_Biblioteca;
-    String tipoUsuario;
+    private String nom_Biblioteca;
+    private String tipoUsuario;
 
     public int getValor() {
         return valor;
@@ -64,6 +68,67 @@ public class usuarioBean implements Serializable {
         personal = new Personal();
     }
 
+    //INICIO PAGINADOR
+    private List<Usuario> filtroUsuario;
+    private LazyDataModel<Usuario> lazymodel;
+    private String palabra="";
+    private int numeroRegistros = 0;
+
+    @PostConstruct
+    public void init() {
+        lazymodel = new LazyDataModel<Usuario>() {
+            @Override
+            public List<Usuario> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+                String idTipoUsuario = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario"));
+                String idBibliotecaMediador = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente"));
+                String idPersonalBiblioteca = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdPersonalBiblioteca"));
+                List<Usuario> listaUsuarios = usuarioDao.obtenerEntidadesParametrosPaginadorFiltro(idTipoUsuario, idBibliotecaMediador, idPersonalBiblioteca, first, pageSize, palabra.trim());
+                int i = usuarioDao.contarUsuariosFiltro(idTipoUsuario, idBibliotecaMediador, idPersonalBiblioteca, first, pageSize, palabra.trim());
+                lazymodel.setRowCount(i);
+                setNumeroRegistros(i);
+                return listaUsuarios;
+            }
+        };
+    }
+
+    public int getNumeroRegistros() {
+        return numeroRegistros;
+    }
+
+    public void setNumeroRegistros(int numeroRegistros) {
+        this.numeroRegistros = numeroRegistros;
+    }
+
+    public String getPalabra() {
+        return palabra;
+    }
+
+    public void setPalabra(String palabra) {
+        this.palabra = palabra;
+    }
+
+    public LazyDataModel<Usuario> getLazymodel() {
+        return lazymodel;
+    }
+
+    public void setLazymodel(LazyDataModel<Usuario> lazymodel) {
+        this.lazymodel = lazymodel;
+    }
+
+    //filtro tabla get set segun tipo de objeto
+    public List<Usuario> getFiltroUsuario() {
+        return filtroUsuario;
+    }
+
+    public void setFiltroUsuario(List<Usuario> filtroUsuario) {
+        this.filtroUsuario = filtroUsuario;
+    }
+
+    public void accionFiltrar() {
+        RequestContext.getCurrentInstance().update("frmListUsuario:tblUsuario");
+    }
+
+    //FIN PAGINADOR
     public String getNom_Biblioteca() {
         return nom_Biblioteca;
     }
@@ -96,14 +161,14 @@ public class usuarioBean implements Serializable {
         this.cboTipoUsuario = cboTipoUsuario;
     }
 
-    public List<Usuario> getListUsuario() {
-        String idTipoUsuario = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario"));
-        String idBibliotecaMediador = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente"));
-        String idPersonalBiblioteca = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdPersonalBiblioteca"));
-        ListUsuario = usuarioDao.obtenerEntidadesParametros(idTipoUsuario, idBibliotecaMediador, idPersonalBiblioteca);
-        return ListUsuario;
-    }
-
+    //ya no 
+//    public List<Usuario> getListUsuario() {
+//        String idTipoUsuario = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario"));
+//        String idBibliotecaMediador = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente"));
+//        String idPersonalBiblioteca = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdPersonalBiblioteca"));
+//        ListUsuario = usuarioDao.obtenerEntidadesParametros(idTipoUsuario, idBibliotecaMediador, idPersonalBiblioteca);
+//        return ListUsuario;
+//    }
     public void updUsuario() {
         int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
         int dataUpdate = usuarioDao.actualizarEntidad(usuarioUpd, idUsuario);
@@ -144,10 +209,10 @@ public class usuarioBean implements Serializable {
 
     }
 
-    public void setListUsuario(List<Usuario> ListUsuario) {
-
-        this.ListUsuario = ListUsuario;
-    }
+//    public void setListUsuario(List<Usuario> ListUsuario) {
+//
+//        this.ListUsuario = ListUsuario;
+//    }
 
     public Usuario getUsuarioUpd() {
         return usuarioUpd;
@@ -157,14 +222,13 @@ public class usuarioBean implements Serializable {
         this.usuarioUpd = usuarioUpd;
     }
 
-    public List<Usuario> getFilterListUsuario() {
-        return filterListUsuario;
-    }
-
-    public void setFilterListUsuario(List<Usuario> filterListUsuario) {
-        this.filterListUsuario = filterListUsuario;
-    }
-
+//    public List<Usuario> getFilterListUsuario() {
+//        return filterListUsuario;
+//    }
+//
+//    public void setFilterListUsuario(List<Usuario> filterListUsuario) {
+//        this.filterListUsuario = filterListUsuario;
+//    }
     public void loginUsuario() throws IOException {
         usuario = loginDao.validar(usuario.getUSUARIO(), usuario.getCONTRASENA());
 

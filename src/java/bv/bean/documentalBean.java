@@ -29,7 +29,10 @@ import bv.dao.TemaDao;
 import bv.dao.TransaccionDao;
 import bv.dao.impl.DaoFactory;
 import static bv.util.Constantes.*;
+import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import vb.dto.PerfilDto;
 import vb.entidad.Autor;
 import vb.entidad.AuxContenido;
@@ -68,8 +71,8 @@ public class documentalBean {
     private Documental documental;
     private final DocumentalDao documentalDao;
     private String classValidacion;
-    private List<Documental> lstDocumental;
-    private List<Documental> lstDocumentalFilter;
+    //private List<Documental> lstDocumental;
+    // private List<Documental> lstDocumentalFilter;
     //VARIABLES COBERTURA
     private Cobertura cobertura;
     private List<SelectItem> cboDocumentalRelacion;
@@ -605,32 +608,32 @@ public class documentalBean {
         this.classValidacion = classValidacion;
     }
 
-    public List<Documental> getLstDocumental() {
-        int tipoUsuario = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario").toString());
-        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
-        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+//    public List<Documental> getLstDocumental() {
+//        int tipoUsuario = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario").toString());
+//        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+//        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+//
+//        lstDocumental = documentalDao.listarDocumental(perfil, tipoUsuario, idUsuario, ID_BIBLIOTECA_FUENTE);
+//        return lstDocumental;
+//    }
 
-        lstDocumental = documentalDao.listarDocumental(perfil, tipoUsuario, idUsuario, ID_BIBLIOTECA_FUENTE);
-        return lstDocumental;
-    }
+//    public List<Documental> getLstDocumentalGn() {
+//        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+//        lstDocumental = documentalDao.listarDocumentalGn(perfil, ID_BIBLIOTECA_FUENTE);
+//        return lstDocumental;
+//    }
 
-    public List<Documental> getLstDocumentalGn() {
-        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
-        lstDocumental = documentalDao.listarDocumentalGn(perfil, ID_BIBLIOTECA_FUENTE);
-        return lstDocumental;
-    }
+//    public List<Documental> getLstDocumentalFilter() {
+//        return lstDocumentalFilter;
+//    }
 
-    public List<Documental> getLstDocumentalFilter() {
-        return lstDocumentalFilter;
-    }
+//    public void setLstDocumentalFilter(List<Documental> lstDocumentalFilter) {
+//        this.lstDocumentalFilter = lstDocumentalFilter;
+//    }
 
-    public void setLstDocumentalFilter(List<Documental> lstDocumentalFilter) {
-        this.lstDocumentalFilter = lstDocumentalFilter;
-    }
-
-    public void setLstDocumental(List<Documental> lstDocumental) {
-        this.lstDocumental = lstDocumental;
-    }
+//    public void setLstDocumental(List<Documental> lstDocumental) {
+//        this.lstDocumental = lstDocumental;
+//    }
 
     public void validaTitulo() {
         int antIgual = 0;
@@ -1581,5 +1584,78 @@ public class documentalBean {
         return bib;
 
     }
+    
+    //Paginador DocumentalList
+     //public List<Documental> getLstDocumental() {
+//        int tipoUsuario = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario").toString());
+//        int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+//        int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+//
+//        lstDocumental = documentalDao.listarDocumental(perfil, tipoUsuario, idUsuario, ID_BIBLIOTECA_FUENTE);
+//        return lstDocumental;
+//    }
+    
+    //INICIO PAGINADOR
+    private List<Documental> filtroDocumental;
+    private LazyDataModel<Documental> lazymodel;
+    private String palabra="";
+    private int numeroRegistros = 0;
+
+    @PostConstruct
+    public void init() {
+        lazymodel = new LazyDataModel<Documental>() {
+            @Override
+            public List<Documental> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+                int tipoUsuario = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalTipoUsuario").toString());
+                int idUsuario = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalIdUsuario");
+                int ID_BIBLIOTECA_FUENTE = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("personalidBibliotecaFuente").toString());
+                List<Documental> lstDocumental = documentalDao.listarDocumentalFiltro(perfil, tipoUsuario, idUsuario, ID_BIBLIOTECA_FUENTE, first, pageSize, palabra.trim());
+                int i = documentalDao.contarDocumentalFiltro(perfil, tipoUsuario, idUsuario, ID_BIBLIOTECA_FUENTE, first, pageSize, palabra.trim());
+                lazymodel.setRowCount(i);
+                setNumeroRegistros(i);
+                return lstDocumental;
+            }
+        };
+    }
+    
+
+    public int getNumeroRegistros() {
+        return numeroRegistros;
+    }
+
+    public void setNumeroRegistros(int numeroRegistros) {
+        this.numeroRegistros = numeroRegistros;
+    }
+
+    public String getPalabra() {
+        return palabra;
+    }
+
+    public void setPalabra(String palabra) {
+        this.palabra = palabra;
+    }
+
+    public List<Documental> getFiltroDocumental() {
+        return filtroDocumental;
+    }
+
+    public void setFiltroDocumental(List<Documental> filtroDocumental) {
+        this.filtroDocumental = filtroDocumental;
+    }
+
+    public LazyDataModel<Documental> getLazymodel() {
+        return lazymodel;
+    }
+
+    public void setLazymodel(LazyDataModel<Documental> lazymodel) {
+        this.lazymodel = lazymodel;
+    }
+
+    public void accionFiltrar() {
+        RequestContext.getCurrentInstance().update("frmListDocumental:tblDocumental");
+    }
+    
+    //FIN PAGINADOR
+    
 
 }

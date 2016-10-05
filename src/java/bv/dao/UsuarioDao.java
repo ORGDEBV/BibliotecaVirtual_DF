@@ -22,8 +22,13 @@ public interface UsuarioDao {
 
     List<Usuario> obtenerEntidades();
 
-    List<Usuario> obtenerEntidadesParametros(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca);
-
+    //List<Usuario> obtenerEntidadesParametros(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca);
+    
+    //PAGINADOR
+    List<Usuario> obtenerEntidadesParametrosPaginadorFiltro(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca,int pagina,int registros,String palabra);
+    public int contarUsuariosFiltro(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca,int pagina,int registros,String palabra);
+    //---------
+    
     List<Object[]> obtenerTipousuario(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca);
 
     int cambiarContrasena(Usuario usuario, int idUsuario);

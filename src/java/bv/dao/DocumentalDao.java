@@ -21,10 +21,15 @@ public interface DocumentalDao {
 
     List<Object[]> llenaComboDocumentalRelacion(String idDocumental);
 
-    List<Documental> listarDocumental(String perfil, int tipoUsuario, int idUsuario, int idBiblioteca);
-
-    List<Documental> listarDocumentalGn(String perfil, int idBiblioteca);
-
+    //List<Documental> listarDocumental(String perfil, int tipoUsuario, int idUsuario, int idBiblioteca); perfil, tipoUsuario, idUsuario, ID_BIBLIOTECA_FUENTE, first, pageSize, palabra
+    List<Documental> listarDocumentalFiltro(String perfil,int tipoUsuario,int idUsuario,int ID_BIBLIOTECA_FUENTE,int first, int pageSize,String palabra);
+    int contarDocumentalFiltro(String perfil,int tipoUsuario,int idUsuario,int ID_BIBLIOTECA_FUENTE,int first, int pageSize,String palabra);
+     
+    //ya no 
+    //List<Documental> listarDocumentalGn(String perfil, int idBiblioteca);
+    List<Documental> listarDocumentalGeneralFiltro(String perfil, int idBiblioteca,int first, int pageSize, String palabra);
+    int contarDocumentalGeneralFiltro(String perfil, int idBiblioteca,int first, int pageSize, String palabra);
+    
     Documental listarXIdDocumental(String idDocumental);
 
     Documental listarDocumentalDetalle(String idDocumental);

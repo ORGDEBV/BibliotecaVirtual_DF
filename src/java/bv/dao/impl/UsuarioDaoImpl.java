@@ -129,11 +129,76 @@ public class UsuarioDaoImpl implements UsuarioDao{
         }
         return lstUsuario;
     }
-
+    //paginador
+//    @Override
+//    public List<Usuario> obtenerEntidadesParametrosPaginador(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca,int pagina,int registros) {
+//        List<Usuario> lstUsuario = new ArrayList<>();
+//        String[] parametros = new String[14];
+//        parametros[0] = "";
+//        parametros[1] = "";
+//        parametros[2] = "";
+//        parametros[3] = "";
+//        parametros[4] = "";
+//        parametros[5] = "";
+//        parametros[6] = "";
+//        parametros[7] = "LIST_USUARIO_TODOS";
+//        parametros[8] = idTipoUsuario;
+//        parametros[9] = idBibliotecaMediador;
+//        parametros[10] = idPersonalBiblioteca;
+//        parametros[11] = String.valueOf(pagina);
+//        parametros[12] = String.valueOf(registros);
+//        parametros[13] = "";
+//        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_PAGINACION_USUARIO]", parametros);
+//        for (Object[] datos : data) {
+//            Usuario usuario = new Usuario();
+//            usuario.setID_USUARIO(Integer.parseInt(datos[0].toString()));
+//            usuario.setUSUARIO(datos[1].toString());
+//            usuario.setCONTRASENA(datos[2].toString());
+//            if (datos[3].equals("1")) {
+//                usuario.setBoolActivo(true);
+//            } else {
+//                usuario.setBoolActivo(false);
+//            }
+//            usuario.setID_PERSONAL_BIBLIOTECA(Integer.parseInt(datos[4].toString()));
+//            usuario.setNombrePersonalBiblioteca(datos[5].toString());
+//            usuario.setID_TIPO_USUARIO(Integer.parseInt(datos[6].toString()));
+//            usuario.setTipoUsuario(datos[7].toString());
+//            usuario.setNombreBiblioteca(datos[8].toString());
+//            usuario.setCAMBIO_PASSW_SISTEMA(Integer.parseInt(datos[9].toString()));
+//            lstUsuario.add(usuario);
+//        }
+//        return lstUsuario;
+//    }
+//
+//    @Override
+//    public int contarUsuariosTodos(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca,int pagina,int registros) {
+//        String[] parametros = new String[14];
+//        parametros[0] = "";
+//        parametros[1] = "";
+//        parametros[2] = "";
+//        parametros[3] = "";
+//        parametros[4] = "";
+//        parametros[5] = "";
+//        parametros[6] = "";
+//        parametros[7] = "CONTAR_USUARIO_TODOS";
+//        parametros[8] = idTipoUsuario;
+//        parametros[9] = idBibliotecaMediador;
+//        parametros[10] = idPersonalBiblioteca;
+//        parametros[11] = String.valueOf(pagina);
+//        parametros[12] = String.valueOf(registros);
+//        parametros[13] = "";
+//        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_PAGINACION_USUARIO]", parametros);
+//        int total = 0;
+//        for (Object[] objects : data) {
+//            total = Integer.parseInt(objects[0].toString());
+//        }
+//        return total;
+//    }
+//   
     @Override
-    public List<Usuario> obtenerEntidadesParametros(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca) {
+    public List<Usuario> obtenerEntidadesParametrosPaginadorFiltro(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca,int pagina,int registros,String palabra ) {
         List<Usuario> lstUsuario = new ArrayList<>();
-        String[] parametros = new String[11];
+        String[] parametros = new String[14];
         parametros[0] = "";
         parametros[1] = "";
         parametros[2] = "";
@@ -141,11 +206,14 @@ public class UsuarioDaoImpl implements UsuarioDao{
         parametros[4] = "";
         parametros[5] = "";
         parametros[6] = "";
-        parametros[7] = "LIST_USUARIO";
+        parametros[7] = "LIST_USUARIO_FILTRO";
         parametros[8] = idTipoUsuario;
         parametros[9] = idBibliotecaMediador;
         parametros[10] = idPersonalBiblioteca;
-        ArrayList<Object[]> data = conector.execProcedure("BV.SP_MANTENIMIENTO_USUARIO", parametros);
+        parametros[11] = String.valueOf(pagina);
+        parametros[12] = String.valueOf(registros);
+        parametros[13] = palabra;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_PAGINACION_USUARIO]", parametros);
         for (Object[] datos : data) {
             Usuario usuario = new Usuario();
             usuario.setID_USUARIO(Integer.parseInt(datos[0].toString()));
@@ -166,6 +234,69 @@ public class UsuarioDaoImpl implements UsuarioDao{
         }
         return lstUsuario;
     }
+
+    @Override
+    public int contarUsuariosFiltro(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca,int pagina,int registros,String palabra) {
+        String[] parametros = new String[14];
+        parametros[0] = "";
+        parametros[1] = "";
+        parametros[2] = "";
+        parametros[3] = "";
+        parametros[4] = "";
+        parametros[5] = "";
+        parametros[6] = "";
+        parametros[7] = "CONTAR_USUARIO_FILTRO";
+        parametros[8] = idTipoUsuario;
+        parametros[9] = idBibliotecaMediador;
+        parametros[10] = idPersonalBiblioteca;
+        parametros[11] = String.valueOf(pagina);
+        parametros[12] = String.valueOf(registros);
+        parametros[13] = palabra;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_PAGINACION_USUARIO]", parametros);
+        int total = 0;
+        for (Object[] objects : data) {
+            total = Integer.parseInt(objects[0].toString());
+        }
+        return total;
+    }
+    //------------
+    
+//    @Override
+//    public List<Usuario> obtenerEntidadesParametros(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca) {
+//        List<Usuario> lstUsuario = new ArrayList<>();
+//        String[] parametros = new String[11];
+//        parametros[0] = "";
+//        parametros[1] = "";
+//        parametros[2] = "";
+//        parametros[3] = "";
+//        parametros[4] = "";
+//        parametros[5] = "";
+//        parametros[6] = "";
+//        parametros[7] = "LIST_USUARIO";
+//        parametros[8] = idTipoUsuario;
+//        parametros[9] = idBibliotecaMediador;
+//        parametros[10] = idPersonalBiblioteca;
+//        ArrayList<Object[]> data = conector.execProcedure("BV.SP_MANTENIMIENTO_USUARIO", parametros);
+//        for (Object[] datos : data) {
+//            Usuario usuario = new Usuario();
+//            usuario.setID_USUARIO(Integer.parseInt(datos[0].toString()));
+//            usuario.setUSUARIO(datos[1].toString());
+//            usuario.setCONTRASENA(datos[2].toString());
+//            if (datos[3].equals("1")) {
+//                usuario.setBoolActivo(true);
+//            } else {
+//                usuario.setBoolActivo(false);
+//            }
+//            usuario.setID_PERSONAL_BIBLIOTECA(Integer.parseInt(datos[4].toString()));
+//            usuario.setNombrePersonalBiblioteca(datos[5].toString());
+//            usuario.setID_TIPO_USUARIO(Integer.parseInt(datos[6].toString()));
+//            usuario.setTipoUsuario(datos[7].toString());
+//            usuario.setNombreBiblioteca(datos[8].toString());
+//            usuario.setCAMBIO_PASSW_SISTEMA(Integer.parseInt(datos[9].toString()));
+//            lstUsuario.add(usuario);
+//        }
+//        return lstUsuario;
+//    }
 
     @Override
     public List<Object[]> obtenerTipousuario(String idTipoUsuario, String idBibliotecaMediador, String idPersonalBiblioteca) {

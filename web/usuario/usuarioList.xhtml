@@ -22,64 +22,61 @@
 
         <p:separator/>
         <h:form id="frmListUsuario">
-            <p:dataTable lazy="false" id="tblUsuario" 
-                         var="usuario"
-                         value="#{usuarioBean.listUsuario}"
-                         rows="5"
-                         paginator="true"
-                         paginatorPosition="top"
-                         widgetVar="tblUsuario"
-                         emptyMessage="No se encontraron registros"
-                         filteredValue="#{usuarioBean.filterListUsuario}">
-                <f:facet name="header">
+            <p:dataTable var="usuario"  
+                         value="#{usuarioBean.lazymodel}" id="tblUsuario" widgetVar="tblUsuario"
+                         paginator="true" rows="100" rowsPerPageTemplate="80,100,150" stickyHeader="true" 
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         lazy="true" emptyMessage="No se encontraron registros..." filteredValue="#{usuarioBean.filtroUsuario}">  
+
+                <f:facet name="header"> 
                     <p:outputPanel>
-                        <h:outputText value="Busque un usuario"/>
-                        <p:inputText id="globalFilter" 
-                                     style="width:200px;margin-left:30px;border-radius:18px;"
-                                     placeholder="Ingrese su bsqueda..." />
-                         <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" onclick="PF('tblUsuario').filter()" value="Filtrar"></p:commandButton>
-                        
+                        <p:fragment autoUpdate="true">
+                            <h:outputText value="Buscar: "/>
+                            <p:inputText id="globalFilter" style="width:200px;margin-left:30px;border-radius:18px;" placeholder="Ingrese su búsqueda..." value="#{usuarioBean.palabra}"/>
+                            <p:commandButton style="margin-left:30px;border-radius: 18px;border:0px;" value="Filtrar" actionListener="#{usuarioBean.accionFiltrar()}" />
+                        </p:fragment>
                     </p:outputPanel>
-
-                </f:facet> 
-
-                <p:column rendered="false" filterStyle="display:none" filterBy="#{usuario.ID_USUARIO}" filterMatchMode="contains" headerText="ID USUARIO">
+                </f:facet>
+                <p:column rendered="false" headerText="ID USUARIO">
                     <h:outputText value="#{usuario.ID_USUARIO}"/>
                 </p:column>
-                <p:column rendered="false" filterStyle="display:none" filterBy="#{usuario.ID_PERSONAL_BIBLIOTECA}" filterMatchMode="contains" headerText="ID PERSONAL" style="text-align:center;">
+                <p:column rendered="false" headerText="ID PERSONAL BIBLIOTECA">
                     <h:outputText value="#{usuario.ID_PERSONAL_BIBLIOTECA}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{usuario.nombrePersonalBiblioteca}" width="15%" filterMatchMode="contains" headerText="NOMBRES Y APELLIDOS" style="text-align:center;">
+                <p:column width="15%" headerText="NOMBRES Y APELLIDOS" style="text-align:center;">
                     <h:outputText value="#{usuario.nombrePersonalBiblioteca}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{usuario.USUARIO}" width="6%" filterMatchMode="contains" headerText="USUARIO" style="text-align:center;">
+                <p:column width="6%" headerText="USUARIO" style="text-align:center;">
                     <h:outputText value="#{usuario.USUARIO}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{usuario.CONTRASENA}" width="10%" filterMatchMode="contains" headerText="CONTRASEÑA" style="text-align:center;">
+                <p:column width="10%"  headerText="CONTRASEÑA" style="text-align:center;">
                     <h:outputText value="#{usuario.CONTRASENA}"/>
                 </p:column>
-                <p:column rendered="false" filterStyle="display:none" filterBy="#{usuario.ID_TIPO_USUARIO}" filterMatchMode="contains" headerText="ID TIPO USUARIO" style="text-align:center;">
+                <p:column rendered="false" headerText="ID TIPO USUARIO" style="text-align:center;">
                     <h:outputText value="#{usuario.ID_TIPO_USUARIO}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{usuario.tipoUsuario}" width="8%" filterMatchMode="contains" headerText="TIPO USUARIO" style="text-align:center;">
+                <p:column width="8%"  headerText="TIPO USUARIO" style="text-align:center;">
                     <h:outputText value="#{usuario.tipoUsuario}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{usuario.nombreBiblioteca}" width="10%" filterMatchMode="contains" headerText="BIBLIOTECA" style="text-align:center;">
+                <p:column width="10%" headerText="BIBLIOTECA" style="text-align:center;">
                     <h:outputText value="#{usuario.nombreBiblioteca}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{usuario.boolActivo}" width="5%" filterMatchMode="contains" headerText="ACTIVO" style="text-align:center;">
+                <p:column width="5%" headerText="ACTIVO" style="text-align:center;">
                     <p:selectBooleanCheckbox value="#{usuario.boolActivo}" disabled="true"/>
                 </p:column>
-                
-
-                <p:column filterStyle="display:none" filterBy="#{usuario.boolActivo}" width="5%" filterMatchMode="contains" headerText="Editar" style="text-align:center;">
+                <p:column width="5%" headerText="EDITAR" style="text-align:center;">
                     <p:commandButton update=":frmListUsuario:grid" oncomplete="PF('dlbUpdUsuario').show()" icon="ui-icon-pencil">
                         <f:setPropertyActionListener target="#{usuarioBean.usuarioUpd}" value="#{usuario}" />                        
                     </p:commandButton>
-                </p:column>                
-
+                </p:column> 
+                
+                <f:facet name="footer"> 
+                        <h:outputText value="#{usuarioBean.numeroRegistros} REGISTROS" />                        
+                </f:facet>
+                
             </p:dataTable>
-
+            
+            
             <p:dialog closeOnEscape="true" header="..:: EDITAR USUARIOS ::.."
                       widgetVar="dlbUpdUsuario" modal="true" showEffect="clip"
                       hideEffect="clip" resizable="false"

@@ -54,28 +54,176 @@ public class DocumentalDaoImpl implements DocumentalDao {
         return data;
     }
 
+//    @Override
+//    public List<Documental> listarDocumental(String perfil, int tipoUsuario, int idUsuario, int idBiblioteca) {
+//        List<Documental> lstDocumental = new ArrayList<>();
+//        Documental doc;
+//        String[] array = new String[4];
+//        array[1] = perfil;
+//        switch (tipoUsuario) {
+//            case 3:
+//                array[2] = idUsuario + "";
+//                array[0] = "LIST_DOCUMENTAL_UNICO";
+//                break;
+//            case 2:
+//                array[2] = "";
+//                array[0] = "LIST_DOCUMENTAL_REPRERSENTANTE";
+//                break;
+//            default:
+//                array[2] = "";
+//                array[0] = "LIST_DOCUMENTAL_ADMINISTRADOR";
+//                break;
+//        }
+//        array[3] = String.valueOf(idBiblioteca);
+//        ArrayList<Object[]> data = conector.execProcedure("BV.SP_LISTAR_DOCUMENTAL", array);
+//        for (Object[] d : data) {
+//            doc = new Documental();
+//            doc.setID_DOCUMENTAL(d[0].toString());
+//            doc.setTITULO(d[1].toString());
+//            doc.setTITULO_ALTERNATIVO(d[2].toString());
+//            doc.setDESCRIPCION(d[3].toString());
+//            doc.setRESUMEN(d[4].toString());
+//            doc.setID_TIPO(Integer.parseInt(d[5].toString()));
+//            doc.setTIPO(d[6].toString());
+//            doc.setID_BIBLIOTECA_FUENTE(Integer.parseInt(d[7].toString()));
+//            doc.setBIBLIOTECA_FUENTE(d[8].toString());
+//            doc.setTIENE_COMO_VERSION(d[9].toString());
+//            doc.setES_PARTE_DE(d[10].toString());
+//            doc.setTIENE_PARTE_DE(d[11].toString());
+//            doc.setID_COBERTURA_ESPACIAL(Integer.parseInt(d[12].toString()));
+//            doc.setCOBERTURA_ESPACIAL(d[13].toString());
+//            doc.setID_COBERTURA_TEMPORAL(Integer.parseInt(d[14].toString()));
+//            doc.setCOBERTURA_TEMPORAL(d[15].toString());
+//            doc.setFECHA_DISPONIBLE(d[16].toString());
+//            doc.setFECHA_PUBLICACION(d[17].toString());
+//            doc.setFECHA_ACEPTACION((Date) d[18]);
+//            doc.setFECHA_COPYRIGHT((Date) d[19]);
+//            doc.setID_FORMATO(d[20].toString());
+//            doc.setFORMATO_EXTENSION(d[21].toString());
+//            doc.setFORMATO_MEDIO_DESCRIPCION(d[22].toString());
+//            doc.setID_EDITORIAL(Integer.parseInt(d[23].toString()));
+//            doc.setEDITORIAL(d[24].toString());
+//            doc.setDERECHO(d[25].toString());
+//            doc.setDERECHO_ACCESO(d[26].toString());
+//            doc.setID_AUDIENCIA(Integer.parseInt(d[27].toString()));
+//            doc.setAUDIENCIA(d[28].toString());
+//            doc.setURL(d[29].toString());
+//            doc.setISBN(d[30].toString());
+//            doc.setOTRO(d[31].toString());
+//            doc.setNUMERO_PAGINAS(d[32].toString());
+//            lstDocumental.add(doc);
+//        }
+//        return lstDocumental;
+//    }
     @Override
-    public List<Documental> listarDocumental(String perfil, int tipoUsuario, int idUsuario, int idBiblioteca) {
+    public List<Documental> listarDocumentalFiltro(String perfil, int tipoUsuario, int idUsuario, int ID_BIBLIOTECA_FUENTE, int first, int pageSize, String palabra) {
         List<Documental> lstDocumental = new ArrayList<>();
         Documental doc;
-        String[] array = new String[4];
-        array[1] = perfil;
+        String[] parametros = new String[7];
+        parametros[1] = perfil;
         switch (tipoUsuario) {
             case 3:
-                array[2] = idUsuario + "";
-                array[0] = "LIST_DOCUMENTAL_UNICO";
+                parametros[2] = idUsuario + "";
+                parametros[0] = "LIST_DOCUMENTAL_UNICO";
                 break;
             case 2:
-                array[2] = "";
-                array[0] = "LIST_DOCUMENTAL_REPRERSENTANTE";
+                parametros[2] = "";
+                parametros[0] = "LIST_DOCUMENTAL_REPRERSENTANTE";
                 break;
             default:
-                array[2] = "";
-                array[0] = "LIST_DOCUMENTAL_ADMINISTRADOR";
+                parametros[2] = "";
+                parametros[0] = "LIST_DOCUMENTAL_ADMINISTRADOR";
                 break;
         }
-        array[3] = String.valueOf(idBiblioteca);
-        ArrayList<Object[]> data = conector.execProcedure("BV.SP_LISTAR_DOCUMENTAL", array);
+        parametros[3] = String.valueOf(ID_BIBLIOTECA_FUENTE);
+        parametros[4] = String.valueOf(first);
+        parametros[5] = String.valueOf(pageSize);
+        parametros[6] = palabra;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_DOCUMENTAL_PAGINACION]", parametros);
+        for (Object[] d : data) {
+            doc = new Documental();
+            doc.setID_DOCUMENTAL(d[0].toString());
+            doc.setTITULO(d[1].toString());
+            doc.setTITULO_ALTERNATIVO(d[2].toString());
+            doc.setDESCRIPCION(d[3].toString());
+            doc.setRESUMEN(d[4].toString());
+            doc.setID_TIPO(Integer.parseInt(d[5].toString()));
+            doc.setTIPO(d[6].toString());
+            doc.setID_BIBLIOTECA_FUENTE(Integer.parseInt(d[7].toString()));
+            doc.setBIBLIOTECA_FUENTE(d[8].toString());
+            doc.setTIENE_COMO_VERSION(d[9].toString());
+            doc.setES_PARTE_DE(d[10].toString());
+            doc.setTIENE_PARTE_DE(d[11].toString());
+            doc.setID_COBERTURA_ESPACIAL(Integer.parseInt(d[12].toString()));
+            doc.setCOBERTURA_ESPACIAL(d[13].toString());
+            doc.setID_COBERTURA_TEMPORAL(Integer.parseInt(d[14].toString()));
+            doc.setCOBERTURA_TEMPORAL(d[15].toString());
+            doc.setFECHA_DISPONIBLE(d[16].toString());
+            doc.setFECHA_PUBLICACION(d[17].toString());
+            doc.setFECHA_ACEPTACION((Date) d[18]);
+            doc.setFECHA_COPYRIGHT((Date) d[19]);
+            doc.setID_FORMATO(d[20].toString());
+            doc.setFORMATO_EXTENSION(d[21].toString());
+            doc.setFORMATO_MEDIO_DESCRIPCION(d[22].toString());
+            doc.setID_EDITORIAL(Integer.parseInt(d[23].toString()));
+            doc.setEDITORIAL(d[24].toString());
+            doc.setDERECHO(d[25].toString());
+            doc.setDERECHO_ACCESO(d[26].toString());
+            doc.setID_AUDIENCIA(Integer.parseInt(d[27].toString()));
+            doc.setAUDIENCIA(d[28].toString());
+            doc.setURL(d[29].toString());
+            doc.setISBN(d[30].toString());
+            doc.setOTRO(d[31].toString());
+            doc.setNUMERO_PAGINAS(d[32].toString());
+            lstDocumental.add(doc);
+        }
+        return lstDocumental;
+        
+    }
+
+    @Override
+    public int contarDocumentalFiltro(String perfil, int tipoUsuario, int idUsuario, int ID_BIBLIOTECA_FUENTE, int first, int pageSize, String palabra) {
+        String[] parametros = new String[7];
+        parametros[1] = perfil;
+        switch (tipoUsuario) {
+            case 3:
+                parametros[2] = idUsuario + "";
+                parametros[0] = "COUNT_LIST_DOCUMENTAL_UNICO";
+                break;
+            case 2:
+                parametros[2] = "";
+                parametros[0] = "COUNT_LIST_DOCUMENTAL_REPRERSENTANTE";
+                break;
+            default:
+                parametros[2] = "";
+                parametros[0] = "COUNT_LIST_DOCUMENTAL_ADMINISTRADOR";
+                break;
+        }
+        parametros[3] = String.valueOf(ID_BIBLIOTECA_FUENTE);
+        parametros[4] = String.valueOf(first);
+        parametros[5] = String.valueOf(pageSize);
+        parametros[6] = palabra;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_DOCUMENTAL_PAGINACION]", parametros);
+        int total = 0;
+        for (Object[] objects : data) {
+            total = Integer.parseInt(objects[0].toString());
+        }
+        return total;
+    }
+
+    @Override
+    public List<Documental> listarDocumentalGeneralFiltro(String perfil, int idBiblioteca,int first, int pageSize, String palabra) {
+        List<Documental> lstDocumental = new ArrayList<>();
+        Documental doc;
+        String[] parametros = new String[7];
+        parametros[0] = "LIST_DOCUMENTAL_TODO";
+        parametros[1] = perfil;
+        parametros[2] = "";
+        parametros[3] = String.valueOf(idBiblioteca);
+        parametros[4] = String.valueOf(first);
+        parametros[5] = String.valueOf(pageSize);
+        parametros[6] = palabra;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_DOCUMENTAL_PAGINACION]", parametros);
         for (Object[] d : data) {
             doc = new Documental();
             doc.setID_DOCUMENTAL(d[0].toString());
@@ -117,55 +265,23 @@ public class DocumentalDaoImpl implements DocumentalDao {
     }
 
     @Override
-    public List<Documental> listarDocumentalGn(String perfil, int idBiblioteca) {
-        List<Documental> lstDocumental = new ArrayList<>();
-        Documental doc;
-        String[] array = new String[4];
-        array[0] = "LIST_DOCUMENTAL_TODO";
-        array[1] = perfil;
-        array[2] = "";
-        array[3] = idBiblioteca + "";
-        ArrayList<Object[]> data = conector.execProcedure("BV.SP_LISTAR_DOCUMENTAL", array);
-        for (Object[] d : data) {
-            doc = new Documental();
-            doc.setID_DOCUMENTAL(d[0].toString());
-            doc.setTITULO(d[1].toString());
-            doc.setTITULO_ALTERNATIVO(d[2].toString());
-            doc.setDESCRIPCION(d[3].toString());
-            doc.setRESUMEN(d[4].toString());
-            doc.setID_TIPO(Integer.parseInt(d[5].toString()));
-            doc.setTIPO(d[6].toString());
-            doc.setID_BIBLIOTECA_FUENTE(Integer.parseInt(d[7].toString()));
-            doc.setBIBLIOTECA_FUENTE(d[8].toString());
-            doc.setTIENE_COMO_VERSION(d[9].toString());
-            doc.setES_PARTE_DE(d[10].toString());
-            doc.setTIENE_PARTE_DE(d[11].toString());
-            doc.setID_COBERTURA_ESPACIAL(Integer.parseInt(d[12].toString()));
-            doc.setCOBERTURA_ESPACIAL(d[13].toString());
-            doc.setID_COBERTURA_TEMPORAL(Integer.parseInt(d[14].toString()));
-            doc.setCOBERTURA_TEMPORAL(d[15].toString());
-            doc.setFECHA_DISPONIBLE(d[16].toString());
-            doc.setFECHA_PUBLICACION(d[17].toString());
-            doc.setFECHA_ACEPTACION((Date) d[18]);
-            doc.setFECHA_COPYRIGHT((Date) d[19]);
-            doc.setID_FORMATO(d[20].toString());
-            doc.setFORMATO_EXTENSION(d[21].toString());
-            doc.setFORMATO_MEDIO_DESCRIPCION(d[22].toString());
-            doc.setID_EDITORIAL(Integer.parseInt(d[23].toString()));
-            doc.setEDITORIAL(d[24].toString());
-            doc.setDERECHO(d[25].toString());
-            doc.setDERECHO_ACCESO(d[26].toString());
-            doc.setID_AUDIENCIA(Integer.parseInt(d[27].toString()));
-            doc.setAUDIENCIA(d[28].toString());
-            doc.setURL(d[29].toString());
-            doc.setISBN(d[30].toString());
-            doc.setOTRO(d[31].toString());
-            doc.setNUMERO_PAGINAS(d[32].toString());
-            lstDocumental.add(doc);
+    public int contarDocumentalGeneralFiltro(String perfil, int idBiblioteca,int first, int pageSize, String palabra) {
+        String[] parametros = new String[7];
+        parametros[0] = "COUNT_LIST_DOCUMENTAL_TODO";
+        parametros[1] = perfil;
+        parametros[2] = "";
+        parametros[3] = String.valueOf(idBiblioteca);
+        parametros[4] = String.valueOf(first);
+        parametros[5] = String.valueOf(pageSize);
+        parametros[6] = palabra;
+        ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_DOCUMENTAL_PAGINACION]", parametros);
+        int total = 0;
+        for (Object[] objects : data) {
+            total = Integer.parseInt(objects[0].toString());
         }
-        return lstDocumental;
+        return total;
     }
-
+    
     @Override
     public Documental listarXIdDocumental(String idDocumental) {
         Documental doc = new Documental();
@@ -326,7 +442,7 @@ public class DocumentalDaoImpl implements DocumentalDao {
     }
 
     @Override
-    public ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca,String idEstadoControl) {
+    public ArrayList<Documental> listDocumentalPublicacion(String perfilControl, String idBiblioteca, String idEstadoControl) {
         ArrayList<Documental> lstDocPublicacion = new ArrayList<>();
         Documental doc;
         String[] parametros = new String[5];
@@ -390,18 +506,18 @@ public class DocumentalDaoImpl implements DocumentalDao {
 
     @Override
     public String controlDocumentalObservacion(String idDoc, String estadoCont, String observacion, int idUsuario) {
-       String msg = "";
+        String msg = "";
         String[] parametros = new String[4];
         parametros[0] = idDoc;
         parametros[1] = estadoCont;
         parametros[2] = observacion;
         parametros[3] = String.valueOf(idUsuario);
-     
+
         ArrayList<Object[]> data = conector.execProcedure("[BV].[SP_DOCUMENTAL_ESTADO_CONTROL_Insertar]", parametros);
         for (Object[] d : data) {
             msg = d[1].toString();
         }
         return msg;
-        
+
     }
 }
